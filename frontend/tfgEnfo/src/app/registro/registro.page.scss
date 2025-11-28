@@ -1,0 +1,131 @@
+.registro-content {
+    --background: var(--color-verde-oscuro);
+    padding: auto;
+
+    // Estilos del logo y eslogan
+    .header-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin: 2em 0 1em 0;
+
+        .logo {
+            width: 6em;
+            height: auto;
+            object-fit: contain;
+            margin-bottom: 0.5em;
+        }
+
+        .slogan {
+            color: var(--color-verde-claro);
+            font-size: var(--tamano-texto-mediano);
+        }
+    }
+
+    // Estilos del formulario
+    .registro-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.5em;
+
+        .input-item {
+            --background: transparent;
+            --border-color: transparent;
+
+            // Etiqueta del campo
+            .input-label {
+                color: white;
+                font-size: var(--tamano-texto-gigante);
+                margin-bottom: 1em;
+                font-weight: bold;
+            }
+
+            // El campo de texto
+            .styled-input {
+                background: var(--color-verde-claro);
+                color: black;
+                border: solid 2px var(--color-verde);
+                border-radius: 8px;
+                width: 20em;
+                height: 1em;
+                font-size: var(--tamano-texto-enano);
+                --padding-start: 0.5em;
+            }
+        }
+
+        // Contenedor para los botones de Hombre/Mujer
+        .gender-selection-container {
+            display: flex;
+            flex-direction: column;
+            width: 18em;
+            margin: 1em;
+
+            .input-label {
+                // Reusa la clase para mantener el estilo de las etiquetas
+                @extend .input-label;
+                margin-bottom: 10px;
+                font-weight: bold;
+                align-self: start;
+                justify-self: start;
+                color: white;
+                font-size: var(--tamano-texto-mediano);
+            }
+
+            .gender-buttons {
+                display: flex;
+                justify-content: space-between;
+                gap: 1em;
+
+                .gender-button {
+                    flex: 1;
+                    height: 1.5em;
+                    text-transform: none;
+                    font-weight: normal;
+                    font-size: var(--tamano-texto-mediano);
+                    border-radius: 8px;
+
+                    &.unselected {
+                        // Botón no seleccionado
+                        background: var(--color-verde-oscuro);
+                        color: white;
+                        border: solid 2px var(--color-verde);
+                        border-radius: 8px;
+                    }
+
+                    &.selected {
+                        // Botón seleccionado 
+                        background: var(--color-verde);
+                        color: var(--color-verde-oscuro);
+                        border-color: var(--color-verde-claro);
+                        border: solid 2px var(--color-verde-claro);
+                    }
+                }
+            }
+        }
+
+        // Botón principal de registro
+        .register-button {
+            --background: var(--color-verde-oscuro);
+            color: white;
+            border: solid 2px var(--color-verde);
+            border-radius: 8px;
+            width: 20em;
+        }
+
+        // Enlace de inicio de sesión
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--color-verde-claro);
+
+            a {
+                color: var(--color-verde);
+                text-decoration: none; // Quita el subrayado por defecto
+                font-weight: bold;
+            }
+        }
+    }
+}
