@@ -1,0 +1,251 @@
+    .registro-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        --background: radial-gradient(circle at bottom right,
+                rgba(107, 182, 71, 0.5) 0%,
+                var(--color-verde-oscuro) 30%);
+    }
+
+
+    .header-section {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5em;
+        justify-content: center;
+        align-items: center;
+        padding-top: 3em;
+        margin: 4em 0 2em 0;
+    }
+
+    .logo {
+        width: 5em;
+        height: auto;
+    }
+
+    .slogan {
+        font-size: var(--tamano-texto-pequeno);
+        color: var(--color-verde-claro);
+    }
+
+    .registro-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5em;
+    }
+
+    .inptsPC {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5em;
+    }
+
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5em;
+        width: 15em;
+    }
+
+    .input-group label {
+        font-weight: bold;
+        color: white;
+        font-size: var(--tamano-texto-pequeno);
+    }
+
+    .input-group input {
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid var(--color-verde);
+        background-color: var(--color-verde-claro);
+        font-size: var(--tamano-texto-pequeno);
+        height: 0.5em;
+        color: var(--color-verde-oscuro)
+    }
+
+    .input-group input:focus {
+        background-color: var(--color-verde-oscuro);
+        color: var(--color-verde-claro);
+        border: 1px solid var(--color-verde);
+        outline: none;
+    }
+
+    .gender-selection-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5em;
+        width: 15em;
+    }
+
+    .gender-selection-container label {
+        font-weight: bold;
+        color: white
+    }
+
+    .gender-buttons {
+        display: flex;
+        justify-content: space-between;
+        gap: 1em;
+    }
+
+    .gender-button {
+        flex: 1;
+        height: 2em;
+        border-radius: 8px;
+        border: 1px solid var(--color-verde);
+        background-color: var(--color-verde-oscuro);
+        font-size: var(--tamano-texto-mediano);
+        color: white;
+        font-weight: bold;
+
+
+        &.selected {
+            background-color: var(--color-verde);
+            border: 1px solid var(--color-verde-claro);
+            color: var(--color-verde-oscuro);
+        }
+    }
+
+    .gender-button:active {
+        background-color: var(--color-verde);
+        border: 1px solid var(--color-verde-claro);
+        color: var(--color-verde-oscuro);
+        outline: none;
+    }
+
+    .register-button {
+        margin-top: 2em;
+        width: 15em;
+        height: 2em;
+        border-radius: 8px;
+        background-color: var(--color-verde-oscuro);
+        color: white;
+        font-size: var(--tamano-texto-mediano);
+        border: 1px solid var(--color-verde);
+        font-weight: bold;
+    }
+
+    .register-button:active {
+        background-color: var(--color-verde);
+        border: 1px solid var(--color-verde-claro);
+        color: var(--color-verde-oscuro);
+        outline: none;
+    }
+
+    .login-link {
+        text-align: center;
+        font-size: var(--tamano-texto-pequeno);
+        color: white;
+        margin: 0;
+    }
+
+    a {
+        margin-left: 0.5em;
+        color: var(--color-verde-claro);
+        font-weight: bold;
+        text-decoration: none;
+        position: relative;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+
+
+    a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 2px;
+        width: 0;
+        background-color: var(--color-verde);
+        transition: width 0.3s ease;
+    }
+
+
+    a:hover::after {
+        width: 100%;
+    }
+
+
+    a:active {
+        color: var(--color-verde);
+    }
+
+
+
+
+
+
+
+
+
+
+    /*---------------------------------MEDIA QUERY PARA PC------------------------------------*/
+
+    @media screen and (min-width: 1024px) {
+
+        .registro-content {
+            --background: url('../../assets/imgs/blob-scene-haikei.svg');
+        }
+
+        .marcoPC {
+            display: flex;
+            flex-direction: column;
+            justify-self: center;
+            margin: 3em 0 0 0;
+
+            background: var(--color-verde-oscuro);
+            padding: 2em 2em 3em 2em;
+            width: 25em;
+            border-radius: 8px;
+
+            box-shadow: 0 0 10px rgba(107, 182, 71, 0.5);
+        }
+
+        .header-section {
+            align-self: center;
+            justify-self: center;
+            gap: 0.5em;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 3em;
+            border-bottom: solid 1px var(--color-verde);
+            width: 75%;
+            padding-top: 1em;
+            margin: -1em 0 3em 0;
+        }
+
+        .inptsPC {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5em;
+        }
+
+        .gender-button {
+            height: 1.8em;
+            font-size: 0.9em;
+        }
+
+        .input-group input {
+            padding: 10px;
+            font-size: 0.9em;
+        }
+
+        .register-button {
+            margin-top: 2.5em;
+        }
+
+        .register-button:hover {
+            background-color: rgba(66, 112, 44, 0.5);
+            color: white;
+        }
+
+        .register-button:active {
+            background-color: var(--color-verde);
+            border: 1px solid var(--color-verde-claro);
+            color: var(--color-verde-oscuro);
+            outline: none;
+        }
+    }
