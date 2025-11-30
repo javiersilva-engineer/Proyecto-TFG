@@ -1,41 +1,54 @@
-<ion-content [fullscreen]="true" class="registro-content">
+<ion-content class="registro-content">
 
-  <div class="header-section">
-    <img src="assets/imgs/logoEnfo.png" alt="EnFo Logo" class="logo">
-    <p class="slogan">Los abdominales se cocinan, no se entrenan.</p>
-  </div>
-
-  <form class="registro-form">
-
-    <ion-item class="input-item">
-      <ion-label position="stacked" class="input-label">Nombre de usuario*</ion-label>
-      <ion-input type="text" placeholder="Manolito" class="styled-input"></ion-input>
-    </ion-item>
-
-    <ion-item class="input-item">
-      <ion-label position="stacked" class="input-label">Email*</ion-label>
-      <ion-input type="email" placeholder="manolo1234@gmail.com" class="styled-input"></ion-input>
-    </ion-item>
-
-    <ion-item class="input-item">
-      <ion-label position="stacked" class="input-label">Contraseña*</ion-label>
-      <ion-input type="password" placeholder="********" class="styled-input"></ion-input>
-    </ion-item>
-
-    <div class="gender-selection-container">
-      <ion-label class="input-label">Sexo*</ion-label>
-      <div class="gender-buttons">
-        <ion-button class="gender-button unselected" fill="clear">Hombre</ion-button>
-        <ion-button class="gender-button unselected" fill="clear">Mujer</ion-button>
-      </div>
+  <div class="marcoPC">
+    <div class="header-section">
+      <img src="assets/imgs/logoEnfo.png" alt="EnFo Logo" class="logo" />
+      <p class="slogan">Los abdominales se cocinan, no se entrenan.</p>
     </div>
 
-    <ion-button class="register-button">
-      Registrarse
-    </ion-button>
+    <form class="registro-form">
 
-    <p class="login-link">¿Ya tienes cuenta? <a href="/login">Inicia sesión</a></p>
+      <div class="inptsPC">
+        <div class="input-group">
+          <label>Nombre de usuario*</label>
+          <input type="text" />
+        </div>
 
-  </form>
+        <div class="input-group">
+          <label>Email*</label>
+          <input type="email" />
+        </div>
+      </div>
+
+      <div class="inptsPC">
+        <div class="input-group">
+          <label>Contraseña*</label>
+          <input type="password" />
+        </div>
+
+        <div class="gender-selection-container">
+          <label>Sexo*</label>
+          <div class="gender-buttons">
+            <button type="button" class="gender-button" [class.selected]="selectedGender === 'Hombre'"
+              (click)="selectGender('Hombre')">
+              Hombre
+            </button>
+            <button type="button" class="gender-button" [class.selected]="selectedGender === 'Mujer'"
+              (click)="selectGender('Mujer')">
+              Mujer
+            </button>
+          </div>
+        </div>
+      </div>
+
+
+      <button type="submit" class="register-button">
+        Registrarse
+      </button>
+
+      <p class="login-link">¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a></p>
+
+    </form>
+  </div>
 
 </ion-content>

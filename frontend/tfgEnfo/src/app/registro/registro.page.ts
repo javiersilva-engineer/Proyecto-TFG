@@ -8,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegistroPage implements OnInit {
 
+  // Variable que guarda el género seleccionado
+  selectedGender: string = '';
+
   constructor() { }
 
-  ngOnInit() {
+  ngOnInit() { }
+
+  // Función para seleccionar un género
+  selectGender(gender: string) {
+    this.selectedGender = gender;
   }
 
 }
