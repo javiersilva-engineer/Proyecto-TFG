@@ -1,0 +1,47 @@
+.gender-selection-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  width: 15em;
+}
+
+.gender-selection-container label {
+  font-weight: bold;
+  color: white;
+}
+
+.gender-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+}
+
+.gender-button {
+  flex: 1;
+  height: 1.75em;
+  border-radius: 8px;
+  border: 1px solid var(--color-verde);
+  background-color: var(--color-verde-oscuro);
+  font-size: var(--tamano-texto-mediano);
+  color: white;
+  font-weight: bold;
+
+  &.selected {
+    background-color: var(--color-verde);
+    border: 1px solid var(--color-verde-claro);
+    color: var(--color-verde-oscuro);
+  }
+}
+
+.gender-button:active {
+  background-color: var(--color-verde);
+  border: 1px solid var(--color-verde-claro);
+  color: var(--color-verde-oscuro);
+  outline: none;
+}
+
+.error-text {
+  color: red;
+  font-size: var(--tamano-texto-enano);
+  margin: 0;
+}

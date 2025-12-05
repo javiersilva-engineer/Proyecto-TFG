@@ -1,0 +1,28 @@
+a {
+  margin-left: 0.5em;
+  color: var(--color-verde-claro);
+  font-weight: bold;
+  text-decoration: none;
+  position: relative;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0;
+  background-color: var(--color-verde);
+  transition: width 0.3s ease;
+}
+
+a:hover::after {
+  width: 100%;
+}
+
+a:active {
+  color: var(--color-verde);
+}

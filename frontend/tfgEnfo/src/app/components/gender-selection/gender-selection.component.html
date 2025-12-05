@@ -1,0 +1,20 @@
+<div class="gender-selection-container">
+  <label>Sexo*</label>
+  <div class="gender-buttons">
+    <button type="button"
+            class="gender-button"
+            [class.selected]="selected === 'Hombre'"
+            (click)="selectGender('Hombre')">
+      Hombre
+    </button>
+
+    <button type="button"
+            class="gender-button"
+            [class.selected]="selected === 'Mujer'"
+            (click)="selectGender('Mujer')">
+      Mujer
+    </button>
+  </div>
+
+  <p class="error-text" *ngIf="error">{{ error }}</p>
+</div>

@@ -1,0 +1,35 @@
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  width: 15em;
+}
+
+.input-group label {
+  font-weight: bold;
+  color: white;
+  font-size: var(--tamano-texto-pequeno);
+}
+
+.input-group input {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--color-verde);
+  background-color: var(--color-verde-claro);
+  font-size: var(--tamano-texto-pequeno);
+  height: 0.2em;
+  color: var(--color-verde-oscuro);
+}
+
+.input-group input:focus {
+  background-color: var(--color-verde-oscuro);
+  color: var(--color-verde-claro);
+  border: 1px solid var(--color-verde);
+  outline: none;
+}
+
+.error-text {
+  color: red;
+  font-size: var(--tamano-texto-enano);
+  margin: 0;
+}

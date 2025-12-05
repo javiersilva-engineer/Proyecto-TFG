@@ -1,0 +1,37 @@
+<ion-content class="registro-content">
+
+  <div class="marcoPC">
+    <div class="header-section" [class.error-header]="hasErrors">
+      <img src="assets/imgs/logoEnfo.png" alt="EnFo Logo" class="logo" />
+      <p class="slogan">Los abdominales se cocinan, no se entrenan.</p>
+    </div>
+
+    <form class="registro-form" (ngSubmit)="onSubmit()">
+
+      <div class="inptsPC">
+        <app-input label="Nombre de usuario*" type="text" [(value)]="username"
+          [error]="errors.username ? 'Introduce un usuario válido' : null"></app-input>
+
+        <app-input label="Email*" type="email" [(value)]="email"
+          [error]="errors.email || errors.emailFormat ? 'Introduce un email válido' : null"></app-input>
+      </div>
+
+      <div class="inptsPC">
+        <app-input label="Contraseña*" type="password" [(value)]="password"
+          [error]="errors.password ? 'La contraseña es obligatoria' : null"></app-input>
+
+        <app-gender-selection [(selected)]="selectedGender" [error]="errors.gender ? 'Selecciona un sexo' : null">
+        </app-gender-selection>
+      </div>
+
+      <app-button text="Registrarse" type="submit"></app-button>
+
+      <p class="login-link">
+        ¿Ya tienes cuenta?
+        <app-link text="Inicia sesión" route="/login"></app-link>
+      </p>
+
+    </form>
+  </div>
+
+</ion-content>

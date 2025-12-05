@@ -1,0 +1,5 @@
+<div class="input-group">
+  <label>{{ label }}</label>
+  <input [type]="type" [(ngModel)]="value" (ngModelChange)="valueChange.emit(value)" />
+  <p class="error-text" *ngIf="error">{{ error }}</p>
+</div>

@@ -1,0 +1,18 @@
+.register-button {
+  margin-top: 1em;
+  width: 15em;
+  height: 2em;
+  border-radius: 8px;
+  background-color: var(--color-verde-oscuro);
+  color: white;
+  font-size: var(--tamano-texto-mediano);
+  border: 1px solid var(--color-verde);
+  font-weight: bold;
+}
+
+.register-button:active {
+  background-color: var(--color-verde);
+  border: 1px solid var(--color-verde-claro);
+  color: var(--color-verde-oscuro);
+  outline: none;
+}
