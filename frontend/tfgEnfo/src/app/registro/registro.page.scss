@@ -188,21 +188,44 @@
 
         .registro-content {
             --background: url('../../assets/imgs/blob-scene-haikei.svg');
+
+            height: 100vh;
+            width: 100vw;
+            --overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            --padding-top: 0;
+            --padding-bottom: 0;
+            --padding-start: 0;
+            --padding-end: 0;
+
+        }
+
+        ion-content.registro-content::part(scroll) {
+            display: flex;
+            flex-direction: column;
+
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+
+            width: 100%;
         }
 
         .marcoPC {
             display: flex;
             flex-direction: column;
-            justify-self: center;
-            margin: 3em 0 0 0;
 
             background: var(--color-verde-oscuro);
             padding: 2em 2em 3em 2em;
-            width: 38em;
+            width: 35em;
             border-radius: 8px;
 
-            box-shadow: 0 0 10px rgba(107, 182, 71, 0.5);
+            box-shadow: 0 0 10px var(--color-verde);
         }
+
 
         .header-section {
             align-self: center;
