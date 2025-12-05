@@ -9,6 +9,7 @@ import { FormObjetivo1PageRoutingModule } from './form-objetivo-1-routing.module
 import { FormObjetivo1Page } from './form-objetivo-1.page';
 
 import { ProgressBarComponent } from '../../components/progress-bar/progress-bar.component';
+import { NumberPickerComponent } from '../../components/number-picker/number-picker.component';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { ProgressBarComponent } from '../../components/progress-bar/progress-bar
     FormsModule,
     IonicModule,
     FormObjetivo1PageRoutingModule,
-    ProgressBarComponent
+    ProgressBarComponent,
+    NumberPickerComponent
   ],
   declarations: [FormObjetivo1Page]
 })

@@ -16,12 +16,11 @@
         justify-content: center;
         align-items: center;
         padding-top: 3em;
-        margin-bottom: 2em;
     }
 
     .header-section p {
         color: white;
-        font-size: var(--tamano-texto-gigante);
+        font-size: var(--tamano-texto-grande);
         margin: 1.5em 2em 1.5em 2em;
         font-weight: bold;
     }
@@ -30,8 +29,10 @@
         color: var(--color-verde);
     }
 
-
-
+    .questions{
+        display: flex;
+        flex-direction: column;
+    }
 
     .error-text {
         color: #ff4d4d;

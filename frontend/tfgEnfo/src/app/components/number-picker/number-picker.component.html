@@ -1,0 +1,39 @@
+<div class="picker-input" (click)="openPicker()">
+  <label>{{label}}</label>
+  <div class="value">{{ value !== null ? value + ' ' + type : 'Seleccionar' }}</div>
+</div>
+
+<div class="modal-backdrop" *ngIf="showModal">
+  <div class="modal">
+
+    <div class="selector-container">
+
+      <!-- SCROLL DE ENTEROS -->
+      <div class="scroll" #intScroll (scroll)="onScroll(intScroll, 'int')">
+        <div *ngFor="let n of [].constructor(type === 'años' ? 120 : 250); let i = index"
+             [class.selected]="i === selectedInt"
+             (click)="selectInt(i)">
+          {{i}}
+        </div>
+      </div>
+
+      <!-- SCROLL DE DECIMALES -->
+      <div class="scroll" #decScroll *ngIf="type !== 'años'" (scroll)="onScroll(decScroll, 'dec')">
+        <div *ngFor="let d of decimals; let i = index"
+             [class.selected]="i === selectedDec"
+             (click)="selectDec(i)">
+          {{ d }}
+        </div>
+      </div>
+
+    </div>
+
+    <div class="buttons">
+      <button class="cancel" (click)="close()">
+        <fa-icon [icon]="faXmark"></fa-icon>
+      </button>
+      <button class="ok" (click)="confirm()">Ok</button>
+    </div>
+
+  </div>
+</div>

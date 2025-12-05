@@ -1,0 +1,133 @@
+.picker-input {
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+  cursor: pointer;
+  color: white;
+  margin: 0 1.5em 0.5em 1.5em;
+  font-size: var(--tamano-texto-mediano);
+  font-weight: bold;
+  position: relative;
+  border-radius: 0;
+}
+
+/* Línea verde centrada */
+.picker-input::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 1px;
+  background-color: var(--color-verde);
+}
+
+.value {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1em 0 0.5em 0;
+  color: var(--color-verde-claro);
+}
+
+/* MODAL */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 12;
+}
+
+.modal {
+  position: fixed;
+  width: 60%;
+  max-width: 350px;
+  background: var(--color-verde-oscuro);
+  border: solid 1px var(--color-verde);
+  border-radius: 12px;
+  padding: 1.5em;
+  text-align: center;
+  z-index: 10;
+  
+}
+
+.selector-container {
+  margin: 2em 0 0 0;
+  display: flex;
+  justify-content: center;
+  gap: 0.25em;
+}
+
+.scroll {
+  height: 150px;
+  width: 60px;
+  overflow-y: auto;
+  text-align: center;
+  padding: 5px 0;
+  background: #082200;
+  border-radius: 6px;
+
+  /* Scroll snap para centrar el elemento */
+  scroll-snap-type: y mandatory;
+
+  /* Difuminado más cerca del centro */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 40%, transparent 55%);
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 40%, transparent 55%);
+  mask-repeat: no-repeat;
+  mask-size: 100% 100%;
+
+  /* Ocultar scroll */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scroll::-webkit-scrollbar {
+  display: none; /* Chrome, Edge, Safari */
+}
+
+.scroll div {
+  padding: 8px 0;
+  color: #444;
+  cursor: pointer;
+  scroll-snap-align: center;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.scroll div.selected {
+  transform: scale(1.2);
+  color: white;
+  background: var(--color-verde);
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: -2em;
+}
+
+button.cancel {
+  background: var(--color-verde-oscuro);
+  border: solid 1px var(--color-verde);
+  color: white;
+  padding: .7em 1em;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: var(--tamano-texto-pequeno);
+}
+
+button.ok {
+  background: var(--color-verde);
+  color: black;
+  border: solid 1px var(--color-verde-claro);
+  padding: .7em 1em;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: var(--tamano-texto-pequeno);
+}
