@@ -52,7 +52,7 @@
   padding: 1.5em;
   text-align: center;
   z-index: 10;
-  
+
 }
 
 .selector-container {
@@ -83,11 +83,13 @@
   mask-size: 100% 100%;
 
   /* Ocultar scroll */
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .scroll::-webkit-scrollbar {
-  display: none; /* Chrome, Edge, Safari */
+  display: none;
+  /* Chrome, Edge, Safari */
 }
 
 .scroll div {
@@ -130,4 +132,27 @@ button.ok {
   border-radius: 6px;
   font-weight: bold;
   font-size: var(--tamano-texto-pequeno);
+}
+
+.error-text {
+  color: red;
+  font-size: var(--tamano-texto-mediano);
+}
+
+
+
+
+
+
+
+
+
+
+/*---------------------------------MEDIA QUERY PARA PC------------------------------------*/
+
+@media screen and (min-width: 1024px) {
+
+  .picker-input::after {
+    display: none;
+  }
 }

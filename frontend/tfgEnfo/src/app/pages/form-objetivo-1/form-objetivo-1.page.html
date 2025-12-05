@@ -10,14 +10,28 @@
     </div>
 
     <div class="questions">
-      <app-number-picker label="¿Cuál es tu objetivo?" type="kg" [(value)]="objetivoPeso"></app-number-picker>
-      <app-number-picker label="¿Cuánto pesas?" type="kg" [(value)]="peso"></app-number-picker>
-      <app-number-picker label="¿Cuánto mides?" type="m" [(value)]="altura"></app-number-picker>
-      <app-number-picker label="¿Qué edad tienes?" type="años" [(value)]="edad"></app-number-picker>
+      <div class="quests">
+        <app-number-picker label="¿Cuál es tu objetivo?" type="kg" [(value)]="objetivoPeso"
+        [hasError]="triedToNavigate && objetivoPeso === null"></app-number-picker>
+      <app-number-picker label="¿Cuánto pesas?" type="kg" [(value)]="peso"
+        [hasError]="triedToNavigate && peso === null"></app-number-picker>
+      </div>
+      
+      <div class="quests">
+        <app-number-picker label="¿Cuánto mides?" type="m" [(value)]="altura"
+        [hasError]="triedToNavigate && altura === null"></app-number-picker>
+      <app-number-picker label="¿Qué edad tienes?" type="años" [(value)]="edad"
+        [hasError]="triedToNavigate && edad === null"></app-number-picker>
+      </div>
     </div>
 
-      
+    <div class="flechas">
+      <!-- Flecha izquierda: ir hacia atrás -->
+      <app-flecha-button direction="left" (click)="goBack()"></app-flecha-button>
 
+      <!-- Flecha derecha: validar y navegar -->
+      <app-flecha-button direction="right" (click)="validateAndNavigate()"></app-flecha-button>
+    </div>
   </div>
 
 </ion-content>

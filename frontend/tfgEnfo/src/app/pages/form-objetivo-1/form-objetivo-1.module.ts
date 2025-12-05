@@ -10,6 +10,7 @@ import { FormObjetivo1Page } from './form-objetivo-1.page';
 
 import { ProgressBarComponent } from '../../components/progress-bar/progress-bar.component';
 import { NumberPickerComponent } from '../../components/number-picker/number-picker.component';
+import { FlechaButtonComponent } from '../../components/flecha-button/flecha-button.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { NumberPickerComponent } from '../../components/number-picker/number-pic
     IonicModule,
     FormObjetivo1PageRoutingModule,
     ProgressBarComponent,
-    NumberPickerComponent
+    NumberPickerComponent,
+    FlechaButtonComponent
   ],
   declarations: [FormObjetivo1Page]
 })

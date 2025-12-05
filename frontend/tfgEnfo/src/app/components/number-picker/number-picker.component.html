@@ -1,5 +1,5 @@
 <div class="picker-input" (click)="openPicker()">
-  <label>{{label}}</label>
+  <label [class.error-text]="hasError">{{label}}</label>
   <div class="value">{{ value !== null ? value + ' ' + type : 'Seleccionar' }}</div>
 </div>
 

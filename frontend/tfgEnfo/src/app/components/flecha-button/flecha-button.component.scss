@@ -1,0 +1,20 @@
+.flecha-button {
+  width: 2.2em;
+  height: 2.2em;
+  border-radius: 50%;
+  background-color: var(--color-verde-oscuro);
+  border: 1px solid var(--color-verde-claro);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 0.1em;
+  cursor: pointer;
+  font-size: var(--tamano-texto-grande);
+  color: var(--color-verde-claro);
+  transition: transform 0.2s;
+  margin: 0 0.5em;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}

@@ -17,6 +17,8 @@ export class NumberPickerComponent implements AfterViewInit {
   @Input() label: string = '';
   @Input() type: 'kg' | 'm' | 'años' = 'kg';
   @Input() value: number | null = null;
+  @Input() hasError: boolean = false;
+
   @Output() valueChange = new EventEmitter<number>();
 
   showModal = false;
@@ -31,8 +33,7 @@ export class NumberPickerComponent implements AfterViewInit {
   @ViewChild('intScroll') intScroll!: ElementRef<HTMLDivElement>;
   @ViewChild('decScroll') decScroll!: ElementRef<HTMLDivElement>;
 
-  ngAfterViewInit() {
-  }
+  ngAfterViewInit() {}
 
   openPicker() {
     this.showModal = true;

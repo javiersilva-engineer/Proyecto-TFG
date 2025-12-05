@@ -18,44 +18,43 @@ export class FormObjetivo1Page implements OnInit {
   altura: number | null = null;
   edad: number | null = null;
 
-  // Control del modal del picker
-  showPicker: boolean = false;
-  pickerType: 'kg' | 'm' | 'años' = 'kg';
+  // Flag para saber si el usuario intentó avanzar
+  triedToNavigate: boolean = false;
+
+  // Mensaje de error general
+  errorMessage: string = '';
 
   constructor(private router: Router) { }
 
   ngOnInit() {
     const navigation = this.router.getCurrentNavigation();
-
     if (navigation?.extras.state) {
       this.usuario = navigation.extras.state['username'] || '';
     }
   }
 
-  // Abrir el selector
-  openPicker(type: 'kg' | 'm' | 'años') {
-    this.pickerType = type;
-    this.showPicker = true;
-  }
+  // Validar campos y navegar a la siguiente página
+  validateAndNavigate() {
+    this.triedToNavigate = true;
+    this.errorMessage = '';
 
-  // Recibir el valor del componente hijo
-  onPickerValueSelected(value: number) {
-    if (this.pickerType === 'kg') this.peso = value;
-    if (this.pickerType === 'm') this.altura = value;
-    if (this.pickerType === 'años') this.edad = value;
+    const pickers = [
+      { value: this.objetivoPeso, label: 'objetivoPeso' },
+      { value: this.peso, label: 'peso' },
+      { value: this.altura, label: 'altura' },
+      { value: this.edad, label: 'edad' },
+    ];
 
-    this.showPicker = false;
-  }
+    const hasError = pickers.some(p => p.value === null);
 
-  nextStep() {
-    if (this.progress < 100) {
-      this.progress += 20;
+    if (hasError) {
+      return;
     }
+
+    this.router.navigate(['/siguiente-pagina']);
   }
 
-  prevStep() {
-    if (this.progress > 0) {
-      this.progress -= 20;
-    }
+  goBack() {
+    this.router.navigate(['/registro']);
   }
 }
