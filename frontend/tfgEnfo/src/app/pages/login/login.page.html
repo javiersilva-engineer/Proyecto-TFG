@@ -6,25 +6,19 @@
       <p class="slogan">Los abdominales se cocinan, no se entrenan.</p>
     </div>
 
-    <form class="registro-form">
+    <form class="registro-form" (ngSubmit)="onSubmit()">
 
       <div class="inptsPC">
-        <div class="input-group">
-          <label>Email*</label>
-          <input type="email" />
-        </div>
+        <app-input label="Email*" type="email" [(value)]="email"
+          [error]="errors.email || errors.emailFormat ? 'Introduce un email válido' : null"></app-input>
 
-        <div class="input-group">
-          <label>Contraseña*</label>
-          <input type="password" />
-        </div>
+        <app-input label="Contraseña*" type="password" [(value)]="password"
+          [error]="errors.password ? 'Contraseña incorrecta' : null"></app-input>
       </div>
 
-      <button type="submit" class="register-button">
-        Iniciar sesión
-      </button>
+      <app-button text="Iniciar sesión" type="submit"></app-button>
 
-      <p class="login-link">¿No tienes cuenta? <a routerLink="/registro">Regístrate</a></p>
+      <p class="login-link">¿No tienes cuenta? <app-link text="Regístrate" route="/registro"></app-link></p>
 
     </form>
   </div>

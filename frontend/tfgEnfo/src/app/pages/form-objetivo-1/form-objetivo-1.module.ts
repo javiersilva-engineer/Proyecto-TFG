@@ -8,12 +8,15 @@ import { FormObjetivo1PageRoutingModule } from './form-objetivo-1-routing.module
 
 import { FormObjetivo1Page } from './form-objetivo-1.page';
 
+import { ProgressBarComponent } from '../../components/progress-bar/progress-bar.component';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    FormObjetivo1PageRoutingModule
+    FormObjetivo1PageRoutingModule,
+    ProgressBarComponent
   ],
   declarations: [FormObjetivo1Page]
 })

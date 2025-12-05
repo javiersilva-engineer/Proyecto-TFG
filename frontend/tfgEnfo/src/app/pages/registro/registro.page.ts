@@ -61,7 +61,7 @@ export class RegistroPage implements OnInit {
     console.log("Formulario válido. Procediendo a registrar...");
 
     // Redirección a la siguiente página
-    this.router.navigateByUrl('/form-objetivo-1');
+    this.router.navigateByUrl('/form-objetivo-1', { state: { username: this.username } });
   }
 
   // Método para actualizar el sexo seleccionado desde el componente
@@ -69,4 +69,5 @@ export class RegistroPage implements OnInit {
     this.selectedGender = gender;
     this.errors.gender = false; // Limpiar error si se selecciona
   }
+  
 }

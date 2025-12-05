@@ -2,24 +2,14 @@
 
   <div class="marcoPC">
     <div class="header-section">
-      <img src="assets/imgs/logoEnfo.png" alt="EnFo Logo" class="logo" />
-      <p class="slogan">Los abdominales se cocinan, no se entrenan.</p>
+      <app-progress-bar [progress]="progress"></app-progress-bar>
+      <p>
+        ¡Bienvenido <span class="username">{{usuario}}</span>!<br>
+        Para empezar a crear tu plan personalizado, cuéntanos un poco sobre ti.
+      </p>
     </div>
 
-    <form class="registro-form">
 
-      <!-- Primera fila -->
-      <div class="inptsPC">
-
-        <div class="input-group">
-          <label>Nombre de usuario*</label>
-          <input id="username" type="text" />
-        </div>
-
-
-      </div>
-
-    </form>
   </div>
 
 </ion-content>
