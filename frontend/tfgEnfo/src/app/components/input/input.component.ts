@@ -10,10 +10,23 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule]
 })
 export class InputComponent {
+
   @Input() label: string = '';
   @Input() type: string = 'text';
   @Input() error: string | null = null;
 
-  @Input() value: string = '';
-  @Output() valueChange = new EventEmitter<string>();
+  // Ahora acepta string | number | null
+  @Input() value: string | number | null = null;
+
+  // Emite los mismos tipos
+  @Output() valueChange = new EventEmitter<string | number | null>();
+
+  // Necesario para emitir al escribir
+  onValueChange(event: any) {
+    const newValue = this.type === 'number'
+      ? (event.target.value !== '' ? Number(event.target.value) : null)
+      : event.target.value;
+
+    this.valueChange.emit(newValue);
+  }
 }

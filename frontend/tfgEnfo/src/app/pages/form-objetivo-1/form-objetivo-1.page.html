@@ -11,26 +11,93 @@
 
     <div class="questions">
       <div class="quests">
-        <app-number-picker label="¿Cuál es tu objetivo?" type="kg" [(value)]="objetivoPeso"
-        [hasError]="triedToNavigate && objetivoPeso === null"></app-number-picker>
-      <app-number-picker label="¿Cuánto pesas?" type="kg" [(value)]="peso"
-        [hasError]="triedToNavigate && peso === null"></app-number-picker>
+        <ng-container *ngIf="!isPC; else inputObjetivoPeso">
+          <app-number-picker
+            label="¿Cuál es tu peso objetivo?"
+            type="kg"
+            [(value)]="objetivoPeso"
+            [hasError]="triedToNavigate && objetivoPeso === null">
+          </app-number-picker>
+        </ng-container>
+
+        <ng-template #inputObjetivoPeso>
+          <app-input
+            label="¿Cuál es tu peso objetivo?"
+            type="number"
+            [(value)]="objetivoPeso"
+            [error]="triedToNavigate && objetivoPeso === null ? 'Campo obligatorio' : null">
+          </app-input>
+        </ng-template>
+
+        <ng-container *ngIf="!isPC; else inputPeso">
+          <app-number-picker
+            label="¿Cuánto pesas?"
+            type="kg"
+            [(value)]="peso"
+            [hasError]="triedToNavigate && peso === null">
+          </app-number-picker>
+        </ng-container>
+
+        <ng-template #inputPeso>
+          <app-input
+            label="¿Cuánto pesas?"
+            type="number"
+            [(value)]="peso"
+            [error]="triedToNavigate && peso === null ? 'Campo obligatorio' : null">
+          </app-input>
+        </ng-template>
       </div>
-      
+
       <div class="quests">
-        <app-number-picker label="¿Cuánto mides?" type="m" [(value)]="altura"
-        [hasError]="triedToNavigate && altura === null"></app-number-picker>
-      <app-number-picker label="¿Qué edad tienes?" type="años" [(value)]="edad"
-        [hasError]="triedToNavigate && edad === null"></app-number-picker>
+        <ng-container *ngIf="!isPC; else inputAltura">
+          <app-number-picker
+            label="¿Cuánto mides?"
+            type="m"
+            [(value)]="altura"
+            [hasError]="triedToNavigate && altura === null">
+          </app-number-picker>
+        </ng-container>
+
+        <ng-template #inputAltura>
+          <app-input
+            label="¿Cuánto mides?"
+            type="number"
+            [(value)]="altura"
+            [error]="triedToNavigate && altura === null ? 'Campo obligatorio' : null">
+          </app-input>
+        </ng-template>
+
+        <ng-container *ngIf="!isPC; else inputEdad">
+          <app-number-picker
+            label="¿Qué edad tienes?"
+            type="años"
+            [(value)]="edad"
+            [hasError]="triedToNavigate && edad === null">
+          </app-number-picker>
+        </ng-container>
+
+        <ng-template #inputEdad>
+          <app-input
+            label="¿Qué edad tienes?"
+            type="number"
+            [(value)]="edad"
+            [error]="triedToNavigate && edad === null ? 'Campo obligatorio' : null">
+          </app-input>
+        </ng-template>
       </div>
     </div>
 
     <div class="flechas">
-      <!-- Flecha izquierda: ir hacia atrás -->
-      <app-flecha-button direction="left" (click)="goBack()"></app-flecha-button>
+      <ng-container *ngIf="!isPC; else botonesPC">
+        <app-flecha-button direction="left" (click)="goBack()"></app-flecha-button>
+        <app-flecha-button direction="right" (click)="validateAndNavigate()"></app-flecha-button>
+      </ng-container>
 
-      <!-- Flecha derecha: validar y navegar -->
-      <app-flecha-button direction="right" (click)="validateAndNavigate()"></app-flecha-button>
+      <ng-template #botonesPC>
+        <app-button text="Anterior" (click)="goBack()" class="btn-anterior"></app-button>
+        <app-button text="Siguiente" (click)="validateAndNavigate()" class="btn-siguiente"></app-button>
+      </ng-template>
+
     </div>
   </div>
 

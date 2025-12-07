@@ -12,17 +12,15 @@ export class FormObjetivo1Page implements OnInit {
   usuario: string = '';
   progress: number = 20;
 
-  // Valores elegidos en los pickers
   objetivoPeso: number | null = null;
   peso: number | null = null;
   altura: number | null = null;
   edad: number | null = null;
 
-  // Flag para saber si el usuario intentó avanzar
   triedToNavigate: boolean = false;
-
-  // Mensaje de error general
   errorMessage: string = '';
+
+  isPC: boolean = false;
 
   constructor(private router: Router) { }
 
@@ -31,9 +29,14 @@ export class FormObjetivo1Page implements OnInit {
     if (navigation?.extras.state) {
       this.usuario = navigation.extras.state['username'] || '';
     }
+
+    this.isPC = window.innerWidth >= 1024;
+
+    window.addEventListener('resize', () => {
+      this.isPC = window.innerWidth >= 1024;
+    });
   }
 
-  // Validar campos y navegar a la siguiente página
   validateAndNavigate() {
     this.triedToNavigate = true;
     this.errorMessage = '';
