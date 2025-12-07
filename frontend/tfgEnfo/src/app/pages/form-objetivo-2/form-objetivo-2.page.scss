@@ -1,0 +1,112 @@
+    .registro-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        --background: radial-gradient(circle at bottom right,
+                rgba(107, 182, 71, 0.5) 0%,
+                var(--color-verde-oscuro) 30%);
+    }
+
+
+    .header-section {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5em;
+        justify-content: center;
+        align-items: center;
+        padding-top: 2.5em;
+    }
+
+    .header-section p {
+        color: white;
+        font-size: var(--tamano-texto-grande);
+        margin: 1.5em 2em 1.5em 2em;
+        font-weight: bold;
+    }
+
+    .header-section p .username {
+        color: var(--color-verde);
+    }
+
+
+
+
+
+
+
+
+
+
+    /*---------------------------------MEDIA QUERY PARA PC------------------------------------*/
+
+    @media screen and (min-width: 1024px) {
+
+        .registro-content {
+            --background: url('../../../assets/imgs/blob-scene-haikei.svg');
+
+            height: 100vh;
+            width: 100vw;
+            --overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            --padding-top: 0;
+            --padding-bottom: 0;
+            --padding-start: 0;
+            --padding-end: 0;
+
+        }
+
+        ion-content.registro-content::part(scroll) {
+            display: flex;
+            flex-direction: column;
+
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+
+            width: 100%;
+        }
+
+        .marcoPC {
+            display: flex;
+            flex-direction: column;
+            background: var(--color-verde-oscuro);
+            padding: 2em 2em 3em 2em;
+            width: 30em;
+            border-radius: 8px;
+            box-shadow: 0 0 10px var(--color-verde);
+            height: 60%;
+            align-items: center;
+        }
+
+        .marcoPC.error {
+            height: 70% !important;
+        }
+
+        .header-section {
+            align-self: center;
+            justify-self: center;
+            gap: 0.5em;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 0.5em;
+            width: 75%;
+            padding-top: 1em;
+        }
+
+        :host ::ng-deep app-progress-bar .progress-bar {
+            width: 28em !important;
+        }
+
+        .header-section p {
+            width: 25em;
+            margin: 1.5em 0;
+        }
+
+        .header-section p>br {
+            display: none;
+        }
+    }

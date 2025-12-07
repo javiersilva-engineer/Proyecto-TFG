@@ -1,0 +1,40 @@
+<ion-content class="registro-content">
+
+  <div class="marcoPC" [ngClass]="{ 'error': triedToNavigate && hasError() }">
+
+    <div class="header-section">
+      <app-progress-bar [progress]="progress"></app-progress-bar>
+      <p>
+        ¡Bienvenido <span class="username">{{usuario}}</span>!<br>
+        Continúa con tu configuración personalizada.
+      </p>
+    </div>
+
+    <app-fat-button icon="battery-empty" title="Sedentario" description="Poco o nada de ejercicio">
+    </app-fat-button>
+
+    <app-fat-button icon="battery-quarter" title="Ligeramente activo" description="Ejercicio 1 o 2 días a la semana">
+    </app-fat-button>
+
+    <app-fat-button icon="battery-half" title="Moderadamente activo" description="Ejercicio 3 o 4 días a la semana">
+    </app-fat-button>
+
+    <app-fat-button icon="battery-three-quarters" title="Muy activo" description="Ejercicio 5 o 6 días a la semana">
+    </app-fat-button>
+
+    <app-fat-button icon="battery-full" title="Atleta profesional" description="Ejercicio 7 días a la semana">
+    </app-fat-button>
+
+    <div class="flechas">
+      <ng-container *ngIf="!isPC; else botonesPC">
+        <app-flecha-button direction="left" (click)="goBack()"></app-flecha-button>
+      </ng-container>
+
+      <ng-template #botonesPC>
+        <app-button text="Anterior" (click)="goBack()" class="btn-anterior"></app-button>
+      </ng-template>
+    </div>
+
+  </div>
+
+</ion-content>

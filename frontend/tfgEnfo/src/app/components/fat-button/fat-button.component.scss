@@ -1,0 +1,68 @@
+.fat-button {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 1em 1.2em 1em 1em;
+    border-radius: 8px;
+    border: 1.5px solid var(--color-verde-claro);
+    background-color: var(--color-verde-oscuro);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+
+    &:hover {
+        background-color: rgb(0, 20, 1);
+        transform: translateY(-1px);
+    }
+
+    &:active {
+        background-color: var(--color-verde);
+        border-color: var(--color-verde-oscuro);
+
+        .icon {
+            color: black;
+        }
+
+        .text {
+            color: black;
+
+            .title {
+                color: black;
+            }
+
+            .description {
+                color: black;
+            }
+        }
+
+    }
+
+    .icon {
+        font-size: 30px;
+        margin-right: 0.6em;
+        color: var(--color-verde)
+    }
+
+    .text {
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+        justify-content: left;
+        gap: 0.5em;
+
+        .title {
+            display: flex;
+            font-weight: bold;
+            font-size: var(--tamano-texto-mediano);
+            margin-bottom: 2px;
+            justify-self: left;
+        }
+
+        .description {
+            display: flex;
+            font-size: var(--tamano-texto-pequeno);
+            color: var(--color-verde-claro);
+            justify-self: left;
+        }
+    }
+}

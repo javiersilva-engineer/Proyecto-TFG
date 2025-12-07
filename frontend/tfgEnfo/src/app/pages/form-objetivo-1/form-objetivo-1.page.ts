@@ -54,7 +54,9 @@ export class FormObjetivo1Page implements OnInit {
       return;
     }
 
-    this.router.navigate(['/siguiente-pagina']);
+    this.router.navigate(['/form-objetivo-2'], {
+      state: { username: this.usuario }
+    });
   }
 
   hasError(): boolean {
