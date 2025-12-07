@@ -57,6 +57,13 @@ export class FormObjetivo1Page implements OnInit {
     this.router.navigate(['/siguiente-pagina']);
   }
 
+  hasError(): boolean {
+    return this.objetivoPeso === null ||
+      this.peso === null ||
+      this.altura === null ||
+      this.edad === null;
+  }
+
   goBack() {
     this.router.navigate(['/registro']);
   }

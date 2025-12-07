@@ -1,6 +1,6 @@
 <ion-content class="registro-content">
 
-  <div class="marcoPC">
+  <div class="marcoPC" [ngClass]="{ 'error': triedToNavigate && hasError() }">
     <div class="header-section">
       <app-progress-bar [progress]="progress"></app-progress-bar>
       <p>
