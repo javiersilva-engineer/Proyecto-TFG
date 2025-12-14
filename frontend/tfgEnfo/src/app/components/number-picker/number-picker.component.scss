@@ -150,7 +150,7 @@ button.ok {
 
 /*---------------------------------MEDIA QUERY PARA PC------------------------------------*/
 
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 767px) {
 
   .picker-input::after {
     display: none;

@@ -12,6 +12,9 @@ export class FormObjetivo2Page implements OnInit {
   usuario: string = '';
   progress: number = 40;
 
+  // 👉 selección del fat-button
+  nivelActividad: string | null = null;
+
   triedToNavigate: boolean = false;
   errorMessage: string = '';
 
@@ -20,13 +23,11 @@ export class FormObjetivo2Page implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit() {
-    // Recuperar username de la navegación (igual que en form-objetivo-1)
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state) {
       this.usuario = navigation.extras.state['username'] || '';
     }
 
-    // Detectar si es PC o no
     this.isPC = window.innerWidth >= 1024;
 
     window.addEventListener('resize', () => {
@@ -34,13 +35,30 @@ export class FormObjetivo2Page implements OnInit {
     });
   }
 
-  goBack() {
-    this.router.navigate(['/form-objetivo-1'], {
-      state: { username: this.usuario }
+  validateAndNavigate() {
+    this.triedToNavigate = true;
+    this.errorMessage = '';
+
+    if (!this.nivelActividad) {
+      this.errorMessage = 'Debes seleccionar una opción';
+      return;
+    }
+
+    this.router.navigate(['/form-objetivo-3'], {
+      state: {
+        username: this.usuario,
+        actividad: this.nivelActividad
+      }
     });
   }
 
   hasError(): boolean {
-    return false; // por ahora no hay campos obligatorios
+    return this.triedToNavigate && !this.nivelActividad;
+  }
+
+  goBack() {
+    this.router.navigate(['/form-objetivo-1'], {
+      state: { username: this.usuario }
+    });
   }
 }

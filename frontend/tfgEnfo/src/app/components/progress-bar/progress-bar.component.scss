@@ -1,5 +1,9 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
 .progress-bar {
-  width: 18em;
   height: 4px;
   background-color: grey;
   overflow: hidden;

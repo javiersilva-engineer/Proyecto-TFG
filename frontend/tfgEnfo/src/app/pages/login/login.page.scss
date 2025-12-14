@@ -16,7 +16,7 @@
         justify-content: center;
         align-items: center;
         padding-top: 3em;
-        margin: 4em 0 2em 0;
+        margin: 7em 0 2em 0;
     }
 
     .logo {
@@ -184,7 +184,7 @@
 
     /*---------------------------------MEDIA QUERY PARA PC------------------------------------*/
 
-    @media screen and (min-width: 1024px) {
+    @media screen and (min-width: 767px) {
 
         .registro-content {
             --background: url('../../../assets/imgs/blob-scene-haikei.svg');

@@ -15,7 +15,7 @@
         transform: translateY(-1px);
     }
 
-    &:active {
+    &.selected {
         background-color: var(--color-verde);
         border-color: var(--color-verde-oscuro);
 
@@ -36,6 +36,8 @@
         }
 
     }
+
+    
 
     .icon {
         font-size: 30px;
