@@ -28,10 +28,10 @@ export class FormObjetivo2Page implements OnInit {
       this.usuario = navigation.extras.state['username'] || '';
     }
 
-    this.isPC = window.innerWidth >= 1024;
+    this.isPC = window.innerWidth >= 767;
 
     window.addEventListener('resize', () => {
-      this.isPC = window.innerWidth >= 1024;
+      this.isPC = window.innerWidth >= 767;
     });
   }
 

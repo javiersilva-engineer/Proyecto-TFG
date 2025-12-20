@@ -12,7 +12,7 @@
         <app-input label="Nombre de usuario*" type="text" [(value)]="username"
           [error]="errors.username ? 'Introduce un usuario válido' : null"></app-input>
 
-        <app-input label="Email*" type="email" [(value)]="email"
+        <app-input id="email"label="Email*" type="email" [(value)]="email"
           [error]="errors.email || errors.emailFormat ? 'Introduce un email válido' : null"></app-input>
       </div>
 
