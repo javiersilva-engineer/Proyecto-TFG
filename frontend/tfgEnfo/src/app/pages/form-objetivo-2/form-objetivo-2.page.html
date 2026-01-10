@@ -65,6 +65,7 @@
     <div class="flechas">
       <ng-container *ngIf="!isPC; else botonesPC">
         <app-flecha-button direction="left" (click)="goBack()"></app-flecha-button>
+        <app-flecha-button direction="right" (click)="validateAndNavigate()"></app-flecha-button>
       </ng-container>
 
       <ng-template #botonesPC>

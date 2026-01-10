@@ -15,13 +15,13 @@
         gap: 0.5em;
         justify-content: center;
         align-items: center;
-        padding-top: 2.5em;
+        padding-top: 2em;
     }
 
     .header-section p {
         color: white;
         font-size: var(--tamano-texto-grande);
-        margin: 1.5em 2em 2em 2em;
+        margin: 1em 2em 2em 2em;
         font-weight: bold;
     }
 
@@ -118,7 +118,7 @@
             display: flex;
             flex-direction: column;
             background: var(--color-verde-oscuro);
-            padding: 2em 2em 3em 2em;
+            padding: 1.5em 2em 3em 2em;
             width: 40em;
             border-radius: 8px;
             box-shadow: 0 0 10px var(--color-verde);
