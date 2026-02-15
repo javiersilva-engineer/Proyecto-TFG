@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UsuarioService } from '../../services/usuario_services/usuario';
 
 @Component({
   selector: 'app-login',
@@ -18,13 +19,14 @@ export class LoginPage implements OnInit {
     emailFormat: false
   };
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private usuarioService: UsuarioService
+  ) { }
 
   ngOnInit() { }
 
-  // Método que se llama al hacer submit
   onSubmit() {
-    // Validaciones
     this.errors.email = this.email.trim() === '';
     this.errors.password = this.password.trim() === '';
 
@@ -32,14 +34,20 @@ export class LoginPage implements OnInit {
     this.errors.emailFormat = !emailRegex.test(this.email.trim());
 
     if (this.errors.email || this.errors.password || this.errors.emailFormat) {
-      console.log('Formulario con errores. No se inicia sesión.');
       return;
     }
 
-    // Formulario válido, iniciar sesión
-    console.log('Inicio de sesión correcto');
+    this.usuarioService.login(this.email, this.password).subscribe({
+      next: (response) => {
+        console.log('Login correcto', response);
 
-    // Redirigir a la página principal o dashboard
-    this.router.navigateByUrl('/home'); 
+        this.router.navigateByUrl('/form-objetivo-1');
+      },
+      error: () => {
+        this.errors.password = true;
+        console.log('Email o contraseña incorrectos');
+      }
+    });
   }
+
 }

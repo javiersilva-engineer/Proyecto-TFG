@@ -61,7 +61,7 @@ export class RegistroPage implements OnInit {
       email: this.email.trim(),
       password: this.password.trim(),
       sexo: this.selectedGender === 'Hombre' ? 1 : 0,
-      altura: null,  // Puedes pedirlo luego
+      altura: null,
       peso: null,
       edad: null,
       ejercicio: null
