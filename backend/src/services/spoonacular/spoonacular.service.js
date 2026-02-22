@@ -3,11 +3,32 @@ const axios = require('axios');
 const Comida = require('../../models/comida');
 const Ingrediente = require('../../models/ingrediente');
 const Alergia = require('../../models/alergia');
+const { traducirATextoES } = require('../../utils/traductor');
+const mapaAlergenos = require('../../utils/mapaAlergenos');
 
 const API_KEY = process.env.SPOONACULAR_API_KEY;
 const BASE_URL = 'https://api.spoonacular.com';
 
-// Obtener recetas aleatorias de Spoonacular
+
+
+
+async function detectarAlergias(nombreIngrediente) {
+  const nombre = nombreIngrediente.toLowerCase();
+  const alergias = [];
+
+  for (const [alergenoEN, palabras] of Object.entries(mapaAlergenos)) {
+    if (palabras.some(p => nombre.includes(p))) {
+      const alergia = await Alergia.findOne({ nombreEN: alergenoEN });
+      if (alergia) alergias.push(alergia._id);
+    }
+  }
+
+  return alergias;
+}
+
+/* ======================================================
+   OBTENER RECETAS DE SPOONACULAR (CON NUTRICIÓN)
+====================================================== */
 async function obtenerRecetas(numero = 5) {
   const response = await axios.get(`${BASE_URL}/recipes/random`, {
     params: {
@@ -17,73 +38,131 @@ async function obtenerRecetas(numero = 5) {
     }
   });
 
-  return response.data.recipes;
+  return response.data.recipes || [];
 }
 
-// Poblar la base de datos con recetas de Spoonacular
+/* ======================================================
+   FUNCIÓN AUXILIAR PARA EXTRAER MACROS
+====================================================== */
+function obtenerNutriente(nutrients = [], nombre) {
+  return nutrients.find(n => n.name === nombre)?.amount || 0;
+}
+
+/* ======================================================
+   POBLAR BASE DE DATOS DESDE SPOONACULAR
+====================================================== */
 async function poblarDesdeSpoonacular(numero = 5) {
   const recetas = await obtenerRecetas(numero);
 
   for (const receta of recetas) {
 
-    // Evitar duplicar comidas
-    const existeComida = await Comida.findOne({ nombreComida: receta.title });
+    /* ==========================================
+       EVITAR DUPLICAR COMIDAS
+    ========================================== */
+    const existeComida = await Comida.findOne({
+      nombreInterno: receta.title
+    });
+
     if (existeComida) continue;
 
-    const ingredientesIds = [];
+    const ingredientesArray = [];
 
+    /* ==========================================
+       INGREDIENTES DE LA RECETA
+    ========================================== */
     for (const ing of receta.extendedIngredients) {
 
-      // Alergia
+      // /* ---------- ALERGIA ---------- */
       let alergiaDoc = null;
-      if (ing.aisle) {
-        alergiaDoc = await Alergia.findOneAndUpdate(
-          { nombreAlergia: ing.aisle },
-          { nombreAlergia: ing.aisle },
-          { upsert: true, new: true }
-        );
-      }
 
-      // Ingrediente
-      let ingredienteDoc = await Ingrediente.findOne({ nombreIngrediente: ing.name });
+      // if (ing.aisle) {
+      //   alergiaDoc = await Alergia.findOneAndUpdate(
+      //     { nombreAlergia: ing.aisle.toLowerCase() },
+      //     { nombreAlergia: ing.aisle.toLowerCase() },
+      //     { upsert: true, new: true }
+      //   );
+      // }
+
+      /* ---------- INGREDIENTE ---------- */
+      let ingredienteDoc = await Ingrediente.findOne({
+        nombreInterno: ing.name
+      });
 
       if (!ingredienteDoc) {
+        const nombreIngredienteES = await traducirATextoES(ing.name);
+        const alergiasDetectadas = await detectarAlergias(ing.name);
+
         ingredienteDoc = await Ingrediente.create({
-          nombreIngrediente: ing.name,
-          calorias: ing.nutrition?.nutrients?.find(n => n.name === 'Calories')?.amount || 0,
-          proteinas: ing.nutrition?.nutrients?.find(n => n.name === 'Protein')?.amount || 0,
-          carbohidratos: ing.nutrition?.nutrients?.find(n => n.name === 'Carbohydrates')?.amount || 0,
-          grasas: ing.nutrition?.nutrients?.find(n => n.name === 'Fat')?.amount || 0,
-          imagen: ing.image || '',
-          alergias: alergiaDoc ? [alergiaDoc._id] : []
+          nombreInterno: ing.name, // inglés (clave estable)
+          nombreES: nombreIngredienteES,      // luego podrás traducir
+          caloriasIngrediente: obtenerNutriente(
+            ing.nutrition?.nutrients,
+            'Calories'
+          ),
+          proteinasIngrediente: obtenerNutriente(
+            ing.nutrition?.nutrients,
+            'Protein'
+          ),
+          carbohidratosIngrediente: obtenerNutriente(
+            ing.nutrition?.nutrients,
+            'Carbohydrates'
+          ),
+          grasasIngrediente: obtenerNutriente(
+            ing.nutrition?.nutrients,
+            'Fat'
+          ),
+          picIngrediente: ing.image || '',
+          alergias: alergiasDetectadas
         });
-      } else if (alergiaDoc && !ingredienteDoc.alergias.includes(alergiaDoc._id)) {
+      } else if (
+        alergiaDoc &&
+        !ingredienteDoc.alergias.includes(alergiaDoc._id)
+      ) {
         ingredienteDoc.alergias.push(alergiaDoc._id);
         await ingredienteDoc.save();
       }
 
-      ingredientesIds.push(ingredienteDoc._id);
+      /* ---------- RELACIÓN COMIDA ↔ INGREDIENTE ---------- */
+      ingredientesArray.push({
+        ingrediente: ingredienteDoc._id,
+        cantidad: ing.measures?.metric?.amount || 0,
+        unidad: ing.measures?.metric?.unitShort || ''
+      });
     }
 
-    // Obtener nutrientes de las comidas (acceso seguro)
-    function obtenerNutriente(nutrients, nombre) {
-      return (nutrients || []).find(n => n.name === nombre)?.amount || 0;
-    }
+    /* ==========================================
+       MACROS DE LA COMIDA COMPLETA
+    ========================================== */
+    const nutrients = receta.nutrition?.nutrients || [];
 
-    const nutrientesReceta = receta.nutrition?.nutrients || [];
+    /* ==========================================
+       CREAR COMIDA
+    ========================================== */
+    const nombreES = await traducirATextoES(receta.title);
 
-    // Crear comida (usar nombres de campo del esquema `Comida`)
+    const recetaOriginal = receta.instructions || '';
+    const recetaES = recetaOriginal
+      ? await traducirATextoES(recetaOriginal)
+      : '';
+
     await Comida.create({
-      nombreComida: receta.title,
-      caloriasComida: obtenerNutriente(nutrientesReceta, 'Calories'),
-      proteinasComida: obtenerNutriente(nutrientesReceta, 'Protein'),
-      carbohidratosComida: obtenerNutriente(nutrientesReceta, 'Carbohydrates'),
-      grasasComida: obtenerNutriente(nutrientesReceta, 'Fat'),
-      picComida: receta.image || '',
-      receta: receta.instructions || '',
-      minCocina: receta.readyInMinutes,
+      nombreInterno: receta.title,
+      nombreES: nombreES,
+
+      calorias: obtenerNutriente(nutrients, 'Calories'),
+      proteinas: obtenerNutriente(nutrients, 'Protein'),
+      carbohidratos: obtenerNutriente(nutrients, 'Carbohydrates'),
+      grasas: obtenerNutriente(nutrients, 'Fat'),
+
+      imagen: receta.image || '',
+
+      recetaInterna: recetaOriginal,
+      recetaES: recetaES,
+
+      minCocina: receta.readyInMinutes || 0,
       segCocina: 0,
-      ingredientes: ingredientesIds
+
+      ingredientes: ingredientesArray
     });
   }
 

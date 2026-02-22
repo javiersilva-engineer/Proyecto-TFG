@@ -1,28 +1,44 @@
 const mongoose = require('mongoose');
 
-const ComidaSchema = new mongoose.Schema({
-  nombreComida: {
+const comidaSchema = new mongoose.Schema({
+
+  nombreInterno: {
+    type: String,
+    required: true,
+    unique: true
+  },
+
+  nombreES: {
     type: String,
     required: true
   },
 
-  caloriasComida: Number,
-  proteinasComida: Number,
-  carbohidratosComida: Number,
-  grasasComida: Number,
+  calorias: Number,
+  proteinas: Number,
+  carbohidratos: Number,
+  grasas: Number,
 
-  picComida: String, // URL o path de la imagen
-  receta: String,
+  imagen: String,
+
+  recetaInterna: String,
+  recetaES: String, 
 
   minCocina: Number,
   segCocina: Number,
 
-  ingredientes: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Ingrediente'
-  }]
+  ingredientes: [
+    {
+      ingrediente: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Ingrediente',
+        required: true
+      },
+      cantidad: Number,
+      unidad: String
+    }
+  ]
 }, {
-  versionKey: false
+  versionKey: false,
 });
 
-module.exports = mongoose.model('Comida', ComidaSchema);
+module.exports = mongoose.model('Comida', comidaSchema);

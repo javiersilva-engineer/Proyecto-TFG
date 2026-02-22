@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
 
 const AlergiaSchema = new mongoose.Schema({
-  nombreAlergia: {
+  nombreES: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  nombreEN: {
     type: String,
     required: true,
     unique: true

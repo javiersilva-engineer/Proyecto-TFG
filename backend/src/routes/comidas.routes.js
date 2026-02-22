@@ -29,32 +29,32 @@ router.get('/', async (req, res) => {
 
 
 // Obtener comidas por nombre de ingrediente
-router.get('/ingrediente/:nombre', async (req, res) => {
-  try {
+// router.get('/ingrediente/:nombre', async (req, res) => {
+//   try {
 
-    // Buscar el ingrediente por nombre
-    const ingrediente = await Ingrediente.findOne({
-      nombre: new RegExp(`^${req.params.nombre}$`, 'i')
-    });
+//     // Buscar el ingrediente por nombre
+//     const ingrediente = await Ingrediente.findOne({
+//       nombre: new RegExp(`^${req.params.nombre}$`, 'i')
+//     });
 
-    if (!ingrediente) {
-      return res.status(404).json({ message: 'Ingrediente no encontrado' });
-    }
+//     if (!ingrediente) {
+//       return res.status(404).json({ message: 'Ingrediente no encontrado' });
+//     }
 
-    // Buscar comidas que contengan ese ingrediente (por ID)
-    const comidas = await Comida.find({
-      ingredientes: ingrediente._id
-    }).populate({
-      path: 'ingredientes',
-      populate: { path: 'alergias' }
-    });
+//     // Buscar comidas que contengan ese ingrediente (por ID)
+//     const comidas = await Comida.find({
+//       ingredientes: ingrediente._id
+//     }).populate({
+//       path: 'ingredientes',
+//       populate: { path: 'alergias' }
+//     });
 
-    res.json(comidas);
+//     res.json(comidas);
 
-  } catch (error) {
-    res.status(500).json({ message: 'Error buscando comidas', error });
-  }
-});
+//   } catch (error) {
+//     res.status(500).json({ message: 'Error buscando comidas', error });
+//   }
+// });
 
 // Obtener comida por nombre
 router.get('/:nombre', async (req, res) => {
