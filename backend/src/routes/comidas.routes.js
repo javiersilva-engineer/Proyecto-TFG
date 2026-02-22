@@ -29,6 +29,7 @@ router.get('/', async (req, res) => {
 });
 
 
+// Obtener comidas que no tengan algún tipo de alergia
 router.get('/sin-alergias', async (req, res) => {
   try {
     const alergiasQuery = req.query.alergias;
@@ -39,20 +40,20 @@ router.get('/sin-alergias', async (req, res) => {
 
     const alergiasFiltro = alergiasQuery.split(',').map(a => a.trim().toLowerCase());
 
-    // 1️⃣ Buscar los IDs de las alergias
+    // Buscar los IDs de las alergias
     const alergiasDocs = await Alergia.find({
       nombreEN: { $in: alergiasFiltro }
     });
     const alergiasIds = alergiasDocs.map(a => a._id);
 
-    // 2️⃣ Buscar los IDs de ingredientes que tengan esas alergias
+    // Buscar los IDs de ingredientes que tengan esas alergias
     const ingredientesConAlergia = await Ingrediente.find({
       alergias: { $in: alergiasIds }
     }).select('_id');
 
     const ingredientesIds = ingredientesConAlergia.map(i => i._id);
 
-    // 3️⃣ Buscar comidas que NO tengan esos ingredientes
+    // Buscar comidas que NO tengan esos ingredientes
     const comidas = await Comida.find({
       'ingredientes.ingrediente': { $nin: ingredientesIds }
     }).populate({
@@ -67,6 +68,37 @@ router.get('/sin-alergias', async (req, res) => {
   }
 });
 
+
+// Obtener comidas por tipo
+router.get('/tipo/:tipo', async (req, res) => {
+  try {
+    const { tipo } = req.params;
+
+    const tiposValidos = ['desayuno', 'comida', 'cena', 'snack'];
+
+    if (!tiposValidos.includes(tipo)) {
+      return res.status(400).json({
+        message: 'Tipo de comida no válido',
+        tiposPermitidos: tiposValidos
+      });
+    }
+
+    const comidas = await Comida.find({
+      tipoComida: tipo
+    }).populate({
+      path: 'ingredientes',
+      populate: { path: 'alergias' }
+    });
+
+    res.json(comidas);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: 'Error obteniendo comidas por tipo',
+      error: err.message
+    });
+  }
+});
 
 
 // Obtener comida por nombre
