@@ -3,14 +3,35 @@ const axios = require('axios');
 const Comida = require('../../models/comida');
 const Ingrediente = require('../../models/ingrediente');
 const Alergia = require('../../models/alergia');
+
 const { traducirATextoES } = require('../../utils/traductor');
 const mapaAlergenos = require('../../utils/mapaAlergenos');
+const mapaDishTypes = require('../../utils/mapaDishtypes');
 
 const API_KEY = process.env.SPOONACULAR_API_KEY;
 const BASE_URL = 'https://api.spoonacular.com';
 
 
+function clasificarTipoComida(dishTypes = [], calorias = 0) {
+  const tipos = new Set();
 
+  // Clasificar por dishtypes de Spoonacular
+  for (const dish of dishTypes) {
+    const tipo = mapaDishTypes[dish];
+    if (tipo) tipos.add(tipo);
+  }
+
+  if (tipos.size > 0) {
+    return Array.from(tipos);
+  }
+
+  // Clasificar por calorías si no se detecta nada anteriormente
+  if (calorias < 250) return ['snack'];
+  if (calorias < 450) return ['desayuno'];
+  if (calorias < 700) return ['comida'];
+
+  return ['cena'];
+}
 
 async function detectarAlergias(nombreIngrediente) {
   const nombre = nombreIngrediente.toLowerCase();
@@ -145,6 +166,12 @@ async function poblarDesdeSpoonacular(numero = 5) {
       ? await traducirATextoES(recetaOriginal)
       : '';
 
+    const caloriasTotales = obtenerNutriente(nutrients, 'Calories');
+    const tipoComida = clasificarTipoComida(
+      receta.dishTypes || [],
+      caloriasTotales
+    );
+
     await Comida.create({
       nombreInterno: receta.title,
       nombreES: nombreES,
@@ -161,6 +188,8 @@ async function poblarDesdeSpoonacular(numero = 5) {
 
       minCocina: receta.readyInMinutes || 0,
       segCocina: 0,
+
+      tipoComida: tipoComida,
 
       ingredientes: ingredientesArray
     });

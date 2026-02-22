@@ -21,10 +21,16 @@ const comidaSchema = new mongoose.Schema({
   imagen: String,
 
   recetaInterna: String,
-  recetaES: String, 
+  recetaES: String,
 
   minCocina: Number,
   segCocina: Number,
+
+  tipoComida: {
+    type: [String],
+    enum: ['desayuno', 'comida', 'cena', 'snack'],
+    default: []
+  },
 
   ingredientes: [
     {
