@@ -3,6 +3,7 @@ const router = express.Router();
 
 const Comida = require('../models/comida');
 const Ingrediente = require('../models/ingrediente');
+const Alergia = require('../models/alergia');
 
 // Crear comida
 router.post('/', async (req, res) => {
@@ -28,33 +29,45 @@ router.get('/', async (req, res) => {
 });
 
 
-// Obtener comidas por nombre de ingrediente
-// router.get('/ingrediente/:nombre', async (req, res) => {
-//   try {
+router.get('/sin-alergias', async (req, res) => {
+  try {
+    const alergiasQuery = req.query.alergias;
 
-//     // Buscar el ingrediente por nombre
-//     const ingrediente = await Ingrediente.findOne({
-//       nombre: new RegExp(`^${req.params.nombre}$`, 'i')
-//     });
+    if (!alergiasQuery) {
+      return res.status(400).json({ message: 'Debes indicar al menos una alergia a filtrar' });
+    }
 
-//     if (!ingrediente) {
-//       return res.status(404).json({ message: 'Ingrediente no encontrado' });
-//     }
+    const alergiasFiltro = alergiasQuery.split(',').map(a => a.trim().toLowerCase());
 
-//     // Buscar comidas que contengan ese ingrediente (por ID)
-//     const comidas = await Comida.find({
-//       ingredientes: ingrediente._id
-//     }).populate({
-//       path: 'ingredientes',
-//       populate: { path: 'alergias' }
-//     });
+    // 1️⃣ Buscar los IDs de las alergias
+    const alergiasDocs = await Alergia.find({
+      nombreEN: { $in: alergiasFiltro }
+    });
+    const alergiasIds = alergiasDocs.map(a => a._id);
 
-//     res.json(comidas);
+    // 2️⃣ Buscar los IDs de ingredientes que tengan esas alergias
+    const ingredientesConAlergia = await Ingrediente.find({
+      alergias: { $in: alergiasIds }
+    }).select('_id');
 
-//   } catch (error) {
-//     res.status(500).json({ message: 'Error buscando comidas', error });
-//   }
-// });
+    const ingredientesIds = ingredientesConAlergia.map(i => i._id);
+
+    // 3️⃣ Buscar comidas que NO tengan esos ingredientes
+    const comidas = await Comida.find({
+      'ingredientes.ingrediente': { $nin: ingredientesIds }
+    }).populate({
+      path: 'ingredientes',
+      populate: { path: 'alergias' }
+    });
+
+    res.json(comidas);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error obteniendo comidas', error: err.message });
+  }
+});
+
+
 
 // Obtener comida por nombre
 router.get('/:nombre', async (req, res) => {
@@ -62,10 +75,10 @@ router.get('/:nombre', async (req, res) => {
     const comida = await Comida.findOne({
       nombreComida: new RegExp(`^${req.params.nombre}$`, 'i')
     })
-    .populate({
-      path: 'ingredientes',
-      populate: { path: 'alergias' }
-    });
+      .populate({
+        path: 'ingredientes',
+        populate: { path: 'alergias' }
+      });
 
     if (!comida) {
       return res.status(404).json({ message: 'Comida no encontrada' });
