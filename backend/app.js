@@ -7,9 +7,7 @@ const alergiaRoutes = require('./src/routes/alergias.routes');
 const ingredienteRoutes = require('./src/routes/ingredientes.routes');
 const comidaRoutes = require('./src/routes/comidas.routes');
 const spoonacularRoutes = require('./src/routes/spoonacular');
-
-
-
+const menuRoutes = require('./src/routes/menu.routes');
 
 const app = express();
 
@@ -30,7 +28,10 @@ app.use('/api/ingredientes', ingredienteRoutes);
 // Rutas comidas
 app.use('/api/comidas', comidaRoutes);
 
-//Rutas spoonacular
+// Rutas spoonacular
 app.use('/api/spoonacular', spoonacularRoutes);
+
+// Rutas menú
+app.use('/api/menu', menuRoutes);
 
 module.exports = app;

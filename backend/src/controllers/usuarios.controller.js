@@ -1,4 +1,5 @@
 const Usuario = require('../models/usuario');
+const { calcularObjetivos } = require('../utils/calcularMacros');
 
 exports.crearUsuario = async (req, res) => {
   try {
@@ -13,7 +14,7 @@ exports.crearUsuario = async (req, res) => {
 exports.obtenerUsuarios = async (req, res) => {
   const usuarios = await Usuario.find();
   res.json(usuarios);
-}
+};
 
 exports.loginUsuario = async (req, res) => {
   const { email, password } = req.body;
@@ -25,7 +26,6 @@ exports.loginUsuario = async (req, res) => {
       return res.status(401).json({ message: 'Email o contraseña incorrectos' });
     }
 
-    // ⚠️ Por ahora comparación directa (luego lo haremos con bcrypt)
     if (usuario.password !== password) {
       return res.status(401).json({ message: 'Email o contraseña incorrectos' });
     }
@@ -41,5 +41,44 @@ exports.loginUsuario = async (req, res) => {
 
   } catch (error) {
     res.status(500).json({ message: 'Error en el servidor' });
+  }
+};
+
+
+/*
+CALCULAR OBJETIVOS DE UN USUARIO
+*/
+exports.calcularObjetivosUsuario = async (req, res) => {
+  try {
+
+    const usuario = await Usuario.findById(req.params.id);
+
+    if (!usuario) {
+      return res.status(404).json({
+        message: "Usuario no encontrado"
+      });
+    }
+
+    // calcular macros
+    const objetivos = calcularObjetivos(usuario);
+
+    // actualizar usuario
+    usuario.caloriasObjetivo = objetivos.caloriasObjetivo;
+    usuario.proteinasObjetivo = objetivos.proteinasObjetivo;
+    usuario.carbohidratosObjetivo = objetivos.carbohidratosObjetivo;
+    usuario.grasasObjetivo = objetivos.grasasObjetivo;
+
+    await usuario.save();
+
+    res.json({
+      message: "Objetivos calculados correctamente",
+      usuario
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Error calculando objetivos",
+      error: error.message
+    });
   }
 };

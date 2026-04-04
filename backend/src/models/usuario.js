@@ -42,10 +42,10 @@ const UsuarioSchema = new mongoose.Schema({
     default: null
   },
 
-  alergenos: {
-    type: [String],
-    default: []
-  }
+  alergias: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Alergia'
+  }]
 
 }, {
   versionKey: false
