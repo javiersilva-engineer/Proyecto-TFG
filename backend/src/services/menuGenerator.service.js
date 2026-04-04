@@ -1,12 +1,3 @@
-function calcularObjetivoComida(objetivos, porcentaje) {
-  return {
-    calorias: objetivos.caloriasObjetivo * porcentaje,
-    proteinas: objetivos.proteinasObjetivo * porcentaje,
-    carbohidratos: objetivos.carbohidratosObjetivo * porcentaje,
-    grasas: objetivos.grasasObjetivo * porcentaje
-  };
-}
-
 function calcularScoreMacros(real, objetivo) {
   const diffCal = Math.abs(real.calorias - objetivo.caloriasObjetivo);
   const diffProt = Math.abs(real.proteinas - objetivo.proteinasObjetivo);
@@ -17,9 +8,11 @@ function calcularScoreMacros(real, objetivo) {
 }
 
 function elegirAleatorio(lista, usadasGlobal) {
-  const disponibles = lista.filter(c => !usadasGlobal.has(c._id.toString()));
+  let disponibles = lista.filter(c => !usadasGlobal.has(c._id.toString()));
 
-  if (disponibles.length === 0) return null;
+  if (disponibles.length === 0) {
+    disponibles = lista;
+  }
 
   const seleccion = disponibles[Math.floor(Math.random() * disponibles.length)];
 
@@ -87,7 +80,7 @@ function generarMejorDia(comidasPorTipo, objetivos, comidasMap, usadasGlobal, in
     }
   }
 
-  // 🔥 ahora sí añadimos las comidas elegidas al global
+  // ahora sí añadimos las comidas elegidas al global
   Object.values(mejorDia).forEach(id => {
     if (id) usadasGlobal.add(id.toString());
   });
