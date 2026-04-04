@@ -11,6 +11,9 @@ router.get('/', controller.obtenerUsuarios);
 // Login
 router.post('/login', controller.loginUsuario);
 
+// Actualizar usuario
+router.put('/:id', controller.actualizarUsuario);
+
 // Calcular macros de usuario
 router.post('/calcular-objetivos/:id', controller.calcularObjetivosUsuario);
 

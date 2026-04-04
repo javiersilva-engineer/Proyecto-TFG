@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-form-objetivo-1',
@@ -22,7 +23,7 @@ export class FormObjetivo1Page implements OnInit {
 
   isPC: boolean = false;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private http: HttpClient) { }
 
   ngOnInit() {
     const navigation = this.router.getCurrentNavigation();
@@ -39,24 +40,41 @@ export class FormObjetivo1Page implements OnInit {
 
   validateAndNavigate() {
     this.triedToNavigate = true;
-    this.errorMessage = '';
 
-    const pickers = [
-      { value: this.objetivoPeso, label: 'objetivoPeso' },
-      { value: this.peso, label: 'peso' },
-      { value: this.altura, label: 'altura' },
-      { value: this.edad, label: 'edad' },
-    ];
+    const hasError = this.hasError();
+    if (hasError) return;
 
-    const hasError = pickers.some(p => p.value === null);
+    const userId = localStorage.getItem('userId');
 
-    if (hasError) {
-      return;
-    }
+    const body = {
+      pesoObjetivo: this.objetivoPeso,
+      peso: this.peso,
+      altura: this.altura,
+      edad: this.edad
+    };
 
-    this.router.navigate(['/form-objetivo-2'], {
-      state: { username: this.usuario }
-    });
+    // 1️⃣ Actualizar usuario
+    this.http.put(`http://localhost:3000/api/usuarios/${userId}`, body)
+      .subscribe({
+        next: () => {
+
+          // 2️⃣ Calcular macros
+          this.http.post(`http://localhost:3000/api/usuarios/calcular-objetivos/${userId}`, {})
+            .subscribe({
+              next: () => {
+
+                // 3️⃣ Navegar
+                this.router.navigate(['/form-objetivo-2'], {
+                  state: { username: this.usuario }
+                });
+
+              },
+              error: err => console.error(err)
+            });
+
+        },
+        error: err => console.error(err)
+      });
   }
 
   hasError(): boolean {

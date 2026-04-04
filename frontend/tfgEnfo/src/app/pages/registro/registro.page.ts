@@ -72,6 +72,9 @@ export class RegistroPage implements OnInit {
       next: (usuario) => {
         console.log('Usuario creado:', usuario);
 
+        // Guardar ID
+        localStorage.setItem('userId', usuario._id);
+
         // Redirigir a la siguiente pantalla
         this.router.navigateByUrl('/form-objetivo-1', { state: { username: this.username } });
       },
