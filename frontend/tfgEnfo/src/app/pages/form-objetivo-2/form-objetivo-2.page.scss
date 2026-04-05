@@ -1,174 +1,174 @@
+.registro-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    --background: radial-gradient(circle at bottom right,
+            rgba(107, 182, 71, 0.5) 0%,
+            var(--color-verde-oscuro) 30%);
+}
+
+
+.header-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    justify-content: center;
+    align-items: center;
+    padding-top: 2em;
+}
+
+.header-section p {
+    color: white;
+    font-size: var(--tamano-texto-grande);
+    margin: 1em 2em 2em 2em;
+    font-weight: bold;
+}
+
+.header-section p .username {
+    color: var(--color-verde);
+}
+
+.botonsicos {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    justify-content: center;
+    align-items: center;
+}
+
+:host ::ng-deep app-fat-button .fat-button {
+    width: 22em !important;
+}
+
+:host ::ng-deep app-progress-bar .progress-bar {
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    width: 85% !important;
+    justify-self: center;
+}
+
+.flechas {
+    display: flex;
+    flex-direction: row;
+    margin: 2em 1.5em 0 1.5em;
+    justify-content: space-between;
+}
+
+.error-text {
+    display: flex;
+    justify-self: center;
+    align-self: center;
+    color: red;
+    margin-top: -1em;
+    margin-bottom: 2em;
+    font-size: var(--tamano-texto-pequeno);
+}
+
+.butRow {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*---------------------------------MEDIA QUERY PARA PC------------------------------------*/
+
+@media screen and (min-width: 767px) {
+
     .registro-content {
+        --background: url('../../../assets/imgs/blob-scene-haikei.svg');
+
+        height: 100vh;
+        width: 100vw;
+        --overflow: hidden;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
-        --background: radial-gradient(circle at bottom right,
-                rgba(107, 182, 71, 0.5) 0%,
-                var(--color-verde-oscuro) 30%);
+
+        --padding-top: 0;
+        --padding-bottom: 0;
+        --padding-start: 0;
+        --padding-end: 0;
+
     }
 
-
-    .header-section {
+    ion-content.registro-content::part(scroll) {
         display: flex;
         flex-direction: column;
+
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+
+        width: 100%;
+    }
+
+    .marcoPC {
+        display: flex;
+        flex-direction: column;
+        background: var(--color-verde-oscuro);
+        padding: 1.5em 2em 3em 2em;
+        width: 40em;
+        border-radius: 8px;
+        box-shadow: 0 0 10px var(--color-verde);
+        align-items: center;
+    }
+
+    .header-section {
+        align-self: center;
+        justify-self: center;
         gap: 0.5em;
         justify-content: center;
         align-items: center;
-        padding-top: 2em;
-    }
-
-    .header-section p {
-        color: white;
-        font-size: var(--tamano-texto-grande);
-        margin: 1em 2em 2em 2em;
-        font-weight: bold;
-    }
-
-    .header-section p .username {
-        color: var(--color-verde);
-    }
-
-    .botonsicos {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5em;
-        justify-content: center;
-        align-items: center;
-    }
-
-    :host ::ng-deep app-fat-button .fat-button {
-        width: 22em !important;
+        margin-bottom: 0.5em;
+        width: 95%;
+        padding-top: 1em;
     }
 
     :host ::ng-deep app-progress-bar .progress-bar {
-        margin-top: 1.5em;
-        margin-bottom: 0.5em;
-        width: 85% !important;
-        justify-self: center;
+        width: 100% !important;
     }
 
-    .flechas {
+    .header-section p {
+        width: 25em;
+        margin: 1.5em 0;
+    }
+
+    .header-section p>br {
+        display: none;
+    }
+
+    .butRow {
         display: flex;
         flex-direction: row;
-        margin: 2em 1.5em 0 1.5em;
-        justify-content: space-between;
-    }
-
-    .error-text{
-        display: flex;
-        justify-self: center;
-        align-self: center;
-        color: red;
-        margin-top: -1em;
-        margin-bottom: 2em;
-        font-size: var(--tamano-texto-pequeno);
-    }
-
-    .butRow{
-        display: flex;
-        flex-direction: column;
         gap: 1.5em;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-    /*---------------------------------MEDIA QUERY PARA PC------------------------------------*/
-
-    @media screen and (min-width: 767px) {
-
-        .registro-content {
-            --background: url('../../../assets/imgs/blob-scene-haikei.svg');
-
-            height: 100vh;
-            width: 100vw;
-            --overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            --padding-top: 0;
-            --padding-bottom: 0;
-            --padding-start: 0;
-            --padding-end: 0;
-
-        }
-
-        ion-content.registro-content::part(scroll) {
-            display: flex;
-            flex-direction: column;
-
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-
-            width: 100%;
-        }
-
-        .marcoPC {
-            display: flex;
-            flex-direction: column;
-            background: var(--color-verde-oscuro);
-            padding: 1.5em 2em 3em 2em;
-            width: 40em;
-            border-radius: 8px;
-            box-shadow: 0 0 10px var(--color-verde);
-            align-items: center;
-        }
-
-        .header-section {
-            align-self: center;
-            justify-self: center;
-            gap: 0.5em;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 0.5em;
-            width: 95%;
-            padding-top: 1em;
-        }
-
-        :host ::ng-deep app-progress-bar .progress-bar {
-            width: 100% !important;
-        }
-
-        .header-section p {
-            width: 25em;
-            margin: 1.5em 0;
-        }
-
-        .header-section p>br {
-            display: none;
-        }
-
-        .butRow {
-            display: flex;
-            flex-direction: row;
-            gap: 1.5em;
-        }
-
-        .flechas {
-            width: 100%;
-        }
-
-        :host ::ng-deep app-button.btn-siguiente .register-button {
-            background-color: var(--color-verde) !important;
-            color: black !important;
-            border: solid 1px var(--color-verde-claro);
-        }
-
-        :host ::ng-deep app-button.btn-siguiente .register-button:active {
-            background-color: var(--color-verde-oscuro) !important;
-            color: white !important;
-            border: solid 1px var(--color-verde);
-
-        }
+    .flechas {
+        width: 100%;
     }
+
+    :host ::ng-deep app-button.btn-siguiente .register-button {
+        background-color: var(--color-verde) !important;
+        color: black !important;
+        border: solid 1px var(--color-verde-claro);
+    }
+
+    :host ::ng-deep app-button.btn-siguiente .register-button:active {
+        background-color: var(--color-verde-oscuro) !important;
+        color: white !important;
+        border: solid 1px var(--color-verde);
+
+    }
+}

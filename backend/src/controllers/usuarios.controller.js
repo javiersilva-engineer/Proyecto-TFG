@@ -16,6 +16,21 @@ exports.obtenerUsuarios = async (req, res) => {
   res.json(usuarios);
 };
 
+exports.obtenerUsuarioPorId = async (req, res) => {
+  try {
+    const user = await Usuario.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    res.json(user);
+
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener usuario', error });
+  }
+};
+
 exports.loginUsuario = async (req, res) => {
   const { email, password } = req.body;
 

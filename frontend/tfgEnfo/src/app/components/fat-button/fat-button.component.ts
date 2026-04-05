@@ -6,7 +6,9 @@ import {
   faBatteryQuarter,
   faBatteryHalf,
   faBatteryThreeQuarters,
-  faBatteryFull
+  faBatteryFull,
+  faBolt, 
+  faHandPointer
 } from '@fortawesome/free-solid-svg-icons';
 
 const ICONS_MAP: Record<string, IconDefinition> = {
@@ -14,7 +16,9 @@ const ICONS_MAP: Record<string, IconDefinition> = {
   'battery-quarter': faBatteryQuarter,
   'battery-half': faBatteryHalf,
   'battery-three-quarters': faBatteryThreeQuarters,
-  'battery-full': faBatteryFull
+  'battery-full': faBatteryFull,
+  'flash': faBolt,
+  'manual': faHandPointer
 };
 
 @Component({

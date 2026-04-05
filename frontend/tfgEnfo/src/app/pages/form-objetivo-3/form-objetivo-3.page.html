@@ -1,0 +1,82 @@
+<ion-content class="registro-content">
+
+  <div class="marcoPC">
+
+    <div class="header-section">
+      <app-progress-bar [progress]="60"></app-progress-bar>
+
+      <p>
+        ¡Perfecto <span class="username">{{usuario}}</span>!<br>
+        Estas son las calorías que necesitas consumir para alcanzar tu objetivo.
+      </p>
+    </div>
+
+    <div class="calorias-container">
+
+      <div class="peso lado-izq">
+        <span class="peso-num">{{pesoActual}} kg</span>
+        <span class="peso-label">Actual</span>
+      </div>
+
+      <div class="circulo-wrapper">
+
+        <svg class="progress-ring" width="160" height="160">
+          <circle class="ring-bg" cx="80" cy="80" r="70" />
+          <circle class="ring-progress" cx="80" cy="80" r="70" [style.strokeDashoffset]="dashOffset" />
+        </svg>
+
+        <div class="circulo-texto">
+          {{caloriasAnimadas}} kcal
+        </div>
+
+      </div>
+
+      <div class="peso lado-der">
+        <span class="peso-num">{{pesoObjetivo}} kg</span>
+        <span class="peso-label">Objetivo</span>
+      </div>
+
+    </div>
+
+    <div class="macro">
+      <div class="macro-valor">{{carbohidratos}}g</div>
+      <div class="macro-barra">
+        <div class="macro-barra-relleno" [style.width.%]="barraAnimada"></div>
+      </div>
+      <span>Carbohidratos</span>
+    </div>
+
+    <div class="macro">
+      <div class="macro-valor">{{proteinas}}g</div>
+      <div class="macro-barra">
+        <div class="macro-barra-relleno" [style.width.%]="barraAnimada"></div>
+      </div>
+      <span>Proteínas</span>
+    </div>
+
+    <div class="macro">
+      <div class="macro-valor">{{grasas}}g</div>
+      <div class="macro-barra">
+        <div class="macro-barra-relleno" [style.width.%]="barraAnimada"></div>
+      </div>
+      <span>Grasas</span>
+    </div>
+
+    <div class="flechas">
+      <ng-container *ngIf="!isPC; else botonesPC">
+        <app-flecha-button direction="left" (click)="goBack()"></app-flecha-button>
+        <app-flecha-button direction="right" (click)="goNext()"></app-flecha-button>
+      </ng-container>
+
+      <ng-template #botonesPC>
+        <app-button text="Anterior" (click)="goBack()" class="btn-anterior">
+        </app-button>
+
+        <app-button text="Siguiente" (click)="goNext()" class="btn-siguiente">
+        </app-button>
+      </ng-template>
+    </div>
+
+  </div>
+
+</ion-content>

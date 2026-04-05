@@ -31,6 +31,14 @@ const routes: Routes = [
     path: 'form-objetivo-2',
     loadChildren: () => import('./pages/form-objetivo-2/form-objetivo-2.module').then( m => m.FormObjetivo2PageModule)
   },
+  {
+    path: 'form-objetivo-3',
+    loadChildren: () => import('./pages/form-objetivo-3/form-objetivo-3.module').then( m => m.FormObjetivo3PageModule)
+  },
+  {
+    path: 'form-objetivo-4',
+    loadChildren: () => import('./pages/form-objetivo-4/form-objetivo-4.module').then( m => m.FormObjetivo4PageModule)
+  },
 ];
 
 @NgModule({

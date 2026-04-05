@@ -17,4 +17,7 @@ router.put('/:id', controller.actualizarUsuario);
 // Calcular macros de usuario
 router.post('/calcular-objetivos/:id', controller.calcularObjetivosUsuario);
 
+// Obtener usuario por ID
+router.get('/:id', controller.obtenerUsuarioPorId);
+
 module.exports = router;

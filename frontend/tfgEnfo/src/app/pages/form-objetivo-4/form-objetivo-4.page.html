@@ -1,0 +1,61 @@
+<ion-content class="registro-content">
+
+  <div class="marcoPC" [ngClass]="{ 'error': hasError() }">
+
+    <div class="header-section">
+      <app-progress-bar [progress]="progress"></app-progress-bar>
+      <p>
+        Ahora que ya sabemos cuáles son tus objetivos,<br>
+        ¿cómo quieres distribuir tu alimentación?
+      </p>
+    </div>
+
+    <p class="error-text" *ngIf="hasError()">
+      Debes seleccionar una opción para continuar
+    </p>
+
+    <div class="botonsicos">
+
+      <div class="butRow">
+        <app-fat-button
+          icon="flash"
+          title="EnFo lo gestiona por mí"
+          description="Deja que EnFo planee tu alimentación diaria y ajuste las calorías y macros según tus preferencias."
+          [selected]="gestionMenu === 'enfo'"
+          (select)="gestionMenu = 'enfo'">
+        </app-fat-button>
+
+        <app-fat-button
+          icon="manual"
+          title="Yo me encargo"
+          description="Gestiona tu alimentación introduciendo manualmente las comidas e ingredientes necesarios, incluyendo las recetas que quieras."
+          [selected]="gestionMenu === 'manual'"
+          (select)="gestionMenu = 'manual'">
+        </app-fat-button>
+      </div>
+    </div>
+
+    <div class="flechas">
+      <ng-container *ngIf="!isPC; else botonesPC">
+        <app-flecha-button direction="left" (click)="goBack()"></app-flecha-button>
+        <app-flecha-button direction="right" (click)="validateAndNavigate()"></app-flecha-button>
+      </ng-container>
+
+      <ng-template #botonesPC>
+        <app-button
+          text="Anterior"
+          (click)="goBack()"
+          class="btn-anterior">
+        </app-button>
+
+        <app-button
+          text="Siguiente"
+          (click)="validateAndNavigate()"
+          class="btn-siguiente">
+        </app-button>
+      </ng-template>
+    </div>
+
+  </div>
+
+</ion-content>
