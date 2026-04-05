@@ -41,8 +41,7 @@ export class FormObjetivo1Page implements OnInit {
   validateAndNavigate() {
     this.triedToNavigate = true;
 
-    const hasError = this.hasError();
-    if (hasError) return;
+    if (this.hasError()) return;
 
     const userId = localStorage.getItem('userId');
 
@@ -53,25 +52,12 @@ export class FormObjetivo1Page implements OnInit {
       edad: this.edad
     };
 
-    // 1️⃣ Actualizar usuario
     this.http.put(`http://localhost:3000/api/usuarios/${userId}`, body)
       .subscribe({
         next: () => {
-
-          // 2️⃣ Calcular macros
-          this.http.post(`http://localhost:3000/api/usuarios/calcular-objetivos/${userId}`, {})
-            .subscribe({
-              next: () => {
-
-                // 3️⃣ Navegar
-                this.router.navigate(['/form-objetivo-2'], {
-                  state: { username: this.usuario }
-                });
-
-              },
-              error: err => console.error(err)
-            });
-
+          this.router.navigate(['/form-objetivo-2'], {
+            state: { username: this.usuario }
+          });
         },
         error: err => console.error(err)
       });
