@@ -38,29 +38,32 @@
 
     </div>
 
-    <div class="macro">
-      <div class="macro-valor">{{carbohidratos}}g</div>
-      <div class="macro-barra">
-        <div class="macro-barra-relleno" [style.width.%]="barraAnimada"></div>
+    <div class="losMacros">
+      <div class="macro">
+        <div class="macro-valor">{{carbohidratos}}g</div>
+        <div class="macro-barra">
+          <div class="macro-barra-relleno" [style.width.%]="barraAnimada"></div>
+        </div>
+        <span>Carbohidratos</span>
       </div>
-      <span>Carbohidratos</span>
+
+      <div class="macro">
+        <div class="macro-valor">{{proteinas}}g</div>
+        <div class="macro-barra">
+          <div class="macro-barra-relleno" [style.width.%]="barraAnimada"></div>
+        </div>
+        <span>Proteínas</span>
+      </div>
+
+      <div class="macro">
+        <div class="macro-valor">{{grasas}}g</div>
+        <div class="macro-barra">
+          <div class="macro-barra-relleno" [style.width.%]="barraAnimada"></div>
+        </div>
+        <span>Grasas</span>
+      </div>
     </div>
 
-    <div class="macro">
-      <div class="macro-valor">{{proteinas}}g</div>
-      <div class="macro-barra">
-        <div class="macro-barra-relleno" [style.width.%]="barraAnimada"></div>
-      </div>
-      <span>Proteínas</span>
-    </div>
-
-    <div class="macro">
-      <div class="macro-valor">{{grasas}}g</div>
-      <div class="macro-barra">
-        <div class="macro-barra-relleno" [style.width.%]="barraAnimada"></div>
-      </div>
-      <span>Grasas</span>
-    </div>
 
     <div class="flechas">
       <ng-container *ngIf="!isPC; else botonesPC">

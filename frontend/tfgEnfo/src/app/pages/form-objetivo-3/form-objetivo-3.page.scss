@@ -202,11 +202,12 @@
     display: flex;
     flex-direction: column;
     background: var(--color-verde-oscuro);
-    padding: 1.5em 2em 3em 2em;
+    padding: 0 2em 3em 1.5em;
     width: 40em;
     border-radius: 8px;
     box-shadow: 0 0 10px var(--color-verde);
     align-items: center;
+    max-height: 90vh;
   }
 
   .header-section {
@@ -240,7 +241,8 @@
   }
 
   .flechas {
-    width: 100%;
+    gap: 10em;
+    margin: 1em auto;
   }
 
   :host ::ng-deep app-button.btn-siguiente .register-button {
@@ -254,5 +256,22 @@
     color: white !important;
     border: solid 1px var(--color-verde);
 
+  }
+
+  .losMacros{
+    display: flex;
+    flex-direction: row;
+    gap: 2.5em;
+    width: 95%;
+  }
+
+  .macro {
+    margin: 1.5em auto;
+  }
+
+  .calorias-container {
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    gap: 5em;
   }
 }
