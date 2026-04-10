@@ -1,0 +1,167 @@
+.registro-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    --overflow: hidden;
+    --background: radial-gradient(circle at bottom right,
+            rgba(107, 182, 71, 0.5) 0%,
+            var(--color-verde-oscuro) 30%);
+}
+
+ion-content.registro-content::part(scroll) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.marcoPC {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    padding: 1em 1em 1.5em 1em;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+:host ::ng-deep app-progress-bar .progress-bar {
+    display: block;
+    width: 85% !important;
+    margin: 1.5em auto 0.75em auto !important;
+}
+
+.header-section p {
+    width: 85%;
+    color: white;
+    font-size: var(--tamano-texto-grande);
+    font-weight: bold;
+    margin: 0.5em 0 0 0;
+    text-align: left;
+    line-height: 1.35;
+}
+
+.username {
+    color: var(--color-verde);
+}
+
+.contenido-central {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    width: 100%;
+    gap: 1.5em;
+
+    transform: translateY(-2.5em);
+}
+
+.logo-enfo {
+    width: 6em;
+    height: 6em;
+    object-fit: contain;
+    border-radius: 1.5em;
+}
+
+.mensaje-final {
+    color: white;
+    font-size: var(--tamano-texto-enorme);
+    font-weight: bold;
+    margin: 0;
+    text-align: center;
+}
+
+.boton-finalizar {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1em;
+}
+
+:host ::ng-deep app-button.btn-finalizar .register-button {
+    width: 10em;
+    text-align: center;
+}
+
+
+
+@media screen and (min-width: 767px) {
+    .registro-content {
+        --background: url('../../../assets/imgs/blob-scene-haikei.svg');
+        height: 100vh;
+        width: 100vw;
+        --overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        --padding-top: 0;
+        --padding-bottom: 0;
+        --padding-start: 0;
+        --padding-end: 0;
+    }
+
+    ion-content.registro-content::part(scroll) {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+    }
+
+    .marcoPC {
+        display: flex;
+        flex-direction: column;
+        background: var(--color-verde-oscuro);
+        padding: 1.5em 2em 2em 2em;
+        width: 30em;
+        height: 80vh;
+        border-radius: 8px;
+        box-shadow: 0 0 10px var(--color-verde);
+        align-items: center;
+    }
+
+    :host ::ng-deep app-progress-bar .progress-bar {
+        display: block;
+        width: 100% !important;
+        margin: 0.5em auto 1em auto !important;
+    }
+
+    .header-section {
+        width: 100%;
+    }
+
+    .header-section p {
+        width: 100%;
+        margin: 0.75em 0 3em 0;
+        text-align: left;
+    }
+
+    .contenido-central {
+        gap: 1.5em;
+    }
+
+    .logo-enfo {
+        width: 6.5em;
+        height: 6.5em;
+    }
+
+    .mensaje-final {
+        font-size: var(--tamano-texto-enorme);
+    }
+
+    .boton-finalizar {
+        justify-content: center;
+    }
+}

@@ -1,0 +1,25 @@
+<ion-content class="registro-content">
+
+  <div class="marcoPC">
+
+    <div class="header-section">
+      <app-progress-bar [progress]="100"></app-progress-bar>
+
+      <p>
+        ¡Genial <span class="username">{{ usuario }}</span>! ya puedes empezar a conseguir tus objetivos.
+      </p>
+    </div>
+
+    <div class="contenido-central">
+      <img src="assets/imgs/logoEnfo.png" alt="Logo EnFo" class="logo-enfo" />
+      <p class="mensaje-final">¡A POR TODAS!</p>
+    </div>
+
+    <div class="boton-finalizar">
+      <app-button text="Finalizar" (click)="goNext()" class="btn-finalizar">
+      </app-button>
+    </div>
+
+  </div>
+
+</ion-content>

@@ -153,7 +153,11 @@ export class EnfoGestiona2Page implements OnInit, AfterViewInit {
   }
 
   goNext() {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/fin-registro'], {
+      state: {
+        username: this.usuario
+      }
+    });
   }
 
   obtenerComidasDelDia(dia: string): ComidaMenu[] {

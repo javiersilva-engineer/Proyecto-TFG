@@ -47,6 +47,10 @@ const routes: Routes = [
     path: 'enfo-gestiona-2',
     loadChildren: () => import('./pages/enfo-gestiona-2/enfo-gestiona-2.module').then( m => m.EnfoGestiona2PageModule)
   },
+  {
+    path: 'fin-registro',
+    loadChildren: () => import('./pages/fin-registro/fin-registro.module').then( m => m.FinRegistroPageModule)
+  },
 ];
 
 @NgModule({
