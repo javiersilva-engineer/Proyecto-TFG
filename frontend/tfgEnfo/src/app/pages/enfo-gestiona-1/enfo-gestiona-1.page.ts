@@ -84,7 +84,7 @@ export class EnfoGestiona1Page implements OnInit {
           .subscribe({
             next: () => {
               // 3) Navegar cuando todo haya ido bien
-              this.router.navigate(['/siguiente-pagina'], {
+              this.router.navigate(['/enfo-gestiona-2'], {
                 state: {
                   username: this.usuario
                 }
@@ -99,7 +99,7 @@ export class EnfoGestiona1Page implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/form-objetivo-4'], {
+    this.router.navigate(['/form-objetivo-3'], {
       state: { username: this.usuario }
     });
   }

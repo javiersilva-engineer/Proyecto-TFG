@@ -43,6 +43,10 @@ const routes: Routes = [
     path: 'enfo-gestiona-1',
     loadChildren: () => import('./pages/enfo-gestiona-1/enfo-gestiona-1.module').then( m => m.EnfoGestiona1PageModule)
   },
+  {
+    path: 'enfo-gestiona-2',
+    loadChildren: () => import('./pages/enfo-gestiona-2/enfo-gestiona-2.module').then( m => m.EnfoGestiona2PageModule)
+  },
 ];
 
 @NgModule({

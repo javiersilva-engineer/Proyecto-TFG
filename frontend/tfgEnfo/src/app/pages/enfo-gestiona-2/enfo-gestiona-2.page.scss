@@ -1,0 +1,305 @@
+.registro-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    --background: radial-gradient(circle at bottom right,
+            rgba(107, 182, 71, 0.5) 0%,
+            var(--color-verde-oscuro) 30%);
+}
+
+// .marcoPC {
+//     display: flex;
+//     flex-direction: column;
+//     width: 100%;
+//     padding: 1.5em 1em 2em 1em;
+// }
+
+.header-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1em;
+}
+
+.header-section p {
+    color: white;
+    font-size: var(--tamano-texto-grande);
+    margin: 0.5em 1em 0 1.5em;
+    font-weight: bold;
+}
+
+.header-section .username {
+    color: var(--color-verde);
+}
+
+.subtexto {
+    color: white;
+    font-size: var(--tamano-texto-mediano) !important;
+    margin: 0.5em 1.5em 1.25em 1.5em !important;
+    font-weight: normal;
+    align-self: flex-start;
+}
+
+:host ::ng-deep app-progress-bar .progress-bar {
+    display: block;
+    margin: 1.5em auto 0.5em auto;
+    width: 85% !important;
+}
+
+.accordion-wrapper {
+    position: relative;
+    width: 75%;
+    height: 18em;
+    overflow: hidden;
+    margin: 0 auto;
+    align-self: center;
+    justify-self: center;
+}
+
+.accordion-container {
+    display: block;
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 0.25em;
+    scroll-behavior: smooth;
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.accordion-container::-webkit-scrollbar {
+    display: none;
+}
+
+.accordion-wrapper::before,
+.accordion-wrapper::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2.2em;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 2;
+}
+
+.accordion-wrapper::before {
+    top: 0;
+    background: linear-gradient(to bottom,
+            var(--color-verde-oscuro) 0%,
+            rgba(0, 35, 0, 0.55) 45%,
+            rgba(0, 0, 0, 0) 100%);
+}
+
+.accordion-wrapper::after {
+    bottom: 0;
+    background: linear-gradient(to bottom,
+            rgba(0, 0, 0, 0) 0%,
+            rgba(0, 35, 0, 0.55) 55%,
+            var(--color-verde-oscuro) 100%);
+}
+
+.accordion-wrapper.show-top-fade::before {
+    opacity: 1;
+}
+
+.accordion-wrapper.show-bottom-fade::after {
+    opacity: 1;
+}
+
+.dia-card {
+    border-radius: 0;
+    overflow: hidden;
+    margin-bottom: 0;
+    flex-shrink: 0;
+}
+
+.dia-card:first-child {
+    border-radius: 8px 8px 0 0;
+}
+
+.dia-card:not(:first-child):not(:last-child) {
+    border-radius: 0;
+}
+
+.dia-card:last-child {
+    border-radius: 0 0 8px 8px;
+}
+
+.dia-header {
+    background-color: var(--color-verde);
+    color: black;
+    font-weight: bold;
+    text-align: center;
+    padding: 0.7em 1em;
+    font-size: var(--tamano-texto-mediano);
+    border: solid 0.5px var(--color-verde-claro);
+    cursor: pointer;
+}
+
+.dia-body {
+    background-color: rgba(0, 0, 0, 0.18);
+}
+
+.comida-item {
+    padding: 0.9em 1em;
+    border: solid 0.5px var(--color-verde-claro);
+    border-top: none;
+}
+
+.comida-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75em;
+}
+
+.comida-titulo {
+    color: white;
+    font-weight: bold;
+    font-size: var(--tamano-texto-pequeno);
+
+    flex: 1;
+    min-width: 0;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.comida-calorias {
+    color: var(--color-verde-claro);
+    font-size: var(--tamano-texto-pequeno);
+    font-weight: bold;
+    flex-shrink: 0;
+    text-align: right;
+}
+
+.comida-ingredientes {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: var(--tamano-texto-pequeno);
+    margin-top: 0.25em;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.footer-texto {
+    color: white;
+    font-size: var(--tamano-texto-pequeno);
+    margin: 2em 1em 0 1.5em;
+    line-height: 1.4;
+}
+
+.flechas {
+    display: flex;
+    flex-direction: row;
+    margin: 2em 1.5em 0 1.5em;
+    justify-content: space-between;
+}
+
+@media screen and (min-width: 767px) {
+    .registro-content {
+        --background: url('../../../assets/imgs/blob-scene-haikei.svg');
+        height: 100vh;
+        width: 100vw;
+        --overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        --padding-top: 0;
+        --padding-bottom: 0;
+        --padding-start: 0;
+        --padding-end: 0;
+    }
+
+    ion-content.registro-content::part(scroll) {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+    }
+
+    .marcoPC {
+        display: flex;
+        flex-direction: column;
+        background: var(--color-verde-oscuro);
+        padding: 0 2em 1.5em 2em;
+        width: 42em;
+        border-radius: 8px;
+        box-shadow: 0 0 10px var(--color-verde);
+        align-items: center;
+    }
+
+    .header-section {
+        align-self: center;
+        justify-self: center;
+        gap: 0.5em;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 0.5em;
+        width: 95%;
+        padding-top: 1em;
+    }
+
+    :host ::ng-deep app-progress-bar .progress-bar {
+        display: block;
+        width: 100% !important;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 0.5em;
+    }
+
+    .header-section p {
+        width: 100%;
+        text-align: left;
+        margin: 0.5em 0 0 0;
+    }
+
+    .header-section p>br {
+        display: none;
+    }
+
+    .subtexto {
+        margin: 0.5em 0 1em 0 !important;
+    }
+
+    .accordion-wrapper {
+        width: 90%;
+        height: 18em;
+        margin: 0 auto;
+        align-self: center;
+    }
+
+    .accordion-container {
+        width: 100%;
+    }
+
+    .flechas {
+        width: 100%;
+        margin-top: 0;
+    }
+
+    :host ::ng-deep app-button.btn-siguiente .register-button {
+        background-color: var(--color-verde) !important;
+        color: black !important;
+        border: solid 1px var(--color-verde-claro);
+    }
+
+    :host ::ng-deep app-button.btn-siguiente .register-button:active {
+        background-color: var(--color-verde-oscuro) !important;
+        color: white !important;
+        border: solid 1px var(--color-verde);
+    }
+
+    .footer-texto {
+        margin-bottom: 0 !important;
+    }
+}
