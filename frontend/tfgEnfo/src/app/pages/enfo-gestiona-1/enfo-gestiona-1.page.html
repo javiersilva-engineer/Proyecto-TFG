@@ -1,0 +1,41 @@
+<ion-content class="registro-content">
+
+  <div class="marcoPC">
+
+    <div class="header-section">
+      <app-progress-bar [progress]="progress"></app-progress-bar>
+      <p>
+        ¡Perfecto! para que Enfo se encargue de hacer un plan alimenticio necesitamos saber un par de cosas.
+      </p>
+    </div>
+
+    <p class="pregunta">
+      ¿Tienes alguna alergia?
+    </p>
+
+    <div class="alergias-grid">
+      <ng-container *ngFor="let alergia of alergias">
+        <app-button [text]="alergia.nombreES" (click)="toggleAlergia(alergia)"
+          [class.selected]="estaSeleccionada(alergia._id)" class="alergia-btn">
+        </app-button>
+      </ng-container>
+    </div>
+
+    <div class="flechas">
+      <ng-container *ngIf="!isPC; else botonesPC">
+        <app-flecha-button direction="left" (click)="goBack()"></app-flecha-button>
+        <app-flecha-button direction="right" (click)="validateAndNavigate()"></app-flecha-button>
+      </ng-container>
+
+      <ng-template #botonesPC>
+        <app-button text="Anterior" (click)="goBack()" class="btn-anterior">
+        </app-button>
+
+        <app-button text="Siguiente" (click)="validateAndNavigate()" class="btn-siguiente">
+        </app-button>
+      </ng-template>
+    </div>
+
+  </div>
+
+</ion-content>

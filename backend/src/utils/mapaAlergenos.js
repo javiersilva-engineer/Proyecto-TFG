@@ -9,5 +9,6 @@ module.exports = {
   celery: ['celery'],
   mustard: ['mustard'],
   crustaceans: ['shrimp', 'prawn', 'crab', 'lobster'],
+  fish: ['fish', 'salmon', 'tuna', 'cod', 'hake', 'sardine', 'anchovy', 'trout', 'mackerel', 'sea bass', 'bream'],
   mollusks: ['mussel', 'clam', 'octopus', 'squid']
 };

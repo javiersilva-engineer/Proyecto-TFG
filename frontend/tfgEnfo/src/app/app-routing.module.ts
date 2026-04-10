@@ -39,6 +39,10 @@ const routes: Routes = [
     path: 'form-objetivo-4',
     loadChildren: () => import('./pages/form-objetivo-4/form-objetivo-4.module').then( m => m.FormObjetivo4PageModule)
   },
+  {
+    path: 'enfo-gestiona-1',
+    loadChildren: () => import('./pages/enfo-gestiona-1/enfo-gestiona-1.module').then( m => m.EnfoGestiona1PageModule)
+  },
 ];
 
 @NgModule({

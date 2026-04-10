@@ -7,6 +7,7 @@ const Alergia = require('../models/alergia');
 const ALERGIAS = [
   { nombreES: 'Gluten', nombreEN: 'gluten' },
   { nombreES: 'Crustáceos', nombreEN: 'crustaceans' },
+  { nombreES: 'Pescado', nombreEN: 'fish' },
   { nombreES: 'Lácteos', nombreEN: 'dairy' },
   { nombreES: 'Mostaza', nombreEN: 'mustard' },
   { nombreES: 'Huevos', nombreEN: 'eggs' },

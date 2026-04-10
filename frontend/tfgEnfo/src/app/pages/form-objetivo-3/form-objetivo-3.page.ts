@@ -65,7 +65,8 @@ export class FormObjetivo3Page implements OnInit {
   }
 
   goNext() {
-    this.router.navigate(['/form-objetivo-4']);
+    // this.router.navigate(['/form-objetivo-4']);
+    this.router.navigate(['/enfo-gestiona-1']);
   }
 
   animarCalorias() {
