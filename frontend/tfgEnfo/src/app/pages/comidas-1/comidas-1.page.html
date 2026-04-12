@@ -1,0 +1,53 @@
+<ion-content class="comidas-content" [scrollY]="true">
+
+  <div class="comidas-wrapper" (touchstart)="onTouchStart($event)" (touchend)="onTouchEnd($event)">
+
+    <div class="top-selector">
+      <button class="day-arrow" (click)="diaAnterior()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </button>
+
+      <div class="day-title">
+        {{ diasMenu[diaIndex].label }}
+      </div>
+
+      <button class="day-arrow" (click)="diaSiguiente()">
+        <ion-icon name="arrow-forward-outline"></ion-icon>
+      </button>
+    </div>
+
+    <div class="recetas-lista">
+      <div class="receta-card" *ngFor="let comida of comidasDelDia">
+        <div class="hecho-box" (click)="toggleHecho(comida, $event)">
+          <div class="checkbox" [class.checked]="estaHecha(comida._id)">
+            <ion-icon *ngIf="estaHecha(comida._id)" name="checkmark-outline"></ion-icon>
+          </div>
+          <span>Hecho</span>
+        </div>
+
+        <div class="imagen-wrap">
+          <img *ngIf="comida.imagen; else imagenFallback" [src]="comida.imagen" [alt]="comida.nombreES"
+            class="receta-img" />
+
+          <ng-template #imagenFallback>
+            <div class="receta-img fallback-img">IMG</div>
+          </ng-template>
+        </div>
+
+        <div class="receta-nombre">
+          {{ comida.nombreES }}
+        </div>
+
+        <div class="receta-kcal">
+          {{ comida.calorias | number:'1.0-0' }} kcal
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</ion-content>
+
+<div class="bottom-nav-wrapper">
+  <app-bottom-nav active="comidas"></app-bottom-nav>
+</div>

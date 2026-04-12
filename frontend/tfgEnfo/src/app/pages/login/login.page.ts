@@ -41,7 +41,12 @@ export class LoginPage implements OnInit {
       next: (response) => {
         console.log('Login correcto', response);
 
-        this.router.navigateByUrl('/form-objetivo-1');
+        // Guardar usuario activo
+        localStorage.setItem('userId', response.usuario.id);
+        localStorage.setItem('username', response.usuario.nombreUsuario);
+        localStorage.setItem('userEmail', response.usuario.email);
+
+        this.router.navigateByUrl('/home');
       },
       error: () => {
         this.errors.password = true;

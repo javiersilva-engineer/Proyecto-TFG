@@ -1,20 +1,89 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="home-content">
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="home-wrapper">
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <div class="top-bar">
+      <div class="top-icon" (click)="abrirCalendario()">
+        <ion-icon name="calendar-outline"></ion-icon>
+      </div>
+
+      <div class="racha-container">
+        <div class="racha-semicirculo">
+          <span>{{ diasConsecutivos }} Días</span>
+        </div>
+      </div>
+
+      <div class="top-icon" (click)="irAjustes()">
+        <ion-icon name="settings-outline"></ion-icon>
+      </div>
+    </div>
+
+    <div class="week-strip">
+      <div class="week-day" *ngFor="let dia of semana" [class.selected]="dia.selected">
+        <div class="week-letter">{{ dia.letra }}</div>
+        <div class="week-number">{{ dia.numero }}</div>
+      </div>
+    </div>
+
+    <div class="objetivos-section">
+
+      <div class="calorias-container">
+
+        <div class="peso lado-izq">
+          <span class="peso-num">{{ pesoActual }} kg</span>
+          <span class="peso-label">Actual</span>
+        </div>
+
+        <div class="circulo-wrapper">
+          <svg class="progress-ring" viewBox="0 0 170 170">
+            <circle class="ring-bg" cx="85" cy="85" r="70"></circle>
+            <circle class="ring-progress" cx="85" cy="85" r="70" [style.strokeDashoffset]="dashOffset">
+            </circle>
+          </svg>
+
+          <div class="circulo-texto">
+            <div class="kcal-main">{{ caloriasConsumidas | number:'1.0-2' }} / {{ caloriasObjetivo }}</div>
+            <div class="kcal-sub">kcal</div>
+          </div>
+        </div>
+
+        <div class="peso lado-der">
+          <span class="peso-num">{{ pesoObjetivo }} kg</span>
+          <span class="peso-label">Objetivo</span>
+        </div>
+
+      </div>
+
+      <div class="macro">
+        <div class="macro-valor">{{ carbohidratosConsumidos | number:'1.0-2'  }} / {{ carbohidratosObjetivo }}g</div>
+        <div class="macro-barra">
+          <div class="macro-barra-relleno" [style.width.%]="barraCarbos"></div>
+        </div>
+        <span>Carbohidratos</span>
+      </div>
+
+      <div class="macro">
+        <div class="macro-valor">{{ proteinasConsumidas | number:'1.0-2'  }} / {{ proteinasObjetivo }}g</div>
+        <div class="macro-barra">
+          <div class="macro-barra-relleno" [style.width.%]="barraProteinas"></div>
+        </div>
+        <span>Proteínas</span>
+      </div>
+
+      <div class="macro">
+        <div class="macro-valor">{{ grasasConsumidas | number:'1.0-2'  }} / {{ grasasObjetivo }}g</div>
+        <div class="macro-barra">
+          <div class="macro-barra-relleno" [style.width.%]="barraGrasas"></div>
+        </div>
+        <span>Grasas</span>
+      </div>
+
+    </div>
+
   </div>
+
 </ion-content>
+
+<div class="bottom-nav-wrapper">
+  <app-bottom-nav active="progreso"></app-bottom-nav>
+</div>

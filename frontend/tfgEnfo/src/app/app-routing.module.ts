@@ -51,6 +51,10 @@ const routes: Routes = [
     path: 'fin-registro',
     loadChildren: () => import('./pages/fin-registro/fin-registro.module').then( m => m.FinRegistroPageModule)
   },
+  {
+    path: 'comidas-1',
+    loadChildren: () => import('./pages/comidas-1/comidas-1.module').then( m => m.Comidas1PageModule)
+  },
 ];
 
 @NgModule({
