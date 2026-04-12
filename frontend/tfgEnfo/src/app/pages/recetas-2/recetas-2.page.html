@@ -1,0 +1,53 @@
+<ion-content class="receta-content" [scrollY]="true">
+
+  <div class="receta-wrapper" *ngIf="receta">
+
+    <div class="back-button" (click)="volver()">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </div>
+    
+    <div class="imagen-wrap">
+      <img [src]="receta.imagen || 'assets/imgs/imgsSalva.png'" [alt]="receta.nombreES" class="receta-img"
+        [class.fallback]="!receta.imagen" (error)="onImageError($event)" />
+    </div>
+
+    <div class="titulo">
+      {{ receta.nombreES }}
+    </div>
+
+    <div class="kcal">
+      {{ receta.calorias | number:'1.0-2' }} kcal
+    </div>
+
+    <div class="macros">
+      <div>{{ receta.carbohidratos | number:'1.0-2' }}g Carbs</div>
+      <div>{{ receta.proteinas | number:'1.0-2' }}g Proteína</div>
+      <div>{{ receta.grasas | number:'1.0-2' }}g Grasas</div>
+    </div>
+
+    <div class="bloque">
+      <h2>Ingredientes</h2>
+
+      <ul class="ingredientes-lista">
+        <li *ngFor="let item of receta.ingredientes">
+          {{ item.ingrediente?.nombreES }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="bloque receta-bloque">
+      <div class="receta-header">
+        <h2>Receta</h2>
+        <span>{{ receta.minCocina || 0 }} min</span>
+      </div>
+
+      <div class="receta-texto" [innerHTML]="receta.recetaES"></div>
+    </div>
+
+  </div>
+
+</ion-content>
+
+<div class="bottom-nav-wrapper">
+  <app-bottom-nav active="recetas"></app-bottom-nav>
+</div>

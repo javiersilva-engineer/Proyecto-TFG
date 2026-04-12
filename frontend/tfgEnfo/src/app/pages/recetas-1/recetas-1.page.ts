@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 interface Ingrediente {
   nombreES?: string;
@@ -55,7 +56,7 @@ export class Recetas1Page implements OnInit {
     { key: 'snack', label: 'Snack' }
   ];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
     this.cargarAlergias();
@@ -142,6 +143,10 @@ export class Recetas1Page implements OnInit {
     if (this.maxCaloriasSeleccionadas < this.minCaloriasSeleccionadas) {
       this.maxCaloriasSeleccionadas = this.minCaloriasSeleccionadas;
     }
+  }
+
+  abrirReceta(recetaId: string) {
+    this.router.navigate(['/recetas-2', recetaId]);
   }
 
   get porcentajeMin(): number {

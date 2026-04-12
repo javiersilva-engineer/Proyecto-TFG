@@ -150,6 +150,14 @@ ion-content.comidas-content::part(scroll)::-webkit-scrollbar {
   z-index: 20;
 }
 
+.clickable {
+  cursor: pointer;
+}
+
+.imagen-wrap {
+  cursor: pointer;
+}
+
 @media screen and (min-width: 767px) {
   .comidas-wrapper {
     max-width: 30em;

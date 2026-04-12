@@ -25,7 +25,7 @@
           <span>Hecho</span>
         </div>
 
-        <div class="imagen-wrap">
+        <div class="imagen-wrap" (click)="abrirReceta(comida._id, $event)">
           <img *ngIf="comida.imagen; else imagenFallback" [src]="comida.imagen" [alt]="comida.nombreES"
             class="receta-img" />
 
@@ -34,7 +34,7 @@
           </ng-template>
         </div>
 
-        <div class="receta-nombre">
+        <div class="receta-nombre clickable" (click)="abrirReceta(comida._id, $event)">
           {{ comida.nombreES }}
         </div>
 

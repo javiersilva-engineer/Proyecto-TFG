@@ -71,12 +71,12 @@
       <div class="recetas-horizontal">
         <div class="receta-card" *ngFor="let receta of obtenerRecetasPorTipo(categoria.key)">
 
-          <div class="imagen-wrap">
+          <div class="imagen-wrap" (click)="abrirReceta(receta._id)">
             <img [src]="receta.imagen || 'assets/imgs/imgsSalva.png'" [alt]="receta.nombreES" class="receta-img"
               [class.fallback]="!receta.imagen" (error)="onImageError($event)" />
           </div>
 
-          <div class="receta-nombre">
+          <div class="receta-nombre clickable" (click)="abrirReceta(receta._id)">
             {{ receta.nombreES }}
           </div>
 

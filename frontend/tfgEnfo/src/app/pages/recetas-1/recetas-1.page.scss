@@ -337,6 +337,10 @@ ion-content.recetas-content::part(scroll)::-webkit-scrollbar {
     z-index: 50;
 }
 
+.clickable {
+    cursor: pointer;
+}
+
 @media screen and (min-width: 767px) {
     .recetas-wrapper {
         max-width: 30em;

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 interface ComidaMenu {
   _id: string;
@@ -38,7 +39,7 @@ export class Comidas1Page implements OnInit {
     { key: 'domingo', label: 'Domingo' }
   ];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
     this.diaIndex = this.obtenerIndiceDiaActual();
@@ -49,13 +50,13 @@ export class Comidas1Page implements OnInit {
     const hoy = new Date().getDay();
 
     const mapa: Record<number, number> = {
-      1: 0, // lunes
-      2: 1, // martes
-      3: 2, // miércoles
-      4: 3, // jueves
-      5: 4, // viernes
-      6: 5, // sábado
-      0: 6  // domingo
+      1: 0,
+      2: 1,
+      3: 2,
+      4: 3,
+      5: 4,
+      6: 5,
+      0: 6
     };
 
     return mapa[hoy];
@@ -160,6 +161,11 @@ export class Comidas1Page implements OnInit {
       },
       error: (err) => console.error('Error actualizando comida hecha', err)
     });
+  }
+
+  abrirReceta(recetaId: string, event?: Event) {
+    event?.stopPropagation();
+    this.router.navigate(['/recetas-2', recetaId]);
   }
 
   diaAnterior() {
