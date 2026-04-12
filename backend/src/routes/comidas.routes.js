@@ -28,6 +28,78 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Filtrar comidas por nombre, ingredientes, calorías y alergias
+router.get('/buscar/filtros', async (req, res) => {
+  try {
+    const {
+      q,
+      alergias,
+      minCalorias,
+      maxCalorias
+    } = req.query;
+
+    let comidas = await Comida.find()
+      .populate({
+        path: 'ingredientes.ingrediente',
+        populate: {
+          path: 'alergias'
+        }
+      });
+
+    // Filtrar por búsqueda
+    if (q && q.trim() !== '') {
+      const texto = q.trim().toLowerCase();
+
+      comidas = comidas.filter(comida => {
+        const nombreCoincide =
+          comida.nombreES?.toLowerCase().includes(texto) ||
+          comida.nombreInterno?.toLowerCase().includes(texto);
+
+        const ingredienteCoincide = comida.ingredientes?.some(item =>
+          item.ingrediente?.nombreES?.toLowerCase().includes(texto) ||
+          item.ingrediente?.nombreInterno?.toLowerCase().includes(texto)
+        );
+
+        return nombreCoincide || ingredienteCoincide;
+      });
+    }
+
+    // Filtrar por calorías
+    if (minCalorias) {
+      comidas = comidas.filter(c => (c.calorias || 0) >= Number(minCalorias));
+    }
+
+    if (maxCalorias) {
+      comidas = comidas.filter(c => (c.calorias || 0) <= Number(maxCalorias));
+    }
+
+    // Filtrar por alergias
+    if (alergias) {
+      const alergiasArray = alergias.split(',').map(a => a.trim().toLowerCase());
+
+      comidas = comidas.filter(comida => {
+        const alergiasDeLaComida = comida.ingredientes.flatMap(item =>
+          item.ingrediente?.alergias?.map(a =>
+            a.nombreES?.toLowerCase()
+          ) || []
+        );
+
+        return !alergiasArray.some(alergia =>
+          alergiasDeLaComida.includes(alergia)
+        );
+      });
+    }
+
+    res.json(comidas);
+
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error obteniendo recetas con filtros',
+      error: error.message
+    });
+  }
+});
+
 
 // Obtener comidas que no tengan algún tipo de alergia
 router.get('/sin-alergias', async (req, res) => {
@@ -99,7 +171,6 @@ router.get('/tipo/:tipo', async (req, res) => {
     });
   }
 });
-
 
 // Obtener comida por nombre
 router.get('/:nombre', async (req, res) => {

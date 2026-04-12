@@ -22,7 +22,7 @@ export class BottomNavComponent {
         this.router.navigate(['/home']);
         break;
       case 'recetas':
-        this.router.navigate(['/recetas']);
+        this.router.navigate(['/recetas-1']);
         break;
       case 'add':
         this.router.navigate(['/add-comida']);

@@ -1,0 +1,96 @@
+<ion-content class="recetas-content" [scrollY]="true">
+
+  <div class="recetas-wrapper">
+
+    <div class="top-bar">
+      <button class="filter-btn" (click)="toggleFiltros()">
+        <ion-icon name="options-outline"></ion-icon>
+      </button>
+
+      <div class="search-bar">
+        <input type="text" [(ngModel)]="busqueda" (input)="aplicarFiltros()"
+          placeholder="Buscar receta o ingrediente" />
+        <ion-icon name="search-outline"></ion-icon>
+      </div>
+    </div>
+
+    <div class="overlay" *ngIf="filtrosAbiertos" (click)="cerrarFiltros()"></div>
+
+    <div class="panel-filtros" [class.abierto]="filtrosAbiertos">
+      <h3>Filtros</h3>
+
+      <div class="filtro-bloque">
+        <label>Calorías</label>
+
+        <div class="range-slider-wrapper">
+          <div class="range-track"></div>
+          <div class="range-track-active" [style.left.%]="porcentajeMin"
+            [style.width.%]="porcentajeMax - porcentajeMin">
+          </div>
+
+          <input class="range-input" type="range" [min]="minCalorias" [max]="maxCalorias"
+            [(ngModel)]="minCaloriasSeleccionadas" (input)="onMinSliderChange()" />
+
+          <input class="range-input" type="range" [min]="minCalorias" [max]="maxCalorias"
+            [(ngModel)]="maxCaloriasSeleccionadas" (input)="onMaxSliderChange()" />
+        </div>
+
+        <div class="range-values">
+          <div class="range-box">{{ minCaloriasSeleccionadas }} kcal</div>
+          <span class="range-separador">—</span>
+          <div class="range-box">{{ maxCaloriasSeleccionadas }} kcal</div>
+        </div>
+      </div>
+
+      <div class="filtro-bloque">
+        <label>Alergias a excluir</label>
+        <div class="alergias-lista">
+          <button *ngFor="let alergia of alergias" type="button" class="alergia-chip"
+            [class.selected]="alergiasSeleccionadas.includes(alergia.nombreES)"
+            (click)="toggleAlergia(alergia.nombreES)">
+            {{ alergia.nombreES }}
+          </button>
+        </div>
+      </div>
+
+      <div class="filtros-botones">
+        <button type="button" class="btn-secundario" (click)="limpiarFiltros()">
+          Limpiar
+        </button>
+        <button type="button" class="btn-principal" (click)="aplicarFiltros()">
+          Aplicar
+        </button>
+      </div>
+    </div>
+
+    <div class="categoria" *ngFor="let categoria of categorias"
+      [hidden]="obtenerRecetasPorTipo(categoria.key).length === 0">
+
+      <h2>{{ categoria.label }}</h2>
+
+      <div class="recetas-horizontal">
+        <div class="receta-card" *ngFor="let receta of obtenerRecetasPorTipo(categoria.key)">
+
+          <div class="imagen-wrap">
+            <img [src]="receta.imagen || 'assets/imgs/imgsSalva.png'" [alt]="receta.nombreES" class="receta-img"
+              [class.fallback]="!receta.imagen" (error)="onImageError($event)" />
+          </div>
+
+          <div class="receta-nombre">
+            {{ receta.nombreES }}
+          </div>
+
+          <div class="receta-kcal">
+            {{ receta.calorias | number:'1.0-2' }} kcal
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</ion-content>
+
+<div class="bottom-nav-wrapper">
+  <app-bottom-nav active="recetas"></app-bottom-nav>
+</div>
