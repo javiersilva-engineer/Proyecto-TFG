@@ -154,10 +154,17 @@ ion-content.perfil-page {
     justify-content: center;
 }
 
+// .logout-btn {
+//     background: var(--color-verde-oscuro);
+//     border: 1px solid var(--color-verde);
+//     color: var(--color-verde);
+//     width: 45%;
+// }
+
 .logout-btn {
-    background: var(--color-verde-oscuro);
+    background: var(--color-verde-claro);
     border: 1px solid var(--color-verde);
-    color: var(--color-verde);
+    color: var(--color-verde-oscuro);
     width: 45%;
 }
 
