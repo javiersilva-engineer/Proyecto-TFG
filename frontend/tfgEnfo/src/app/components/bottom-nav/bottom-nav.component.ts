@@ -25,7 +25,7 @@ export class BottomNavComponent {
         this.router.navigate(['/recetas-1']);
         break;
       case 'add':
-        this.router.navigate(['/add-comida']);
+        this.router.navigate(['/publicar-receta']);
         break;
       case 'comidas':
         this.router.navigate(['/comidas-1']);

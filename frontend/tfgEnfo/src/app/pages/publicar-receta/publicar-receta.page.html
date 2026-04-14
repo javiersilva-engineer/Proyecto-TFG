@@ -1,0 +1,135 @@
+<ion-content [fullscreen]="true" class="publicar-page">
+  <div class="page-shell">
+    <div class="scroll-area">
+      <div class="top-bar">
+        <div class="top-left">
+          <app-flecha-button direction="left" (click)="volver()"></app-flecha-button>
+        </div>
+
+        <button class="save-btn" type="button" (click)="guardarReceta()" [disabled]="cargando">
+          <ion-icon name="checkmark-outline"></ion-icon>
+        </button>
+      </div>
+
+      <form [formGroup]="recetaForm" class="content-form">
+        <div class="image-wrapper">
+          <label class="image-box" [class.error]="imagenInvalida()" for="inputImagenReceta">
+            <img [src]="imagenPreview" alt="Imagen receta" />
+          </label>
+
+          <input id="inputImagenReceta" type="file" accept="image/*" hidden (change)="onSeleccionarImagen($event)" />
+        </div>
+
+        <div class="title-block">
+          <input class="title-input" type="text" placeholder="Incluir título" formControlName="titulo"
+            [class.error]="campoInvalido('titulo')" />
+        </div>
+
+        <div class="kcalMacros">
+          <div class="kcal-item">
+            <input type="number" formControlName="calorias" placeholder="X" [class.error]="campoInvalido('calorias')" />
+            <span>kcal</span>
+          </div>
+
+          <div class="macros-row">
+            <div class="macro-item">
+              <input type="number" formControlName="carbohidratos" placeholder="X"
+                [class.error]="campoInvalido('carbohidratos')" />
+              <span>g Carbs</span>
+            </div>
+
+            <div class="macro-item-prot">
+              <input type="number" formControlName="proteinas" placeholder="X"
+                [class.error]="campoInvalido('proteinas')" />
+              <span>g Proteína</span>
+            </div>
+
+            <div class="macro-item">
+              <input type="number" formControlName="grasas" placeholder="X" [class.error]="campoInvalido('grasas')" />
+              <span>g Grasas</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="type-row">
+          <label class="section-label">Tipo</label>
+
+          <select class="type-select" formControlName="tipoComida" [class.error]="campoInvalido('tipoComida')">
+            <option value="" disabled selected>Selecciona tipo</option>
+            <option value="desayuno">Desayuno</option>
+            <option value="comida">Comida</option>
+            <option value="cena">Cena</option>
+            <option value="snack">Snack</option>
+          </select>
+        </div>
+
+        <hr>
+
+        <div class="section">
+          <div class="section-header">
+            <span class="section-title">Ingredientes</span>
+          </div>
+
+          <div formArrayName="ingredientes" class="ingredientes-list">
+            <div class="ingrediente-item" *ngFor="let ingrediente of ingredientesArray.controls; let i = index"
+              [formGroupName]="i">
+              <div class="ingrediente-main-row">
+                <div class="autocomplete-box">
+                  <input type="text" placeholder="Ingrediente" formControlName="nombreES"
+                    [class.error]="ingredienteCampoInvalido(i, 'nombreES')" (input)="onInputIngrediente(i)"
+                    (focus)="abrirSugerencias(i)" (blur)="cerrarSugerencias(i)" />
+
+                  <div class="suggestions" *ngIf="mostrandoSugerencias[i] && sugerenciasPorFila[i]?.length">
+                    <div class="suggestion-item" *ngFor="let sugerencia of sugerenciasPorFila[i]"
+                      (mousedown)="seleccionarSugerencia(i, sugerencia)">
+                      {{ sugerencia.nombreES }}
+                    </div>
+                  </div>
+                </div>
+
+                <input class="cantidad-input" type="number" placeholder="0" formControlName="cantidad"
+                  [class.error]="ingredienteCampoInvalido(i, 'cantidad')" />
+
+                <select class="unidad-select" formControlName="unidad">
+                  <option value="g">g</option>
+                  <option value="ml">ml</option>
+                  <option value="mg">mg</option>
+                  <option value=""></option>
+                </select>
+
+                <button class="remove-btn" type="button" (click)="eliminarIngrediente(i)">
+                  <ion-icon name="remove-circle-outline"></ion-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button class="add-btn" type="button" (click)="agregarIngrediente()">
+            <ion-icon name="add-outline"></ion-icon>
+          </button>
+        </div>
+
+        <hr>
+
+        <div class="section receta-section">
+          <div class="section-header receta-header">
+            <span class="section-title-receta">Receta</span>
+
+            <div class="time-inline">
+              <input type="number" formControlName="minCocina" placeholder="X"
+                [class.error]="campoInvalido('minCocina')" />
+              <span>min</span>
+            </div>
+          </div>
+
+          <textarea rows="7" placeholder="Escribe la receta..." formControlName="recetaES"
+            [class.error]="campoInvalido('recetaES')"></textarea>
+        </div>
+      </form>
+    </div>
+
+    <div class="bottom-nav-fixed">
+      <app-bottom-nav></app-bottom-nav>
+    </div>
+  </div>
+</ion-content>
