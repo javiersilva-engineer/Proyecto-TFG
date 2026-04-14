@@ -11,9 +11,9 @@ import { HttpClient } from '@angular/common/http';
 export class FormObjetivo2Page implements OnInit {
 
   usuario: string = '';
+  origen: 'registro' | 'perfil' | '' = '';
   progress: number = 40;
 
-  // selección del fat-button
   nivelActividad: string | null = null;
 
   triedToNavigate: boolean = false;
@@ -21,14 +21,12 @@ export class FormObjetivo2Page implements OnInit {
 
   isPC: boolean = false;
 
-  constructor(private router: Router, private http: HttpClient) { }
+  constructor(
+    private router: Router,
+    private http: HttpClient
+  ) { }
 
   ngOnInit() {
-    const navigation = this.router.getCurrentNavigation();
-    if (navigation?.extras.state) {
-      this.usuario = navigation.extras.state['username'] || '';
-    }
-
     this.isPC = window.innerWidth >= 767;
 
     window.addEventListener('resize', () => {
@@ -36,8 +34,15 @@ export class FormObjetivo2Page implements OnInit {
     });
   }
 
+  ionViewWillEnter() {
+    const state = history.state;
+
+    this.usuario = state?.username || '';
+    this.origen = state?.origen || '';
+  }
+
   mapActividadANumero(nivel: string): number {
-    const mapa: any = {
+    const mapa: Record<string, number> = {
       sedentario: 0,
       ligero: 1,
       moderado: 2,
@@ -54,36 +59,28 @@ export class FormObjetivo2Page implements OnInit {
     if (!this.nivelActividad) return;
 
     const userId = localStorage.getItem('userId');
-
     const ejercicioNumero = this.mapActividadANumero(this.nivelActividad);
 
-    // Guardar actividad
     this.http.put(`http://localhost:3000/api/usuarios/${userId}`, {
       ejercicio: ejercicioNumero
-    })
-      .subscribe({
-        next: () => {
-
-          // Calcular macros
-          this.http.post(`http://localhost:3000/api/usuarios/calcular-objetivos/${userId}`, {})
-            .subscribe({
-              next: () => {
-
-                // Navegar
-                this.router.navigate(['/form-objetivo-3'], {
-                  state: {
-                    username: this.usuario,
-                    actividad: this.nivelActividad
-                  }
-                });
-
-              },
-              error: err => console.error(err)
-            });
-
-        },
-        error: err => console.error(err)
-      });
+    }).subscribe({
+      next: () => {
+        this.http.post(`http://localhost:3000/api/usuarios/calcular-objetivos/${userId}`, {})
+          .subscribe({
+            next: () => {
+              this.router.navigate(['/form-objetivo-3'], {
+                state: {
+                  username: this.usuario,
+                  origen: this.origen,
+                  actividad: this.nivelActividad
+                }
+              });
+            },
+            error: err => console.error(err)
+          });
+      },
+      error: err => console.error(err)
+    });
   }
 
   hasError(): boolean {
@@ -92,7 +89,10 @@ export class FormObjetivo2Page implements OnInit {
 
   goBack() {
     this.router.navigate(['/form-objetivo-1'], {
-      state: { username: this.usuario }
+      state: {
+        username: this.usuario,
+        origen: this.origen
+      }
     });
   }
 }

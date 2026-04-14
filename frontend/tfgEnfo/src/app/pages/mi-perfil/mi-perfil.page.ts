@@ -129,11 +129,21 @@ export class MiPerfilPage implements OnInit {
   }
 
   irAFormularioObjetivo(): void {
-    this.router.navigate(['/form-objetivo-1']);
+    this.router.navigate(['/form-objetivo-1'], {
+      state: {
+        username: this.usuarioActual?.nombreUsuario || '',
+        origen: 'perfil'
+      }
+    });
   }
 
   cambiarMenuSemanal(): void {
-    this.router.navigate(['/enfo-gestiona-1']);
+    this.router.navigate(['/enfo-gestiona-1'], {
+      state: {
+        username: this.usuarioActual?.nombreUsuario || '',
+        origen: 'perfil'
+      }
+    });
   }
 
   async cerrarSesion(): Promise<void> {

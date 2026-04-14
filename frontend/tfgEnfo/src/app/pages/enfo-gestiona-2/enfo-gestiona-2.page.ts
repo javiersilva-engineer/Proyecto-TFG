@@ -26,6 +26,7 @@ export class EnfoGestiona2Page implements OnInit, AfterViewInit {
   @ViewChild('accordionContainer') accordionContainer!: ElementRef<HTMLDivElement>;
 
   usuario: string = '';
+  origen: 'registro' | 'perfil' | '' = '';
   isPC: boolean = false;
 
   menu: any = null;
@@ -44,7 +45,10 @@ export class EnfoGestiona2Page implements OnInit, AfterViewInit {
     { key: 'domingo', label: 'Domingo' }
   ];
 
-  constructor(private router: Router, private http: HttpClient) { }
+  constructor(
+    private router: Router,
+    private http: HttpClient
+  ) { }
 
   ngOnInit() {
     this.isPC = window.innerWidth >= 767;
@@ -52,6 +56,13 @@ export class EnfoGestiona2Page implements OnInit, AfterViewInit {
     window.addEventListener('resize', () => {
       this.isPC = window.innerWidth >= 767;
     });
+  }
+
+  ionViewWillEnter() {
+    const state = history.state;
+
+    this.usuario = state?.username || '';
+    this.origen = state?.origen || '';
 
     this.cargarMenuYUsuario();
   }
@@ -94,7 +105,7 @@ export class EnfoGestiona2Page implements OnInit, AfterViewInit {
     this.http.get<any>(`http://localhost:3000/api/usuarios/${userId}`)
       .subscribe({
         next: (user) => {
-          this.usuario = user.nombreUsuario || '';
+          this.usuario = user.nombreUsuario || this.usuario;
 
           this.http.get<any>(`http://localhost:3000/api/menu/usuario/${userId}`)
             .subscribe({
@@ -148,14 +159,18 @@ export class EnfoGestiona2Page implements OnInit, AfterViewInit {
 
   goBack() {
     this.router.navigate(['/enfo-gestiona-1'], {
-      state: { username: this.usuario }
+      state: {
+        username: this.usuario,
+        origen: this.origen
+      }
     });
   }
 
   goNext() {
     this.router.navigate(['/fin-registro'], {
       state: {
-        username: this.usuario
+        username: this.usuario,
+        origen: this.origen
       }
     });
   }

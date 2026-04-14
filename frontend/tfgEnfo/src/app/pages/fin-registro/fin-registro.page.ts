@@ -10,20 +10,17 @@ import { Router } from '@angular/router';
 export class FinRegistroPage implements OnInit {
 
   usuario: string = '';
+  origen: 'registro' | 'perfil' | '' = '';
 
   constructor(private router: Router) { }
 
-  ngOnInit() {
-    const navigation = this.router.getCurrentNavigation();
+  ngOnInit() {}
 
-    if (navigation?.extras.state) {
-      this.usuario = navigation.extras.state['username'] || '';
-    }
+  ionViewWillEnter() {
+    const state = history.state;
 
-    // fallback por si se recarga la página y no viene state
-    if (!this.usuario) {
-      this.usuario = localStorage.getItem('username') || '';
-    }
+    this.usuario = state?.username || localStorage.getItem('username') || '';
+    this.origen = state?.origen || '';
   }
 
   goNext() {

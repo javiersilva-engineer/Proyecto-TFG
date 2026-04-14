@@ -17,6 +17,7 @@ interface Alergia {
 export class EnfoGestiona1Page implements OnInit {
 
   usuario: string = '';
+  origen: 'registro' | 'perfil' | '' = '';
   progress: number = 80;
 
   alergias: Alergia[] = [];
@@ -24,14 +25,12 @@ export class EnfoGestiona1Page implements OnInit {
 
   isPC: boolean = false;
 
-  constructor(private router: Router, private http: HttpClient) { }
+  constructor(
+    private router: Router,
+    private http: HttpClient
+  ) { }
 
   ngOnInit() {
-    const navigation = this.router.getCurrentNavigation();
-    if (navigation?.extras.state) {
-      this.usuario = navigation.extras.state['username'] || '';
-    }
-
     this.isPC = window.innerWidth >= 767;
 
     window.addEventListener('resize', () => {
@@ -39,6 +38,13 @@ export class EnfoGestiona1Page implements OnInit {
     });
 
     this.cargarAlergias();
+  }
+
+  ionViewWillEnter() {
+    const state = history.state;
+
+    this.usuario = state?.username || '';
+    this.origen = state?.origen || '';
   }
 
   cargarAlergias() {
@@ -73,34 +79,38 @@ export class EnfoGestiona1Page implements OnInit {
       return;
     }
 
-    // 1) Guardar alergias en el usuario
     this.http.put(`http://localhost:3000/api/usuarios/${userId}`, {
       alergias: this.alergiasSeleccionadas
     }).subscribe({
       next: () => {
-
-        // 2) Generar menú semanal teniendo en cuenta esas alergias
         this.http.post(`http://localhost:3000/api/menu/generar/${userId}`, {})
           .subscribe({
             next: () => {
-              // 3) Navegar cuando todo haya ido bien
               this.router.navigate(['/enfo-gestiona-2'], {
                 state: {
-                  username: this.usuario
+                  username: this.usuario,
+                  origen: this.origen
                 }
               });
             },
             error: (err) => console.error('Error generando menú semanal', err)
           });
-
       },
       error: (err) => console.error('Error actualizando alergias del usuario', err)
     });
   }
 
   goBack() {
+    if (this.origen === 'perfil') {
+      this.router.navigate(['/mi-perfil']);
+      return;
+    }
+
     this.router.navigate(['/form-objetivo-3'], {
-      state: { username: this.usuario }
+      state: {
+        username: this.usuario,
+        origen: 'registro'
+      }
     });
   }
 }

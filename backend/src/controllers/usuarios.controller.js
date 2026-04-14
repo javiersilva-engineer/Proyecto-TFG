@@ -100,17 +100,41 @@ exports.calcularObjetivosUsuario = async (req, res) => {
 
 exports.actualizarUsuario = async (req, res) => {
   try {
-    const { nombreUsuario, email } = req.body;
+    console.log('=== ACTUALIZAR USUARIO ===');
+    console.log('ID usuario:', req.params.id);
+    console.log('Body recibido:', req.body);
 
-    const usuario = await Usuario.findByIdAndUpdate(
-      req.params.id,
-      { nombreUsuario, email },
-      { new: true, runValidators: true }
-    );
+    const usuario = await Usuario.findById(req.params.id);
 
     if (!usuario) {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
+
+    console.log('Usuario encontrado:', usuario._id);
+
+    // Campos permitidos para actualizar
+    const camposPermitidos = [
+      'nombreUsuario', 'email', 'altura', 'peso', 'edad', 'ejercicio', 
+      'sexo', 'pesoObjetivo', 'caloriasObjetivo', 'proteinasObjetivo', 
+      'carbohidratosObjetivo', 'grasasObjetivo', 'alergias'
+    ];
+
+    // Actualizar solo los campos que se enviaron y están permitidos
+    let actualizados = [];
+    camposPermitidos.forEach(campo => {
+      if (req.body.hasOwnProperty(campo)) {
+        console.log(`Actualizando ${campo}:`, req.body[campo]);
+        usuario[campo] = req.body[campo];
+        actualizados.push(campo);
+      }
+    });
+
+    console.log('Campos actualizados:', actualizados);
+
+    // Guardar explícitamente
+    await usuario.save();
+
+    console.log('Usuario guardado exitosamente');
 
     res.json({
       message: 'Usuario actualizado',
@@ -118,6 +142,7 @@ exports.actualizarUsuario = async (req, res) => {
     });
 
   } catch (error) {
+    console.error('ERROR AL ACTUALIZAR USUARIO:', error);
     res.status(500).json({
       message: 'Error actualizando usuario',
       error: error.message

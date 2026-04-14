@@ -11,6 +11,7 @@ import { HttpClient } from '@angular/common/http';
 export class FormObjetivo1Page implements OnInit {
 
   usuario: string = '';
+  origen: 'registro' | 'perfil' | '' = '';
   progress: number = 20;
 
   objetivoPeso: number | null = null;
@@ -23,19 +24,24 @@ export class FormObjetivo1Page implements OnInit {
 
   isPC: boolean = false;
 
-  constructor(private router: Router, private http: HttpClient) { }
+  constructor(
+    private router: Router,
+    private http: HttpClient
+  ) { }
 
   ngOnInit() {
-    const navigation = this.router.getCurrentNavigation();
-    if (navigation?.extras.state) {
-      this.usuario = navigation.extras.state['username'] || '';
-    }
-
     this.isPC = window.innerWidth >= 767;
 
     window.addEventListener('resize', () => {
       this.isPC = window.innerWidth >= 767;
     });
+  }
+
+  ionViewWillEnter() {
+    const state = history.state;
+
+    this.usuario = state?.username || '';
+    this.origen = state?.origen || '';
   }
 
   validateAndNavigate() {
@@ -56,7 +62,10 @@ export class FormObjetivo1Page implements OnInit {
       .subscribe({
         next: () => {
           this.router.navigate(['/form-objetivo-2'], {
-            state: { username: this.usuario }
+            state: {
+              username: this.usuario,
+              origen: this.origen
+            }
           });
         },
         error: err => console.error(err)
@@ -71,6 +80,11 @@ export class FormObjetivo1Page implements OnInit {
   }
 
   goBack() {
+    if (this.origen === 'perfil') {
+      this.router.navigate(['/mi-perfil']);
+      return;
+    }
+
     this.router.navigate(['/registro']);
   }
 }

@@ -11,6 +11,7 @@ import { HttpClient } from '@angular/common/http';
 export class FormObjetivo3Page implements OnInit {
 
   usuario: string = '';
+  origen: 'registro' | 'perfil' | '' = '';
 
   calorias: number = 0;
   proteinas: number = 0;
@@ -26,19 +27,24 @@ export class FormObjetivo3Page implements OnInit {
 
   isPC: boolean = false;
 
-  constructor(private router: Router, private http: HttpClient) { }
+  constructor(
+    private router: Router,
+    private http: HttpClient
+  ) { }
 
   ngOnInit() {
-    const navigation = this.router.getCurrentNavigation();
-    if (navigation?.extras.state) {
-      this.usuario = navigation.extras.state['username'] || '';
-    }
-
     this.isPC = window.innerWidth >= 767;
 
     window.addEventListener('resize', () => {
       this.isPC = window.innerWidth >= 767;
     });
+  }
+
+  ionViewWillEnter() {
+    const state = history.state;
+
+    this.usuario = state?.username || '';
+    this.origen = state?.origen || '';
 
     const userId = localStorage.getItem('userId');
 
@@ -53,6 +59,10 @@ export class FormObjetivo3Page implements OnInit {
           this.pesoActual = user.peso;
           this.pesoObjetivo = user.pesoObjetivo;
 
+          this.caloriasAnimadas = 0;
+          this.dashOffset = 440;
+          this.barraAnimada = 0;
+
           this.animarCalorias();
           this.animarBarras();
         },
@@ -61,12 +71,21 @@ export class FormObjetivo3Page implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/form-objetivo-2']);
+    this.router.navigate(['/form-objetivo-2'], {
+      state: {
+        username: this.usuario,
+        origen: this.origen
+      }
+    });
   }
 
   goNext() {
-    // this.router.navigate(['/form-objetivo-4']);
-    this.router.navigate(['/enfo-gestiona-1']);
+    this.router.navigate(['/enfo-gestiona-1'], {
+      state: {
+        username: this.usuario,
+        origen: this.origen || 'registro'
+      }
+    });
   }
 
   animarCalorias() {

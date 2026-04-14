@@ -43,10 +43,14 @@ exports.generarMenu = async (usuario) => {
   // Generar menú optimizado
   const menu = generarMenuSemanal(comidasPorTipo, objetivos, comidasMap);
 
-  return await MenuSemanalUsuario.create({
-    usuario: usuario._id,
-    ...menu,
-    objetivos,
-    alergiasAplicadas: usuario.alergias
-  });
+  return await MenuSemanalUsuario.findOneAndUpdate(
+    { usuario: usuario._id },
+    {
+      usuario: usuario._id,
+      ...menu,
+      objetivos,
+      alergiasAplicadas: usuario.alergias
+    },
+    { upsert: true, new: true }
+  );
 };
