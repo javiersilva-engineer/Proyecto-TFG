@@ -22,64 +22,35 @@
             <img [src]="imagenPreview" alt="Imagen receta" />
           </label>
 
-          <input
-            id="inputImagenReceta"
-            type="file"
-            accept="image/*"
-            hidden
-            (change)="onSeleccionarImagen($event)"
-          />
+          <input id="inputImagenReceta" type="file" accept="image/*" hidden (change)="onSeleccionarImagen($event)" />
         </div>
 
         <div class="title-block">
-          <input
-            class="title-input"
-            type="text"
-            placeholder="Incluir título"
-            formControlName="titulo"
-            [class.error]="campoInvalido('titulo')"
-          />
+          <input class="title-input" type="text" placeholder="Incluir título" formControlName="titulo"
+            [class.error]="campoInvalido('titulo')" />
         </div>
 
         <div class="kcalMacros">
           <div class="kcal-item">
-            <input
-              type="number"
-              formControlName="calorias"
-              placeholder="X"
-              [class.error]="campoInvalido('calorias')"
-            />
+            <input type="number" formControlName="calorias" placeholder="X" [class.error]="campoInvalido('calorias')" />
             <span>kcal</span>
           </div>
 
           <div class="macros-row">
             <div class="macro-item">
-              <input
-                type="number"
-                formControlName="carbohidratos"
-                placeholder="X"
-                [class.error]="campoInvalido('carbohidratos')"
-              />
+              <input type="number" formControlName="carbohidratos" placeholder="X"
+                [class.error]="campoInvalido('carbohidratos')" />
               <span>g Carbs</span>
             </div>
 
             <div class="macro-item-prot">
-              <input
-                type="number"
-                formControlName="proteinas"
-                placeholder="X"
-                [class.error]="campoInvalido('proteinas')"
-              />
+              <input type="number" formControlName="proteinas" placeholder="X"
+                [class.error]="campoInvalido('proteinas')" />
               <span>g Proteína</span>
             </div>
 
             <div class="macro-item">
-              <input
-                type="number"
-                formControlName="grasas"
-                placeholder="X"
-                [class.error]="campoInvalido('grasas')"
-              />
+              <input type="number" formControlName="grasas" placeholder="X" [class.error]="campoInvalido('grasas')" />
               <span>g Grasas</span>
             </div>
           </div>
@@ -88,11 +59,7 @@
         <div class="type-row">
           <label class="section-label">Tipo</label>
 
-          <select
-            class="type-select"
-            formControlName="tipoComida"
-            [class.error]="campoInvalido('tipoComida')"
-          >
+          <select class="type-select" formControlName="tipoComida" [class.error]="campoInvalido('tipoComida')">
             <option value="" disabled>Selecciona tipo</option>
             <option value="desayuno">Desayuno</option>
             <option value="comida">Comida</option>
@@ -109,41 +76,24 @@
           </div>
 
           <div formArrayName="ingredientes" class="ingredientes-list">
-            <div
-              class="ingrediente-item"
-              *ngFor="let ingrediente of ingredientesArray.controls; let i = index"
-              [formGroupName]="i"
-            >
+            <div class="ingrediente-item" *ngFor="let ingrediente of ingredientesArray.controls; let i = index"
+              [formGroupName]="i">
               <div class="ingrediente-main-row">
                 <div class="autocomplete-box">
-                  <input
-                    type="text"
-                    placeholder="Ingrediente"
-                    formControlName="nombreES"
-                    [class.error]="ingredienteNombreInvalido(i)"
-                    (input)="onInputIngrediente(i)"
-                    (focus)="abrirSugerencias(i)"
-                    (blur)="cerrarSugerencias(i)"
-                  />
+                  <input type="text" placeholder="Ingrediente" formControlName="nombreES"
+                    [class.error]="ingredienteNombreInvalido(i)" (input)="onInputIngrediente(i)"
+                    (focus)="abrirSugerencias(i)" (blur)="cerrarSugerencias(i)" />
 
                   <div class="suggestions" *ngIf="mostrandoSugerencias[i] && sugerenciasPorFila[i]?.length">
-                    <div
-                      class="suggestion-item"
-                      *ngFor="let sugerencia of sugerenciasPorFila[i]"
-                      (mousedown)="seleccionarSugerencia(i, sugerencia)"
-                    >
+                    <div class="suggestion-item" *ngFor="let sugerencia of sugerenciasPorFila[i]"
+                      (mousedown)="seleccionarSugerencia(i, sugerencia)">
                       {{ sugerencia.nombreES }}
                     </div>
                   </div>
                 </div>
 
-                <input
-                  class="cantidad-input"
-                  type="number"
-                  placeholder="0"
-                  formControlName="cantidad"
-                  [class.error]="ingredienteCampoInvalido(i, 'cantidad')"
-                />
+                <input class="cantidad-input" type="number" placeholder="0" formControlName="cantidad"
+                  [class.error]="ingredienteCampoInvalido(i, 'cantidad')" />
 
                 <select class="unidad-select" formControlName="unidad">
                   <option value="g">g</option>
@@ -171,28 +121,20 @@
             <span class="section-title-receta">Receta</span>
 
             <div class="time-inline">
-              <input
-                type="number"
-                formControlName="minCocina"
-                placeholder="X"
-                [class.error]="campoInvalido('minCocina')"
-              />
+              <input type="number" formControlName="minCocina" placeholder="X"
+                [class.error]="campoInvalido('minCocina')" />
               <span>min</span>
             </div>
           </div>
 
-          <textarea
-            rows="7"
-            placeholder="Escribe la receta..."
-            formControlName="recetaES"
-            [class.error]="campoInvalido('recetaES')"
-          ></textarea>
+          <textarea rows="7" placeholder="Escribe la receta..." formControlName="recetaES"
+            [class.error]="campoInvalido('recetaES')"></textarea>
         </div>
       </form>
     </div>
-
-    <div class="bottom-nav-fixed">
-      <app-bottom-nav></app-bottom-nav>
-    </div>
   </div>
 </ion-content>
+
+<div class="bottom-nav-fixed">
+  <app-bottom-nav active="add"></app-bottom-nav>
+</div>

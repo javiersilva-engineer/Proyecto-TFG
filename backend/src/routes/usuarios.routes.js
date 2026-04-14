@@ -14,6 +14,9 @@ router.post('/login', controller.loginUsuario);
 // Actualizar usuario
 router.put('/:id', controller.actualizarUsuario);
 
+// Eliminar usuario
+router.delete('/:id', controller.eliminarUsuario);
+
 // Calcular macros de usuario
 router.post('/calcular-objetivos/:id', controller.calcularObjetivosUsuario);
 

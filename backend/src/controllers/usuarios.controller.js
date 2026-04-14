@@ -100,11 +100,12 @@ exports.calcularObjetivosUsuario = async (req, res) => {
 
 exports.actualizarUsuario = async (req, res) => {
   try {
+    const { nombreUsuario, email } = req.body;
 
     const usuario = await Usuario.findByIdAndUpdate(
       req.params.id,
-      req.body,
-      { new: true }
+      { nombreUsuario, email },
+      { new: true, runValidators: true }
     );
 
     if (!usuario) {
@@ -119,6 +120,28 @@ exports.actualizarUsuario = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: 'Error actualizando usuario',
+      error: error.message
+    });
+  }
+};
+
+exports.eliminarUsuario = async (req, res) => {
+  try {
+    const usuario = await Usuario.findByIdAndDelete(req.params.id);
+
+    if (!usuario) {
+      return res.status(404).json({
+        message: 'Usuario no encontrado'
+      });
+    }
+
+    res.json({
+      message: 'Usuario eliminado correctamente'
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error eliminando usuario',
       error: error.message
     });
   }

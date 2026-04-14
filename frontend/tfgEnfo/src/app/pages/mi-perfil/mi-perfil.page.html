@@ -1,0 +1,77 @@
+<ion-content [fullscreen]="true" class="perfil-page">
+  <div class="page-shell">
+    <div class="scroll-area">
+
+      <div class="top-bar">
+        <div class="top-left">
+          <app-flecha-button direction="left" (click)="volver()"></app-flecha-button>
+        </div>
+      </div>
+
+      <div class="perfil-header">
+        <h1 class="perfil-title">Hola {{ usuarioActual?.nombreUsuario }}</h1>
+        <p class="perfil-subtitle">Gestiona tu información personal y tu planificación</p>
+      </div>
+
+      <form [formGroup]="perfilForm" class="perfil-form">
+        <div class="section-card">
+          <div class="section-title">Información de la cuenta</div>
+
+          <div class="campo">
+            <label>Nombre</label>
+            <input type="text" formControlName="nombreUsuario" placeholder="Tu nombre"
+              [class.error]="campoInvalido('nombreUsuario')" />
+          </div>
+
+          <div class="campo">
+            <label>Correo electrónico</label>
+            <input type="email" formControlName="email" placeholder="tuemail@gmail.com"
+              [class.error]="campoInvalido('email')" />
+          </div>
+
+          <button type="button" class="action-btn primary-btn" (click)="guardarCambiosCuenta()"
+            [disabled]="guardandoCuenta">
+            Guardar cambios
+          </button>
+        </div>
+
+        <div class="section-card">
+          <div class="section-title">Datos físicos y objetivo</div>
+          <p class="section-text">
+            Introduce tus datos nuevamente para recalcular tu objetivo y actualizar tu perfil nutricional.
+          </p>
+
+          <button type="button" class="action-btn primary-btn" (click)="irAFormularioObjetivo()">
+            Cambiar datos
+          </button>
+        </div>
+
+        <div class="section-card">
+          <div class="section-title">Menú semanal</div>
+          <p class="section-text">
+            Si cambian tus alergias o quieres regenerar tu planificación semanal, puedes volver al flujo de selección.
+          </p>
+
+          <button type="button" class="action-btn primary-btn" (click)="cambiarMenuSemanal()">
+            Cambiar menú
+          </button>
+        </div>
+
+        <div class="btnsFinal">
+          <button type="button" class="action-btn logout-btn" (click)="cerrarSesion()">
+            Cerrar sesión
+          </button>
+
+          <button type="button" class="action-btn delete-btn" (click)="confirmarEliminarCuenta()">
+            Eliminar cuenta
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</ion-content>
+
+<div class="bottom-nav-fixed">
+  <app-bottom-nav active="perfil"></app-bottom-nav>
+</div>

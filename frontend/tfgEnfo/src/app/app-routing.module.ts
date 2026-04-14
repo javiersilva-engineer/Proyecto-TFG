@@ -67,6 +67,10 @@ const routes: Routes = [
     path: 'publicar-receta',
     loadChildren: () => import('./pages/publicar-receta/publicar-receta.module').then( m => m.PublicarRecetaPageModule)
   },
+  {
+    path: 'mi-perfil',
+    loadChildren: () => import('./pages/mi-perfil/mi-perfil.module').then( m => m.MiPerfilPageModule)
+  },
 ];
 
 @NgModule({

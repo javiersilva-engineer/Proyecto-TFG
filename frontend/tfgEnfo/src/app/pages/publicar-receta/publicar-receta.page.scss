@@ -1,6 +1,6 @@
 ion-content.publicar-page {
   --background: radial-gradient(circle at top,
-      rgba(107, 182, 71, 0.5) 0%,
+      rgb(52, 114, 23) 0%,
       var(--color-verde-oscuro) 35%);
 }
 
@@ -379,7 +379,6 @@ hr {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-right: 0em;
 }
 
 .time-inline input {

@@ -8,7 +8,7 @@ const progresoDiarioSchema = new mongoose.Schema({
   },
 
   fecha: {
-    type: String, // formato YYYY-MM-DD
+    type: String,
     required: true
   },
 

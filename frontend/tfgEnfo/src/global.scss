@@ -81,3 +81,17 @@ body {
   --font-family: $font-family-open-sans;
 }
 
+.custom-delete-alert .alert-wrapper {
+  background: var(--color-verde-oscuro);
+  border: 1px solid var(--color-verde-claro);
+}
+
+.custom-delete-alert .alert-title,
+.custom-delete-alert .alert-message {
+  color: white;
+}
+
+.custom-delete-alert .alert-button {
+  color: var(--color-verde-claro);
+}
+
