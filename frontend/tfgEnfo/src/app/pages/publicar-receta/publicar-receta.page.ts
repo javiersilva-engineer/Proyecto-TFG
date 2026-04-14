@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NavController, ToastController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
@@ -11,7 +11,7 @@ interface IngredienteDB {
 }
 
 interface IngredienteFila {
-  ingrediente: string | null;
+  ingrediente: string;
   nombreES: string;
   cantidad: number | null;
   unidad: string;
@@ -35,20 +35,18 @@ export class PublicarRecetaPage implements OnInit {
 
   enviado = false;
   cargando = false;
+  mostrarBannerExito = false;
 
   ingredientesBD: IngredienteDB[] = [];
   sugerenciasPorFila: IngredienteDB[][] = [];
   mostrandoSugerencias: boolean[] = [];
 
-  unidades = ['g', 'ml', 'mg', ''];
-
   constructor(
     private fb: FormBuilder,
     private toastController: ToastController,
-    private navCtrl: NavController,
     private http: HttpClient,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -77,7 +75,7 @@ export class PublicarRecetaPage implements OnInit {
 
   crearIngredienteFormGroup(): FormGroup {
     return this.fb.group({
-      ingrediente: [null],
+      ingrediente: [null, Validators.required],
       nombreES: ['', Validators.required],
       cantidad: [null, [Validators.required, Validators.min(0)]],
       unidad: ['g']
@@ -124,6 +122,7 @@ export class PublicarRecetaPage implements OnInit {
     const texto = (control.get('nombreES')?.value || '').trim().toLowerCase();
 
     control.get('ingrediente')?.setValue(null, { emitEvent: false });
+    control.get('ingrediente')?.markAsTouched();
 
     if (!texto) {
       this.sugerenciasPorFila[index] = [];
@@ -145,6 +144,9 @@ export class PublicarRecetaPage implements OnInit {
       ingrediente: ingrediente._id,
       nombreES: ingrediente.nombreES
     });
+
+    fila.get('ingrediente')?.markAsTouched();
+    fila.get('nombreES')?.markAsTouched();
 
     this.sugerenciasPorFila[index] = [];
     this.mostrandoSugerencias[index] = false;
@@ -187,6 +189,20 @@ export class PublicarRecetaPage implements OnInit {
     return !!(control && control.invalid && (control.touched || this.enviado));
   }
 
+  ingredienteNombreInvalido(index: number): boolean {
+    const fila = this.ingredientesArray.at(index);
+    const nombreControl = fila.get('nombreES');
+    const ingredienteControl = fila.get('ingrediente');
+
+    const nombreTocado = nombreControl?.touched || this.enviado;
+    const ingredienteTocado = ingredienteControl?.touched || this.enviado;
+
+    return !!(
+      (nombreControl?.invalid && nombreTocado) ||
+      (ingredienteControl?.invalid && ingredienteTocado)
+    );
+  }
+
   imagenInvalida(): boolean {
     return !this.imagenPreview && this.enviado;
   }
@@ -194,6 +210,7 @@ export class PublicarRecetaPage implements OnInit {
   marcarTodoComoTocado(control: FormGroup | FormArray): void {
     Object.values(control.controls).forEach((c: any) => {
       c.markAsTouched();
+
       if (c.controls) {
         this.marcarTodoComoTocado(c);
       }
@@ -204,7 +221,7 @@ export class PublicarRecetaPage implements OnInit {
     const value = this.recetaForm.value;
 
     const ingredientes = value.ingredientes.map((ing: IngredienteFila) => ({
-      ingrediente: ing.ingrediente || null,
+      ingrediente: ing.ingrediente,
       cantidad: Number(ing.cantidad),
       unidad: ing.unidad ?? ''
     }));
@@ -241,8 +258,11 @@ export class PublicarRecetaPage implements OnInit {
     this.http.post(this.apiComidas, payload).subscribe({
       next: async () => {
         this.cargando = false;
-        await this.mostrarToast('Receta publicada correctamente.', 'success');
-        this.router.navigate(['/home']);
+        this.mostrarBannerPublicacion();
+
+        setTimeout(() => {
+          this.router.navigate(['/home']);
+        }, 3600);
       },
       error: async (error) => {
         this.cargando = false;
@@ -252,6 +272,14 @@ export class PublicarRecetaPage implements OnInit {
         await this.mostrarToast(mensaje, 'danger');
       }
     });
+  }
+
+  mostrarBannerPublicacion(): void {
+    this.mostrarBannerExito = true;
+
+    setTimeout(() => {
+      this.mostrarBannerExito = false;
+    }, 3300);
   }
 
   async mostrarToast(message: string, color: 'success' | 'danger'): Promise<void> {
