@@ -148,10 +148,8 @@ export class MiPerfilPage implements OnInit {
 
   async cerrarSesion(): Promise<void> {
     localStorage.removeItem('userId');
-    localStorage.removeItem('token');
-    localStorage.removeItem('usuario');
-    localStorage.removeItem('menuSemanal');
-    localStorage.removeItem('alergiasSeleccionadas');
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('username');
 
     await this.mostrarToast('Sesión cerrada correctamente.', 'success');
 
@@ -204,10 +202,8 @@ export class MiPerfilPage implements OnInit {
     this.http.delete(`${this.apiUsuarios}/${this.usuarioId}`).subscribe({
       next: async () => {
         localStorage.removeItem('userId');
-        localStorage.removeItem('token');
-        localStorage.removeItem('usuario');
-        localStorage.removeItem('menuSemanal');
-        localStorage.removeItem('alergiasSeleccionadas');
+        localStorage.removeItem('userEmail');
+        localStorage.removeItem('username');
 
         await this.mostrarToast('Cuenta eliminada correctamente.', 'success');
         this.router.navigate(['/login']);
