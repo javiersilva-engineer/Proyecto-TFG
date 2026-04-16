@@ -8,8 +8,7 @@
       </button>
 
       <div class="search-bar">
-        <input type="text" [(ngModel)]="busqueda" (input)="aplicarFiltros()"
-          placeholder="Buscar receta o ingrediente" />
+        <input type="text" [(ngModel)]="busqueda" (input)="aplicarFiltros()" placeholder="Buscar receta" />
         <ion-icon name="search-outline"></ion-icon>
       </div>
     </div>
@@ -72,7 +71,7 @@
         <div class="receta-card" *ngFor="let receta of obtenerRecetasPorTipo(categoria.key)">
 
           <div class="imagen-wrap" (click)="abrirReceta(receta._id)">
-            <img [src]="receta.imagen || 'assets/imgs/imgsSalva.png'" [alt]="receta.nombreES" class="receta-img"
+            <img [src]="getImagenUrl(receta.imagen)" [alt]="receta.nombreES" class="receta-img"
               [class.fallback]="!receta.imagen" (error)="onImageError($event)" />
           </div>
 

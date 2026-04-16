@@ -15,7 +15,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 export class NumberPickerComponent implements AfterViewInit {
 
   @Input() label: string = '';
-  @Input() type: 'kg' | 'm' | 'años' = 'kg';
+  @Input() type: 'kg' | 'cm' | 'años' = 'kg';
   @Input() value: number | null = null;
   @Input() hasError: boolean = false;
 

@@ -34,6 +34,8 @@ interface Alergia {
 })
 export class Recetas1Page implements OnInit {
 
+  readonly apiBaseUrl = 'http://localhost:3000';
+
   recetasFiltradas: Receta[] = [];
 
   alergias: Alergia[] = [];
@@ -61,6 +63,18 @@ export class Recetas1Page implements OnInit {
   ngOnInit() {
     this.cargarAlergias();
     this.aplicarFiltros();
+  }
+
+  getImagenUrl(ruta?: string): string {
+    if (!ruta) {
+      return 'assets/imgs/imgsSalva.png';
+    }
+
+    if (ruta.startsWith('http://') || ruta.startsWith('https://')) {
+      return ruta;
+    }
+
+    return `${this.apiBaseUrl}${ruta}`;
   }
 
   cargarAlergias() {

@@ -7,6 +7,7 @@
   --background: radial-gradient(circle at bottom right,
       rgba(107, 182, 71, 0.5) 0%,
       var(--color-verde-oscuro) 30%);
+  --overflow: hidden;
 }
 
 .header-section {
@@ -15,13 +16,13 @@
   gap: 0.5em;
   justify-content: center;
   align-items: center;
-  padding-top: 1em;
+  padding-top: 0.25em;
 }
 
 .header-section p {
   color: white;
   font-size: var(--tamano-texto-grande);
-  margin: 1em 2em 2em 2em;
+  margin: 0.5em 2em 2em 2em;
   font-weight: bold;
 }
 

@@ -82,16 +82,27 @@ body {
 }
 
 .custom-delete-alert .alert-wrapper {
-  background: var(--color-verde-oscuro);
-  border: 1px solid var(--color-verde-claro);
+  background: rgb(10, 0, 0);
+  border: 2px solid red;
+  height: fit-content;
 }
 
-.custom-delete-alert .alert-title,
 .custom-delete-alert .alert-message {
   color: white;
+  font-size: var(--tamano-texto-mediano);
+}
+
+.custom-delete-alert .alert-title{
+  color: red;
+  font-size: var(--tamano-texto-gigante);
 }
 
 .custom-delete-alert .alert-button {
-  color: var(--color-verde-claro);
+  color: white;
+  background: rgb(126, 0, 0);
+}
+
+.custom-delete-alert .cancela {
+  color: white;
 }
 

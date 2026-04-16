@@ -178,7 +178,8 @@ export class MiPerfilPage implements OnInit {
       buttons: [
         {
           text: 'Cancelar',
-          role: 'cancel'
+          role: 'cancel',
+          cssClass: 'cancela'
         },
         {
           text: 'Eliminar',

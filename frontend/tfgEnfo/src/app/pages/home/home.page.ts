@@ -46,7 +46,7 @@ export class HomePage implements OnInit {
   fechaSeleccionada: string = '';
   calendarioAbierto: boolean = false;
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(private router: Router, private http: HttpClient) { }
 
   ngOnInit() {
     this.inicializarFechaSeleccionada();
