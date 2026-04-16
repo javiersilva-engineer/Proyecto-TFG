@@ -1,5 +1,6 @@
 const ProgresoDiario = require('../models/progresoDiario');
 const Comida = require('../models/comida');
+const MenuSemanalUsuario = require('../models/menuSemanalUsuario');
 
 async function recalcularTotales(progreso) {
   const comidas = await Comida.find({
@@ -12,11 +13,44 @@ async function recalcularTotales(progreso) {
   progreso.grasasConsumidas = comidas.reduce((acc, c) => acc + (c.grasas || 0), 0);
 }
 
+function obtenerDiaKeyDesdeFecha(fechaString) {
+  const fecha = new Date(`${fechaString}T12:00:00`);
+  const day = fecha.getDay();
+
+  const mapa = {
+    1: 'lunes',
+    2: 'martes',
+    3: 'miercoles',
+    4: 'jueves',
+    5: 'viernes',
+    6: 'sabado',
+    0: 'domingo'
+  };
+
+  return mapa[day];
+}
+
+function formatearFechaLocal(fecha) {
+  const year = fecha.getFullYear();
+  const month = String(fecha.getMonth() + 1).padStart(2, '0');
+  const day = String(fecha.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}
+
+function contarComidasDelMenu(menuDia) {
+  if (!menuDia) return 0;
+
+  return ['desayuno', 'comida', 'snack', 'cena']
+    .filter(tipo => !!menuDia[tipo])
+    .length;
+}
+
 exports.obtenerProgresoDiario = async (req, res) => {
   try {
     const { usuarioId, fecha } = req.params;
 
-    let progreso = await ProgresoDiario.findOne({
+    const progreso = await ProgresoDiario.findOne({
       usuario: usuarioId,
       fecha
     });
@@ -59,7 +93,7 @@ exports.toggleComidaHecha = async (req, res) => {
     });
 
     if (!progreso) {
-      progreso = await ProgresoDiario.create({
+      progreso = new ProgresoDiario({
         usuario: usuarioId,
         fecha,
         comidasHechas: []
@@ -89,6 +123,56 @@ exports.toggleComidaHecha = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: 'Error actualizando progreso diario',
+      error: error.message
+    });
+  }
+};
+
+exports.obtenerRacha = async (req, res) => {
+  try {
+    const { usuarioId, fecha } = req.params;
+
+    const menu = await MenuSemanalUsuario.findOne({ usuario: usuarioId });
+
+    if (!menu) {
+      return res.json({ racha: 0 });
+    }
+
+    let racha = 0;
+    let fechaActual = new Date(`${fecha}T12:00:00`);
+
+    while (true) {
+      const fechaISO = formatearFechaLocal(fechaActual);
+      const diaKey = obtenerDiaKeyDesdeFecha(fechaISO);
+      const menuDia = menu[diaKey];
+
+      const totalComidasDia = contarComidasDelMenu(menuDia);
+
+      if (totalComidasDia === 0) {
+        break;
+      }
+
+      const progreso = await ProgresoDiario.findOne({
+        usuario: usuarioId,
+        fecha: fechaISO
+      });
+
+      const comidasHechas = progreso?.comidasHechas || [];
+
+      if (comidasHechas.length >= totalComidasDia) {
+        racha++;
+      } else {
+        break;
+      }
+
+      fechaActual.setDate(fechaActual.getDate() - 1);
+    }
+
+    res.json({ racha });
+
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error obteniendo racha',
       error: error.message
     });
   }

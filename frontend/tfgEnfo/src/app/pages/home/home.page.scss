@@ -67,6 +67,7 @@
   flex-direction: column;
   align-items: center;
   gap: 0.3em;
+  cursor: pointer;
 }
 
 .week-letter {
@@ -85,11 +86,20 @@
   color: white;
   font-size: var(--tamano-texto-mediano);
   font-weight: bold;
+  border: 2px solid transparent;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.week-day.completed .week-number {
+  background-color: var(--color-verde-claro);
+  color: var(--color-verde-oscuro);
 }
 
 .week-day.selected .week-number {
   background-color: var(--color-verde);
   color: black;
+  border: 2px solid var(--color-verde);
 }
 
 .objetivos-section {
@@ -179,7 +189,7 @@
 }
 
 .macro {
-  margin: 0.3em 0.5em 0.7em 0.5em ;
+  margin: 0.3em 0.5em 0.7em 0.5em;
   text-align: center;
   color: white;
 }
@@ -216,6 +226,78 @@
   right: 0;
   bottom: 0;
   z-index: 20;
+}
+
+/* -------------------- CALENDARIO -------------------- */
+
+.calendario-content {
+  --background: var(--color-verde-oscuro);
+}
+
+.calendario-datetime {
+  --background: var(--color-verde-oscuro);
+  --background-rgb: 24, 66, 50;
+  --title-color: white;
+  --wheel-highlight-background: var(--color-verde);
+  --wheel-fade-background-rgb: 24, 66, 50;
+  --highlight-color: var(--color-verde);
+  --ion-color-primary: var(--color-verde);
+  color: white;
+}
+
+.calendario-datetime::part(calendar-day) {
+  color: white;
+  border-radius: 50%;
+}
+
+.calendario-datetime::part(calendar-day active) {
+  background: var(--color-verde);
+  color: black;
+  border-radius: 50%;
+}
+
+.calendario-datetime::part(calendar-day today) {
+  color: var(--color-verde);
+}
+
+.calendario-datetime::part(calendar-day today active) {
+  background: var(--color-verde);
+  color: black;
+}
+
+.calendario-datetime::part(month-year-button) {
+  color: var(--color-verde-claro);
+}
+
+.calendario-datetime::part(button) {
+  color: var(--color-verde-claro);
+}
+
+.calendario-datetime::part(time-button) {
+  color: var(--color-verde-claro);
+}
+
+.calendario-datetime::part(calendar-day):focus {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+ion-modal.calendario-modal {
+  --background: var(--color-verde-oscuro);
+  --border-radius: 20px;
+  --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+ion-modal.calendario-modal ion-toolbar {
+  --background: var(--color-verde-oscuro);
+  --color: white;
+}
+
+ion-modal.calendario-modal ion-title {
+  color: white;
+}
+
+ion-modal.calendario-modal ion-button {
+  --color: var(--color-verde-claro);
 }
 
 @media screen and (min-width: 767px) {

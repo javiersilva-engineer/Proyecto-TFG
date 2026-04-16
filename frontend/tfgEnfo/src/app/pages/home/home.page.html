@@ -19,7 +19,13 @@
     </div>
 
     <div class="week-strip">
-      <div class="week-day" *ngFor="let dia of semana" [class.selected]="dia.selected">
+      <div
+        class="week-day"
+        *ngFor="let dia of semana"
+        [class.selected]="dia.selected"
+        [class.completed]="dia.completado"
+        (click)="seleccionarDiaSemana(dia.fechaISO)"
+      >
         <div class="week-letter">{{ dia.letra }}</div>
         <div class="week-number">{{ dia.numero }}</div>
       </div>
@@ -37,12 +43,19 @@
         <div class="circulo-wrapper">
           <svg class="progress-ring" viewBox="0 0 170 170">
             <circle class="ring-bg" cx="85" cy="85" r="70"></circle>
-            <circle class="ring-progress" cx="85" cy="85" r="70" [style.strokeDashoffset]="dashOffset">
+            <circle
+              class="ring-progress"
+              cx="85"
+              cy="85"
+              r="70"
+              [style.strokeDashoffset]="dashOffset">
             </circle>
           </svg>
 
           <div class="circulo-texto">
-            <div class="kcal-main">{{ caloriasConsumidas | number:'1.0-2' }} / {{ caloriasObjetivo }}</div>
+            <div class="kcal-main">
+              {{ caloriasConsumidas | number:'1.0-2' }} / {{ caloriasObjetivo }}
+            </div>
             <div class="kcal-sub">kcal</div>
           </div>
         </div>
@@ -55,7 +68,9 @@
       </div>
 
       <div class="macro">
-        <div class="macro-valor">{{ carbohidratosConsumidos | number:'1.0-2'  }} / {{ carbohidratosObjetivo }}g</div>
+        <div class="macro-valor">
+          {{ carbohidratosConsumidos | number:'1.0-2' }} / {{ carbohidratosObjetivo }}g
+        </div>
         <div class="macro-barra">
           <div class="macro-barra-relleno" [style.width.%]="barraCarbos"></div>
         </div>
@@ -63,7 +78,9 @@
       </div>
 
       <div class="macro">
-        <div class="macro-valor">{{ proteinasConsumidas | number:'1.0-2'  }} / {{ proteinasObjetivo }}g</div>
+        <div class="macro-valor">
+          {{ proteinasConsumidas | number:'1.0-2' }} / {{ proteinasObjetivo }}g
+        </div>
         <div class="macro-barra">
           <div class="macro-barra-relleno" [style.width.%]="barraProteinas"></div>
         </div>
@@ -71,7 +88,9 @@
       </div>
 
       <div class="macro">
-        <div class="macro-valor">{{ grasasConsumidas | number:'1.0-2'  }} / {{ grasasObjetivo }}g</div>
+        <div class="macro-valor">
+          {{ grasasConsumidas | number:'1.0-2' }} / {{ grasasObjetivo }}g
+        </div>
         <div class="macro-barra">
           <div class="macro-barra-relleno" [style.width.%]="barraGrasas"></div>
         </div>
@@ -81,6 +100,32 @@
     </div>
 
   </div>
+
+  <ion-modal
+    [isOpen]="calendarioAbierto"
+    (didDismiss)="cerrarCalendario()"
+    cssClass="calendario-modal"
+  >
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Seleccionar fecha</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="cerrarCalendario()">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="calendario-content">
+        <ion-datetime
+          class="calendario-datetime"
+          presentation="date"
+          [value]="fechaSeleccionada"
+          (ionChange)="onFechaCalendarioChange($event)">
+        </ion-datetime>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 
 </ion-content>
 

@@ -24,7 +24,8 @@ export class Comidas1Page implements OnInit {
   comidasDelDia: ComidaMenu[] = [];
   comidasHechasIds: string[] = [];
 
-  diaIndex: number = 0;
+  fechaSeleccionada: string = '';
+  tituloDiaSeleccionado: string = '';
 
   touchStartX: number = 0;
   touchEndX: number = 0;
@@ -42,38 +43,65 @@ export class Comidas1Page implements OnInit {
   constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
-    this.diaIndex = this.obtenerIndiceDiaActual();
+    this.inicializarFechaSeleccionada();
     this.cargarMenuUsuario();
   }
 
-  obtenerIndiceDiaActual(): number {
-    const hoy = new Date().getDay();
-
-    const mapa: Record<number, number> = {
-      1: 0,
-      2: 1,
-      3: 2,
-      4: 3,
-      5: 4,
-      6: 5,
-      0: 6
-    };
-
-    return mapa[hoy];
+  ionViewWillEnter() {
+    this.inicializarFechaSeleccionada();
+    this.actualizarTituloDia();
+    this.actualizarComidasDelDia();
+    this.cargarProgresoDiaSeleccionado();
   }
 
-  obtenerFechaSeleccionada(): string {
-    const hoy = new Date();
-    const day = hoy.getDay();
-    const diffToMonday = day === 0 ? -6 : 1 - day;
+  inicializarFechaSeleccionada() {
+    const fechaGuardada = localStorage.getItem('selectedDate');
 
-    const lunes = new Date(hoy);
-    lunes.setDate(hoy.getDate() + diffToMonday);
+    if (fechaGuardada) {
+      this.fechaSeleccionada = fechaGuardada;
+    } else {
+      this.fechaSeleccionada = this.formatearFechaLocal(new Date());
+      localStorage.setItem('selectedDate', this.fechaSeleccionada);
+    }
 
-    const fechaSeleccionada = new Date(lunes);
-    fechaSeleccionada.setDate(lunes.getDate() + this.diaIndex);
+    this.actualizarTituloDia();
+  }
 
-    return fechaSeleccionada.toISOString().split('T')[0];
+  formatearFechaLocal(fecha: Date): string {
+    const year = fecha.getFullYear();
+    const month = String(fecha.getMonth() + 1).padStart(2, '0');
+    const day = String(fecha.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  convertirISOaDate(fechaISO: string): Date {
+    return new Date(`${fechaISO}T12:00:00`);
+  }
+
+  obtenerDiaKeyDesdeFecha(fechaISO: string): string {
+    const fecha = this.convertirISOaDate(fechaISO);
+    const day = fecha.getDay();
+
+    const mapa: Record<number, string> = {
+      1: 'lunes',
+      2: 'martes',
+      3: 'miercoles',
+      4: 'jueves',
+      5: 'viernes',
+      6: 'sabado',
+      0: 'domingo'
+    };
+
+    return mapa[day];
+  }
+
+  actualizarTituloDia() {
+    const fecha = this.convertirISOaDate(this.fechaSeleccionada);
+
+    const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+    const nombreDia = dias[fecha.getDay()];
+
+    this.tituloDiaSeleccionado = `${nombreDia} ${fecha.getDate()}`;
   }
 
   cargarMenuUsuario() {
@@ -101,7 +129,7 @@ export class Comidas1Page implements OnInit {
       return;
     }
 
-    const diaKey = this.diasMenu[this.diaIndex].key;
+    const diaKey = this.obtenerDiaKeyDesdeFecha(this.fechaSeleccionada);
     const menuDia = this.menu[diaKey];
 
     if (!menuDia) {
@@ -124,14 +152,15 @@ export class Comidas1Page implements OnInit {
       return;
     }
 
-    const fecha = this.obtenerFechaSeleccionada();
-
-    this.http.get<any>(`http://localhost:3000/api/progreso/${userId}/${fecha}`)
+    this.http.get<any>(`http://localhost:3000/api/progreso/${userId}/${this.fechaSeleccionada}`)
       .subscribe({
         next: (data) => {
           this.comidasHechasIds = data.comidasHechas || [];
         },
-        error: (err) => console.error('Error cargando progreso diario', err)
+        error: (err) => {
+          console.error('Error cargando progreso diario', err);
+          this.comidasHechasIds = [];
+        }
       });
   }
 
@@ -149,11 +178,9 @@ export class Comidas1Page implements OnInit {
       return;
     }
 
-    const fecha = this.obtenerFechaSeleccionada();
-
     this.http.post<any>('http://localhost:3000/api/progreso/toggle', {
       usuarioId: userId,
-      fecha,
+      fecha: this.fechaSeleccionada,
       comidaId: comida._id
     }).subscribe({
       next: (response) => {
@@ -169,19 +196,25 @@ export class Comidas1Page implements OnInit {
   }
 
   diaAnterior() {
-    this.diaIndex = this.diaIndex === 0
-      ? this.diasMenu.length - 1
-      : this.diaIndex - 1;
+    const fecha = this.convertirISOaDate(this.fechaSeleccionada);
+    fecha.setDate(fecha.getDate() - 1);
 
+    this.fechaSeleccionada = this.formatearFechaLocal(fecha);
+    localStorage.setItem('selectedDate', this.fechaSeleccionada);
+
+    this.actualizarTituloDia();
     this.actualizarComidasDelDia();
     this.cargarProgresoDiaSeleccionado();
   }
 
   diaSiguiente() {
-    this.diaIndex = this.diaIndex === this.diasMenu.length - 1
-      ? 0
-      : this.diaIndex + 1;
+    const fecha = this.convertirISOaDate(this.fechaSeleccionada);
+    fecha.setDate(fecha.getDate() + 1);
 
+    this.fechaSeleccionada = this.formatearFechaLocal(fecha);
+    localStorage.setItem('selectedDate', this.fechaSeleccionada);
+
+    this.actualizarTituloDia();
     this.actualizarComidasDelDia();
     this.cargarProgresoDiaSeleccionado();
   }

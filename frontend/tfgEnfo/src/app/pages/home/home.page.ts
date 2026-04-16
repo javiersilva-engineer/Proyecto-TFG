@@ -6,6 +6,8 @@ interface DiaSemana {
   letra: string;
   numero: number;
   selected: boolean;
+  fechaISO: string;
+  completado: boolean;
 }
 
 @Component({
@@ -41,24 +43,53 @@ export class HomePage implements OnInit {
 
   semana: DiaSemana[] = [];
 
+  fechaSeleccionada: string = '';
+  calendarioAbierto: boolean = false;
+
   constructor(private router: Router, private http: HttpClient) {}
 
   ngOnInit() {
-    this.generarSemanaActual();
+    this.inicializarFechaSeleccionada();
+    this.generarSemanaDesdeFechaSeleccionada();
   }
 
   ionViewWillEnter() {
-    this.generarSemanaActual();
+    this.inicializarFechaSeleccionada();
+    this.generarSemanaDesdeFechaSeleccionada();
     this.cargarDatosUsuario();
+    this.cargarRacha();
+    this.marcarDiasCompletadosSemana();
   }
 
-  generarSemanaActual() {
-    const hoy = new Date();
-    const day = hoy.getDay();
+  inicializarFechaSeleccionada() {
+    const fechaGuardada = localStorage.getItem('selectedDate');
+
+    if (fechaGuardada) {
+      this.fechaSeleccionada = fechaGuardada;
+    } else {
+      this.fechaSeleccionada = this.formatearFechaLocal(new Date());
+      localStorage.setItem('selectedDate', this.fechaSeleccionada);
+    }
+  }
+
+  formatearFechaLocal(fecha: Date): string {
+    const year = fecha.getFullYear();
+    const month = String(fecha.getMonth() + 1).padStart(2, '0');
+    const day = String(fecha.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  convertirISOaDate(fechaISO: string): Date {
+    return new Date(`${fechaISO}T12:00:00`);
+  }
+
+  generarSemanaDesdeFechaSeleccionada() {
+    const fechaBase = this.convertirISOaDate(this.fechaSeleccionada);
+    const day = fechaBase.getDay();
     const diffToMonday = day === 0 ? -6 : 1 - day;
 
-    const lunes = new Date(hoy);
-    lunes.setDate(hoy.getDate() + diffToMonday);
+    const lunes = new Date(fechaBase);
+    lunes.setDate(fechaBase.getDate() + diffToMonday);
 
     const letras = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
 
@@ -66,15 +97,26 @@ export class HomePage implements OnInit {
       const fecha = new Date(lunes);
       fecha.setDate(lunes.getDate() + i);
 
+      const fechaISO = this.formatearFechaLocal(fecha);
+
       return {
         letra: letras[i],
         numero: fecha.getDate(),
-        selected:
-          fecha.getDate() === hoy.getDate() &&
-          fecha.getMonth() === hoy.getMonth() &&
-          fecha.getFullYear() === hoy.getFullYear()
+        selected: fechaISO === this.fechaSeleccionada,
+        fechaISO,
+        completado: false
       };
     });
+  }
+
+  seleccionarDiaSemana(fechaISO: string) {
+    this.fechaSeleccionada = fechaISO;
+    localStorage.setItem('selectedDate', this.fechaSeleccionada);
+
+    this.generarSemanaDesdeFechaSeleccionada();
+    this.cargarProgresoDiaSeleccionado();
+    this.cargarRacha();
+    this.marcarDiasCompletadosSemana();
   }
 
   cargarDatosUsuario() {
@@ -96,31 +138,117 @@ export class HomePage implements OnInit {
           this.carbohidratosObjetivo = user.carbohidratosObjetivo ?? 0;
           this.grasasObjetivo = user.grasasObjetivo ?? 0;
 
-          const fechaHoy = new Date().toISOString().split('T')[0];
-
-          this.http.get<any>(`http://localhost:3000/api/progreso/${userId}/${fechaHoy}`)
-            .subscribe({
-              next: (progreso) => {
-                this.caloriasConsumidas = progreso.caloriasConsumidas ?? 0;
-                this.proteinasConsumidas = progreso.proteinasConsumidas ?? 0;
-                this.carbohidratosConsumidos = progreso.carbohidratosConsumidos ?? 0;
-                this.grasasConsumidas = progreso.grasasConsumidas ?? 0;
-
-                this.actualizarIndicadores();
-              },
-              error: (err) => {
-                console.error('Error cargando progreso diario', err);
-
-                this.caloriasConsumidas = 0;
-                this.proteinasConsumidas = 0;
-                this.carbohidratosConsumidos = 0;
-                this.grasasConsumidas = 0;
-
-                this.actualizarIndicadores();
-              }
-            });
+          this.cargarProgresoDiaSeleccionado();
         },
-        error: (err) => console.error('Error cargando usuario en home', err)
+        error: (err) => {
+          console.error('Error cargando usuario en home', err);
+        }
+      });
+  }
+
+  cargarProgresoDiaSeleccionado() {
+    const userId = localStorage.getItem('userId');
+
+    if (!userId) {
+      console.error('No se encontró userId en localStorage');
+      return;
+    }
+
+    this.http.get<any>(`http://localhost:3000/api/progreso/${userId}/${this.fechaSeleccionada}`)
+      .subscribe({
+        next: (progreso) => {
+          this.caloriasConsumidas = progreso.caloriasConsumidas ?? 0;
+          this.proteinasConsumidas = progreso.proteinasConsumidas ?? 0;
+          this.carbohidratosConsumidos = progreso.carbohidratosConsumidos ?? 0;
+          this.grasasConsumidas = progreso.grasasConsumidas ?? 0;
+
+          this.actualizarIndicadores();
+        },
+        error: (err) => {
+          console.error('Error cargando progreso diario', err);
+
+          this.caloriasConsumidas = 0;
+          this.proteinasConsumidas = 0;
+          this.carbohidratosConsumidos = 0;
+          this.grasasConsumidas = 0;
+
+          this.actualizarIndicadores();
+        }
+      });
+  }
+
+  cargarRacha() {
+    const userId = localStorage.getItem('userId');
+
+    if (!userId) {
+      console.error('No se encontró userId en localStorage');
+      return;
+    }
+
+    this.http.get<any>(`http://localhost:3000/api/progreso/racha/${userId}/${this.fechaSeleccionada}`)
+      .subscribe({
+        next: (data) => {
+          this.diasConsecutivos = data.racha ?? 0;
+        },
+        error: (err) => {
+          console.error('Error cargando racha', err);
+          this.diasConsecutivos = 0;
+        }
+      });
+  }
+
+  marcarDiasCompletadosSemana() {
+    const userId = localStorage.getItem('userId');
+
+    if (!userId) {
+      console.error('No se encontró userId en localStorage');
+      return;
+    }
+
+    this.http.get<any>(`http://localhost:3000/api/menu/usuario/${userId}`)
+      .subscribe({
+        next: (menu) => {
+          const mapaDias: Record<number, string> = {
+            1: 'lunes',
+            2: 'martes',
+            3: 'miercoles',
+            4: 'jueves',
+            5: 'viernes',
+            6: 'sabado',
+            0: 'domingo'
+          };
+
+          this.semana.forEach((diaSemana) => {
+            const fecha = this.convertirISOaDate(diaSemana.fechaISO);
+            const day = fecha.getDay();
+            const diaKey = mapaDias[day];
+
+            const menuDia = menu[diaKey];
+
+            const totalComidas = ['desayuno', 'comida', 'snack', 'cena']
+              .filter(tipo => !!menuDia?.[tipo])
+              .length;
+
+            if (totalComidas === 0) {
+              diaSemana.completado = false;
+              return;
+            }
+
+            this.http.get<any>(`http://localhost:3000/api/progreso/${userId}/${diaSemana.fechaISO}`)
+              .subscribe({
+                next: (progreso) => {
+                  const comidasHechas = progreso.comidasHechas || [];
+                  diaSemana.completado = comidasHechas.length >= totalComidas;
+                },
+                error: () => {
+                  diaSemana.completado = false;
+                }
+              });
+          });
+        },
+        error: (err) => {
+          console.error('Error cargando menú para marcar días completados', err);
+        }
       });
   }
 
@@ -150,7 +278,28 @@ export class HomePage implements OnInit {
   }
 
   abrirCalendario() {
-    console.log('Abrir selector de fecha');
+    this.calendarioAbierto = true;
+  }
+
+  cerrarCalendario() {
+    this.calendarioAbierto = false;
+  }
+
+  onFechaCalendarioChange(event: any) {
+    const nuevaFecha = event.detail.value;
+
+    if (!nuevaFecha) return;
+
+    const fechaISO = nuevaFecha.split('T')[0];
+
+    this.fechaSeleccionada = fechaISO;
+    localStorage.setItem('selectedDate', this.fechaSeleccionada);
+
+    this.generarSemanaDesdeFechaSeleccionada();
+    this.cargarProgresoDiaSeleccionado();
+    this.cargarRacha();
+    this.marcarDiasCompletadosSemana();
+    this.cerrarCalendario();
   }
 
   irAjustes() {
