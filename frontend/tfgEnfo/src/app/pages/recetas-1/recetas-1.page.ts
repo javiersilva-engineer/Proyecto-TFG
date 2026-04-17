@@ -148,15 +148,51 @@ export class Recetas1Page implements OnInit {
   }
 
   onMinSliderChange() {
+    this.minCaloriasSeleccionadas = this.normalizarNumero(this.minCaloriasSeleccionadas, this.minCalorias, this.maxCalorias);
+
     if (this.minCaloriasSeleccionadas > this.maxCaloriasSeleccionadas) {
       this.minCaloriasSeleccionadas = this.maxCaloriasSeleccionadas;
     }
   }
 
   onMaxSliderChange() {
+    this.maxCaloriasSeleccionadas = this.normalizarNumero(this.maxCaloriasSeleccionadas, this.minCalorias, this.maxCalorias);
+
     if (this.maxCaloriasSeleccionadas < this.minCaloriasSeleccionadas) {
       this.maxCaloriasSeleccionadas = this.minCaloriasSeleccionadas;
     }
+  }
+
+  onMinInputChange() {
+    this.minCaloriasSeleccionadas = this.normalizarNumero(this.minCaloriasSeleccionadas, this.minCalorias, this.maxCalorias);
+
+    if (this.minCaloriasSeleccionadas > this.maxCaloriasSeleccionadas) {
+      this.minCaloriasSeleccionadas = this.maxCaloriasSeleccionadas;
+    }
+  }
+
+  onMaxInputChange() {
+    this.maxCaloriasSeleccionadas = this.normalizarNumero(this.maxCaloriasSeleccionadas, this.minCalorias, this.maxCalorias);
+
+    if (this.maxCaloriasSeleccionadas < this.minCaloriasSeleccionadas) {
+      this.maxCaloriasSeleccionadas = this.minCaloriasSeleccionadas;
+    }
+  }
+
+  normalizarNumero(valor: number, minimo: number, maximo: number): number {
+    if (valor === null || valor === undefined || isNaN(valor)) {
+      return minimo;
+    }
+
+    if (valor < minimo) {
+      return minimo;
+    }
+
+    if (valor > maximo) {
+      return maximo;
+    }
+
+    return valor;
   }
 
   abrirReceta(recetaId: string) {

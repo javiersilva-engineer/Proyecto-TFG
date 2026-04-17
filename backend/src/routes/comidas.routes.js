@@ -8,12 +8,10 @@ const Comida = require('../models/comida');
 const Ingrediente = require('../models/ingrediente');
 const Alergia = require('../models/alergia');
 
-// ----------------------------------------------------
-// CONFIGURACIÓN MULTER
-// ----------------------------------------------------
+
+// Configuración multer
 const carpetaDestino = path.join(__dirname, '../uploads/recetas');
 
-// Crear carpeta si no existe
 if (!fs.existsSync(carpetaDestino)) {
   fs.mkdirSync(carpetaDestino, { recursive: true });
 }
@@ -48,7 +46,7 @@ const upload = multer({
   storage,
   fileFilter,
   limits: {
-    fileSize: 5 * 1024 * 1024 // 5 MB
+    fileSize: 5 * 1024 * 1024
   }
 });
 

@@ -30,13 +30,6 @@ const menuSemanalUsuarioSchema = new mongoose.Schema({
   sabado: menuDiaSchema,
   domingo: menuDiaSchema,
 
-  objetivos: {
-    caloriasDiarias: Number,
-    proteinas: Number,
-    carbohidratos: Number,
-    grasas: Number
-  },
-
   alergiasAplicadas: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Alergia'

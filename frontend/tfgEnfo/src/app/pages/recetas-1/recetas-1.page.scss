@@ -125,7 +125,6 @@ ion-content.recetas-content::part(scroll)::-webkit-scrollbar {
     color: white;
     font-size: var(--tamano-texto-pequeno);
     text-align: center;
-
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -266,15 +265,46 @@ ion-content.recetas-content::part(scroll)::-webkit-scrollbar {
     gap: 0.4em;
 }
 
-.range-box {
+.range-box-wrapper {
+    position: relative;
     flex: 1;
-    text-align: center;
-    padding: 0.65em 0.4em;
+}
+
+.range-box-input {
+    width: 100%;
+    text-align: left;
+    padding: 0.65em 2.4em 0.65em 0.9em;
     border-radius: 0.35em;
-    border: 1px solid rgba(198, 223, 182, 0.4);
+    border: 1px solid var(--color-verde);
     color: white;
     font-size: var(--tamano-texto-pequeno);
     background: rgba(255, 255, 255, 0.03);
+    box-sizing: border-box;
+    outline: none;
+}
+
+.range-box-input:focus {
+    border-color: var(--color-verde);
+}
+
+.range-box-input::-webkit-outer-spin-button,
+.range-box-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.range-box-input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.kcal-label {
+    position: absolute;
+    right: 0.65em;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.75);
+    font-size: var(--tamano-texto-pequeno);
+    pointer-events: none;
 }
 
 .range-separador {
@@ -289,7 +319,7 @@ ion-content.recetas-content::part(scroll)::-webkit-scrollbar {
 }
 
 .alergia-chip {
-    border: 1px solid rgba(198, 223, 182, 0.7);
+    border: 1px solid var(--color-verde-claro);
     background: transparent;
     color: white;
     border-radius: 999px;
@@ -326,7 +356,7 @@ ion-content.recetas-content::part(scroll)::-webkit-scrollbar {
 .btn-secundario {
     background: transparent;
     color: white;
-    border: 1px solid rgba(198, 223, 182, 0.7);
+    border: 1px solid var(--color-verde-claro);
 }
 
 .bottom-nav-wrapper {

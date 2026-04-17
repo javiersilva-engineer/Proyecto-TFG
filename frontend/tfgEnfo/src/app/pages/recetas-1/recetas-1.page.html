@@ -23,21 +23,57 @@
 
         <div class="range-slider-wrapper">
           <div class="range-track"></div>
-          <div class="range-track-active" [style.left.%]="porcentajeMin"
-            [style.width.%]="porcentajeMax - porcentajeMin">
+
+          <div class="range-track-active"
+               [style.left.%]="porcentajeMin"
+               [style.width.%]="porcentajeMax - porcentajeMin">
           </div>
 
-          <input class="range-input" type="range" [min]="minCalorias" [max]="maxCalorias"
-            [(ngModel)]="minCaloriasSeleccionadas" (input)="onMinSliderChange()" />
+          <input
+            class="range-input"
+            type="range"
+            [min]="minCalorias"
+            [max]="maxCalorias"
+            [(ngModel)]="minCaloriasSeleccionadas"
+            (input)="onMinSliderChange()" />
 
-          <input class="range-input" type="range" [min]="minCalorias" [max]="maxCalorias"
-            [(ngModel)]="maxCaloriasSeleccionadas" (input)="onMaxSliderChange()" />
+          <input
+            class="range-input"
+            type="range"
+            [min]="minCalorias"
+            [max]="maxCalorias"
+            [(ngModel)]="maxCaloriasSeleccionadas"
+            (input)="onMaxSliderChange()" />
         </div>
 
         <div class="range-values">
-          <div class="range-box">{{ minCaloriasSeleccionadas }} kcal</div>
+
+          <div class="range-box-wrapper">
+            <input
+              class="range-box-input"
+              type="number"
+              [min]="minCalorias"
+              [max]="maxCaloriasSeleccionadas"
+              [(ngModel)]="minCaloriasSeleccionadas"
+              (input)="onMinInputChange()"
+              placeholder="Mínimo" />
+            <span class="kcal-label">kcal</span>
+          </div>
+
           <span class="range-separador">—</span>
-          <div class="range-box">{{ maxCaloriasSeleccionadas }} kcal</div>
+
+          <div class="range-box-wrapper">
+            <input
+              class="range-box-input"
+              type="number"
+              [min]="minCaloriasSeleccionadas"
+              [max]="maxCalorias"
+              [(ngModel)]="maxCaloriasSeleccionadas"
+              (input)="onMaxInputChange()"
+              placeholder="Máximo" />
+            <span class="kcal-label">kcal</span>
+          </div>
+
         </div>
       </div>
 

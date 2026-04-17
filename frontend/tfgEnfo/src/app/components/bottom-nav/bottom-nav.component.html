@@ -4,19 +4,19 @@
     <span>Progreso</span>
   </div>
 
-  <div class="nav-item" [class.active]="active === 'recetas'" (click)="navigateTo('recetas')">
-    <ion-icon name="restaurant"></ion-icon>
-    <span>Recetas</span>
+  <div class="nav-item" [class.active]="active === 'comidas'" (click)="navigateTo('comidas')">
+    <ion-icon name="restaurant-outline"></ion-icon>
+    <span>Comidas</span>
   </div>
 
   <div class="nav-item nav-add" [class.active]="active === 'add'" (click)="navigateTo('add')">
     <ion-icon name="add"></ion-icon>
   </div>
 
-  <div class="nav-item" [class.active]="active === 'comidas'" (click)="navigateTo('comidas')">
-    <ion-icon name="restaurant-outline"></ion-icon>
-    <span>Comidas</span>
-  </div>
+  <div class="nav-item" [class.active]="active === 'recetas'" (click)="navigateTo('recetas')">
+    <ion-icon name="restaurant"></ion-icon>
+    <span>Recetas</span>
+  </div>  
 
   <div class="nav-item" [class.active]="active === 'perfil'" (click)="navigateTo('perfil')">
     <ion-icon name="person-outline"></ion-icon>

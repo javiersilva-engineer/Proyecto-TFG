@@ -6,6 +6,7 @@
         --background: radial-gradient(circle at bottom right,
                 rgba(107, 182, 71, 0.5) 0%,
                 var(--color-verde-oscuro) 30%);
+        --overflow: hidden;
     }
 
 
@@ -16,7 +17,7 @@
         justify-content: center;
         align-items: center;
         padding-top: 3em;
-        margin: 7em 0 2em 0;
+        margin: 4em 0 2em 0;
     }
 
     .logo {

@@ -5,9 +5,9 @@
     <div class="back-button" (click)="volver()">
       <ion-icon name="arrow-back-outline"></ion-icon>
     </div>
-    
+
     <div class="imagen-wrap">
-      <img [src]="receta.imagen || 'assets/imgs/imgsSalva.png'" [alt]="receta.nombreES" class="receta-img"
+      <img [src]="getImagenUrl(receta.imagen)" [alt]="receta.nombreES" class="receta-img"
         [class.fallback]="!receta.imagen" (error)="onImageError($event)" />
     </div>
 

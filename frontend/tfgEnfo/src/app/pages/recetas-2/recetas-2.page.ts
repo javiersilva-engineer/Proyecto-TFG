@@ -71,4 +71,18 @@ export class Recetas2Page implements OnInit {
     img.src = 'assets/imgs/imgsSalva.png';
     img.classList.add('fallback');
   }
+
+  readonly apiBaseUrl = 'http://localhost:3000';
+
+  getImagenUrl(ruta?: string): string {
+    if (!ruta) {
+      return 'assets/imgs/imgsSalva.png';
+    }
+
+    if (ruta.startsWith('http://') || ruta.startsWith('https://')) {
+      return ruta;
+    }
+
+    return `${this.apiBaseUrl}${ruta}`;
+  }
 }
