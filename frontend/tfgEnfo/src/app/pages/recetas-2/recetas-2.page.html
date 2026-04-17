@@ -29,8 +29,14 @@
       <h2>Ingredientes</h2>
 
       <ul class="ingredientes-lista">
-        <li *ngFor="let item of receta.ingredientes">
-          {{ item.ingrediente?.nombreES }}
+        <li *ngFor="let item of receta.ingredientes" class="ingrediente-fila">
+          <span class="ingrediente-nombre">
+            {{ item.ingrediente?.nombreES }}
+          </span>
+
+          <span class="ingrediente-cantidad" *ngIf="item.cantidad !== undefined && item.cantidad !== null">
+            {{ item.cantidad | number:'1.0-2' }}{{ item.unidad ? ' ' + item.unidad : '' }}
+          </span>
         </li>
       </ul>
     </div>

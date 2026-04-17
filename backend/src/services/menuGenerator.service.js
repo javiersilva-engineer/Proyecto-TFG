@@ -51,7 +51,35 @@ function scoreComidaParaObjetivo(comida) {
   );
 }
 
-function elegirMejorAleatorio(lista, usadasGlobal, topN = 25) {
+function obtenerIdsMenuAnterior(menuAnterior) {
+  if (!menuAnterior) return new Set();
+
+  const ids = new Set();
+  const dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
+  const tipos = ['desayuno', 'comida', 'snack', 'cena'];
+
+  for (const dia of dias) {
+    const menuDia = menuAnterior[dia];
+    if (!menuDia) continue;
+
+    for (const tipo of tipos) {
+      const comida = menuDia[tipo];
+      if (!comida) continue;
+
+      if (typeof comida === 'string') {
+        ids.add(comida.toString());
+      } else if (comida._id) {
+        ids.add(comida._id.toString());
+      } else {
+        ids.add(comida.toString());
+      }
+    }
+  }
+
+  return ids;
+}
+
+function elegirMejorAleatorio(lista, usadasGlobal, idsMenuAnterior = new Set(), topN = 25) {
   if (!lista || lista.length === 0) return null;
 
   let disponibles = lista.filter(c => !usadasGlobal.has(c._id.toString()));
@@ -60,18 +88,24 @@ function elegirMejorAleatorio(lista, usadasGlobal, topN = 25) {
     disponibles = lista;
   }
 
-  const ordenadas = [...disponibles].sort(
-    (a, b) => scoreComidaParaObjetivo(b) - scoreComidaParaObjetivo(a)
-  );
+  const ordenadas = [...disponibles].sort((a, b) => {
+    const scoreA =
+      scoreComidaParaObjetivo(a) -
+      (idsMenuAnterior.has(a._id.toString()) ? 100000 : 0);
+
+    const scoreB =
+      scoreComidaParaObjetivo(b) -
+      (idsMenuAnterior.has(b._id.toString()) ? 100000 : 0);
+
+    return scoreB - scoreA;
+  });
 
   const candidatas = ordenadas.slice(0, Math.min(topN, ordenadas.length));
-
   const seleccion = candidatas[Math.floor(Math.random() * candidatas.length)];
 
   if (!seleccion) return null;
 
   usadasGlobal.add(seleccion._id.toString());
-
   return seleccion;
 }
 
@@ -81,7 +115,8 @@ function elegirMejorSnack(
   caloriasRestantes,
   carbosRestantes,
   proteinasRestantes,
-  grasasRestantes
+  grasasRestantes,
+  idsMenuAnterior = new Set()
 ) {
   if (!listaSnacks || listaSnacks.length === 0) return null;
 
@@ -113,7 +148,14 @@ function elegirMejorSnack(
         : Math.abs(grasaSnack - grasasRestantes) /
           Math.max(1, grasasRestantes || 1);
 
-    const scoreTotal = scoreCal * 3 + scoreCarb * 3 + scoreProt * 2 + scoreFat * 4;
+    const penalizacionMenuAnterior = idsMenuAnterior.has(snack._id.toString()) ? 1000 : 0;
+
+    const scoreTotal =
+      scoreCal * 3 +
+      scoreCarb * 3 +
+      scoreProt * 2 +
+      scoreFat * 4 +
+      penalizacionMenuAnterior;
 
     if (scoreTotal < mejorScore) {
       mejorScore = scoreTotal;
@@ -153,10 +195,24 @@ function calcularMacrosDia(dia, comidasMap) {
   );
 }
 
-function generarDiaCandidato(comidasPorTipo, objetivos, comidasMap, usadasGlobal) {
-  const desayuno = elegirMejorAleatorio(comidasPorTipo.desayuno, usadasGlobal);
-  const comida = elegirMejorAleatorio(comidasPorTipo.comida, usadasGlobal);
-  const cena = elegirMejorAleatorio(comidasPorTipo.cena, usadasGlobal);
+function generarDiaCandidato(comidasPorTipo, objetivos, comidasMap, usadasGlobal, idsMenuAnterior) {
+  const desayuno = elegirMejorAleatorio(
+    comidasPorTipo.desayuno,
+    usadasGlobal,
+    idsMenuAnterior
+  );
+
+  const comida = elegirMejorAleatorio(
+    comidasPorTipo.comida,
+    usadasGlobal,
+    idsMenuAnterior
+  );
+
+  const cena = elegirMejorAleatorio(
+    comidasPorTipo.cena,
+    usadasGlobal,
+    idsMenuAnterior
+  );
 
   const parcial = {
     desayuno: desayuno?._id || null,
@@ -178,7 +234,8 @@ function generarDiaCandidato(comidasPorTipo, objetivos, comidasMap, usadasGlobal
     caloriasRestantes,
     carbosRestantes,
     proteinasRestantes,
-    grasasRestantes
+    grasasRestantes,
+    idsMenuAnterior
   );
 
   return {
@@ -189,21 +246,42 @@ function generarDiaCandidato(comidasPorTipo, objetivos, comidasMap, usadasGlobal
   };
 }
 
-function generarMejorDia(comidasPorTipo, objetivos, comidasMap, usadasGlobal, intentos = 1000) {
+function generarMejorDia(
+  comidasPorTipo,
+  objetivos,
+  comidasMap,
+  usadasGlobal,
+  idsMenuAnterior,
+  intentos = 2000
+) {
   let mejorDia = null;
   let mejorScore = Infinity;
 
   for (let i = 0; i < intentos; i++) {
     const usadasTemp = new Set(usadasGlobal);
 
-    const candidato = generarDiaCandidato(comidasPorTipo, objetivos, comidasMap, usadasTemp);
+    const candidato = generarDiaCandidato(
+      comidasPorTipo,
+      objetivos,
+      comidasMap,
+      usadasTemp,
+      idsMenuAnterior
+    );
+
     const macros = calcularMacrosDia(candidato, comidasMap);
 
     if (!esCandidatoValido(macros, objetivos)) {
       continue;
     }
 
-    const score = calcularScoreMacros(macros, objetivos);
+    let score = calcularScoreMacros(macros, objetivos);
+
+    const idsCandidato = Object.values(candidato)
+      .filter(Boolean)
+      .map(id => id.toString());
+
+    const repeticionesMenuAnterior = idsCandidato.filter(id => idsMenuAnterior.has(id)).length;
+    score += repeticionesMenuAnterior * 500;
 
     if (score < mejorScore) {
       mejorScore = score;
@@ -215,9 +293,23 @@ function generarMejorDia(comidasPorTipo, objetivos, comidasMap, usadasGlobal, in
     for (let i = 0; i < Math.max(200, Math.floor(intentos / 2)); i++) {
       const usadasTemp = new Set(usadasGlobal);
 
-      const candidato = generarDiaCandidato(comidasPorTipo, objetivos, comidasMap, usadasTemp);
+      const candidato = generarDiaCandidato(
+        comidasPorTipo,
+        objetivos,
+        comidasMap,
+        usadasTemp,
+        idsMenuAnterior
+      );
+
       const macros = calcularMacrosDia(candidato, comidasMap);
-      const score = calcularScoreMacros(macros, objetivos);
+      let score = calcularScoreMacros(macros, objetivos);
+
+      const idsCandidato = Object.values(candidato)
+        .filter(Boolean)
+        .map(id => id.toString());
+
+      const repeticionesMenuAnterior = idsCandidato.filter(id => idsMenuAnterior.has(id)).length;
+      score += repeticionesMenuAnterior * 500;
 
       if (score < mejorScore) {
         mejorScore = score;
@@ -228,7 +320,13 @@ function generarMejorDia(comidasPorTipo, objetivos, comidasMap, usadasGlobal, in
 
   if (!mejorDia) {
     const usadasTemp = new Set(usadasGlobal);
-    mejorDia = generarDiaCandidato(comidasPorTipo, objetivos, comidasMap, usadasTemp);
+    mejorDia = generarDiaCandidato(
+      comidasPorTipo,
+      objetivos,
+      comidasMap,
+      usadasTemp,
+      idsMenuAnterior
+    );
   }
 
   Object.values(mejorDia).forEach(id => {
@@ -248,17 +346,18 @@ function generarMejorDia(comidasPorTipo, objetivos, comidasMap, usadasGlobal, in
   };
 }
 
-function generarMenuSemanal(comidasPorTipo, objetivos, comidasMap) {
+function generarMenuSemanal(comidasPorTipo, objetivos, comidasMap, menuAnterior = null) {
   const usadasGlobal = new Set();
+  const idsMenuAnterior = obtenerIdsMenuAnterior(menuAnterior);
 
   return {
-    lunes: generarMejorDia(comidasPorTipo, objetivos, comidasMap, usadasGlobal),
-    martes: generarMejorDia(comidasPorTipo, objetivos, comidasMap, usadasGlobal),
-    miercoles: generarMejorDia(comidasPorTipo, objetivos, comidasMap, usadasGlobal),
-    jueves: generarMejorDia(comidasPorTipo, objetivos, comidasMap, usadasGlobal),
-    viernes: generarMejorDia(comidasPorTipo, objetivos, comidasMap, usadasGlobal),
-    sabado: generarMejorDia(comidasPorTipo, objetivos, comidasMap, usadasGlobal),
-    domingo: generarMejorDia(comidasPorTipo, objetivos, comidasMap, usadasGlobal)
+    lunes: generarMejorDia(comidasPorTipo, objetivos, comidasMap, usadasGlobal, idsMenuAnterior),
+    martes: generarMejorDia(comidasPorTipo, objetivos, comidasMap, usadasGlobal, idsMenuAnterior),
+    miercoles: generarMejorDia(comidasPorTipo, objetivos, comidasMap, usadasGlobal, idsMenuAnterior),
+    jueves: generarMejorDia(comidasPorTipo, objetivos, comidasMap, usadasGlobal, idsMenuAnterior),
+    viernes: generarMejorDia(comidasPorTipo, objetivos, comidasMap, usadasGlobal, idsMenuAnterior),
+    sabado: generarMejorDia(comidasPorTipo, objetivos, comidasMap, usadasGlobal, idsMenuAnterior),
+    domingo: generarMejorDia(comidasPorTipo, objetivos, comidasMap, usadasGlobal, idsMenuAnterior)
   };
 }
 

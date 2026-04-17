@@ -6,7 +6,6 @@ const { generarMenuSemanal } = require('../services/menuGenerator.service');
 const { calcularObjetivos } = require('../utils/calcularMacros');
 
 exports.generarMenu = async (usuario) => {
-
   const objetivos = calcularObjetivos(usuario);
 
   const ingredientesProhibidos = await Ingrediente.find({
@@ -34,14 +33,21 @@ exports.generarMenu = async (usuario) => {
     throw new Error('No hay suficientes comidas para generar el menú');
   }
 
-  // Crear mapa de comidas
   const comidasMap = {};
   comidasValidas.forEach(c => {
-    comidasMap[c._id] = c;
+    comidasMap[c._id.toString()] = c;
   });
 
-  // Generar menú optimizado
-  const menu = generarMenuSemanal(comidasPorTipo, objetivos, comidasMap);
+  const menuAnterior = await MenuSemanalUsuario.findOne({
+    usuario: usuario._id
+  });
+
+  const menu = generarMenuSemanal(
+    comidasPorTipo,
+    objetivos,
+    comidasMap,
+    menuAnterior
+  );
 
   return await MenuSemanalUsuario.findOneAndUpdate(
     { usuario: usuario._id },
