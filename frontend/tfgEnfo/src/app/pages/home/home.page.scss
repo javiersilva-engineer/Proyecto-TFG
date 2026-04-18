@@ -74,6 +74,8 @@
   color: white;
   font-size: var(--tamano-texto-mediano);
   font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .week-number {
@@ -167,12 +169,10 @@
 .circulo-texto {
   position: absolute;
   inset: 0;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   text-align: center;
   color: white;
 }
@@ -301,9 +301,67 @@ ion-modal.calendario-modal ion-button {
 }
 
 @media screen and (min-width: 767px) {
-  .home-wrapper {
-    max-width: 28em;
-    margin: 0 auto;
-    padding-top: 1.2em;
+  .conjuntoMacros {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .macro {
+    flex: 1;
+    margin: 1em 2em;
+  }
+
+  .circulo-wrapper {
+    width: 250px;
+    height: 250px;
+  }
+
+  .kcal-main {
+    font-size: 24px;
+  }
+
+  .calorias-container {
+    justify-content: center;
+    gap: 5em;
+    margin-top: 0.75em;
+  }
+
+  .peso-num {
+    font-size: var(--tamano-texto-grande);
+  }
+
+  .peso-label {
+    font-size: var(--tamano-texto-mediano);
+  }
+
+  .week-strip {
+    padding: 0 0 1em 0;
+    border-bottom: 1px solid var(--color-verde);
+  }
+
+  .week-day {
+    min-width: 90px;
+  }
+
+  .week-letter {
+    font-size: var(--tamano-texto-mediano);
+  }
+
+  .racha-semicirculo {
+    width: 12em;
+    height: 4em;
+  }
+
+  .top-bar {
+    margin: 0 2em;
+  }
+
+  .top-icon {
+    margin: 2em 0 0.5em 0;
+  }
+
+  .racha-semicirculo span {
+    font-size: var(--tamano-texto-grande);
   }
 }

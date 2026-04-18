@@ -246,14 +246,7 @@ function generarDiaCandidato(comidasPorTipo, objetivos, comidasMap, usadasGlobal
   };
 }
 
-function generarMejorDia(
-  comidasPorTipo,
-  objetivos,
-  comidasMap,
-  usadasGlobal,
-  idsMenuAnterior,
-  intentos = 2000
-) {
+function generarMejorDia(comidasPorTipo, objetivos, comidasMap, usadasGlobal, idsMenuAnterior, intentos = 2000) {
   let mejorDia = null;
   let mejorScore = Infinity;
 
@@ -293,13 +286,7 @@ function generarMejorDia(
     for (let i = 0; i < Math.max(200, Math.floor(intentos / 2)); i++) {
       const usadasTemp = new Set(usadasGlobal);
 
-      const candidato = generarDiaCandidato(
-        comidasPorTipo,
-        objetivos,
-        comidasMap,
-        usadasTemp,
-        idsMenuAnterior
-      );
+      const candidato = generarDiaCandidato(comidasPorTipo, objetivos, comidasMap, usadasTemp, idsMenuAnterior);
 
       const macros = calcularMacrosDia(candidato, comidasMap);
       let score = calcularScoreMacros(macros, objetivos);
@@ -320,13 +307,7 @@ function generarMejorDia(
 
   if (!mejorDia) {
     const usadasTemp = new Set(usadasGlobal);
-    mejorDia = generarDiaCandidato(
-      comidasPorTipo,
-      objetivos,
-      comidasMap,
-      usadasTemp,
-      idsMenuAnterior
-    );
+    mejorDia = generarDiaCandidato(comidasPorTipo, objetivos, comidasMap, usadasTemp, idsMenuAnterior);
   }
 
   Object.values(mejorDia).forEach(id => {

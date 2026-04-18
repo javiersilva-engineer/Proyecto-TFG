@@ -11,11 +11,10 @@ const mapaDishTypes = require('../../utils/mapaDishtypes');
 const API_KEY = process.env.SPOONACULAR_API_KEY;
 const BASE_URL = 'https://api.spoonacular.com';
 
-
 function clasificarTipoComida(dishTypes = [], calorias = 0) {
   const tipos = new Set();
 
-  // Clasificar por dishtypes de Spoonacular
+  // Clasificar por "dishTypes" de Spoonacular
   for (const dish of dishTypes) {
     const tipo = mapaDishTypes[dish];
     if (tipo) tipos.add(tipo);
@@ -47,10 +46,8 @@ async function detectarAlergias(nombreIngrediente) {
   return alergias;
 }
 
-/* ======================================================
-   OBTENER RECETAS DE SPOONACULAR (CON NUTRICIÓN)
-====================================================== */
-async function obtenerRecetas(numero = 5) {
+// Obtener recetas de Spoonacular
+async function obtenerRecetas(numero = 50) {
   const response = await axios.get(`${BASE_URL}/recipes/random`, {
     params: {
       number: numero,
@@ -62,24 +59,17 @@ async function obtenerRecetas(numero = 5) {
   return response.data.recipes || [];
 }
 
-/* ======================================================
-   FUNCIÓN AUXILIAR PARA EXTRAER MACROS
-====================================================== */
+// Función para extraer macros
 function obtenerNutriente(nutrients = [], nombre) {
   return nutrients.find(n => n.name === nombre)?.amount || 0;
 }
 
-/* ======================================================
-   POBLAR BASE DE DATOS DESDE SPOONACULAR
-====================================================== */
-async function poblarDesdeSpoonacular(numero = 5) {
+// Poblar base de datos desde Spoonacular
+async function poblarDesdeSpoonacular(numero = 50) {
   const recetas = await obtenerRecetas(numero);
 
   for (const receta of recetas) {
-
-    /* ==========================================
-       EVITAR DUPLICAR COMIDAS
-    ========================================== */
+    // Comprobar que no existe la comida para no duplicarla
     const existeComida = await Comida.findOne({
       nombreInterno: receta.title
     });
@@ -88,23 +78,7 @@ async function poblarDesdeSpoonacular(numero = 5) {
 
     const ingredientesArray = [];
 
-    /* ==========================================
-       INGREDIENTES DE LA RECETA
-    ========================================== */
     for (const ing of receta.extendedIngredients) {
-
-      // /* ---------- ALERGIA ---------- */
-      let alergiaDoc = null;
-
-      // if (ing.aisle) {
-      //   alergiaDoc = await Alergia.findOneAndUpdate(
-      //     { nombreAlergia: ing.aisle.toLowerCase() },
-      //     { nombreAlergia: ing.aisle.toLowerCase() },
-      //     { upsert: true, new: true }
-      //   );
-      // }
-
-      /* ---------- INGREDIENTE ---------- */
       let ingredienteDoc = await Ingrediente.findOne({
         nombreInterno: ing.name
       });
@@ -113,37 +87,52 @@ async function poblarDesdeSpoonacular(numero = 5) {
         const nombreIngredienteES = await traducirATextoES(ing.name);
         const alergiasDetectadas = await detectarAlergias(ing.name);
 
-        ingredienteDoc = await Ingrediente.create({
-          nombreInterno: ing.name, // inglés (clave estable)
-          nombreES: nombreIngredienteES,      // luego podrás traducir
-          caloriasIngrediente: obtenerNutriente(
-            ing.nutrition?.nutrients,
-            'Calories'
-          ),
-          proteinasIngrediente: obtenerNutriente(
-            ing.nutrition?.nutrients,
-            'Protein'
-          ),
-          carbohidratosIngrediente: obtenerNutriente(
-            ing.nutrition?.nutrients,
-            'Carbohydrates'
-          ),
-          grasasIngrediente: obtenerNutriente(
-            ing.nutrition?.nutrients,
-            'Fat'
-          ),
+        const caloriasIngrediente = obtenerNutriente(
+          ing.nutrition?.nutrients,
+          'Calories'
+        );
+
+        const proteinasIngrediente = obtenerNutriente(
+          ing.nutrition?.nutrients,
+          'Protein'
+        );
+
+        const carbohidratosIngrediente = obtenerNutriente(
+          ing.nutrition?.nutrients,
+          'Carbohydrates'
+        );
+
+        const grasasIngrediente = obtenerNutriente(
+          ing.nutrition?.nutrients,
+          'Fat'
+        );
+
+        const ingredienteData = {
+          nombreInterno: ing.name,
+          nombreES: nombreIngredienteES,
           picIngrediente: ing.image || '',
           alergias: alergiasDetectadas
-        });
-      } else if (
-        alergiaDoc &&
-        !ingredienteDoc.alergias.includes(alergiaDoc._id)
-      ) {
-        ingredienteDoc.alergias.push(alergiaDoc._id);
-        await ingredienteDoc.save();
+        };
+
+        if (caloriasIngrediente > 0) {
+          ingredienteData.caloriasIngrediente = caloriasIngrediente;
+        }
+
+        if (proteinasIngrediente > 0) {
+          ingredienteData.proteinasIngrediente = proteinasIngrediente;
+        }
+
+        if (carbohidratosIngrediente > 0) {
+          ingredienteData.carbohidratosIngrediente = carbohidratosIngrediente;
+        }
+
+        if (grasasIngrediente > 0) {
+          ingredienteData.grasasIngrediente = grasasIngrediente;
+        }
+
+        ingredienteDoc = await Ingrediente.create(ingredienteData);
       }
 
-      /* ---------- RELACIÓN COMIDA ↔ INGREDIENTE ---------- */
       ingredientesArray.push({
         ingrediente: ingredienteDoc._id,
         cantidad: ing.measures?.metric?.amount || 0,
@@ -151,14 +140,8 @@ async function poblarDesdeSpoonacular(numero = 5) {
       });
     }
 
-    /* ==========================================
-       MACROS DE LA COMIDA COMPLETA
-    ========================================== */
     const nutrients = receta.nutrition?.nutrients || [];
 
-    /* ==========================================
-       CREAR COMIDA
-    ========================================== */
     const nombreES = await traducirATextoES(receta.title);
 
     const recetaOriginal = receta.instructions || '';

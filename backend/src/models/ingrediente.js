@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const IngredienteSchema = new mongoose.Schema({
-
   nombreInterno: {
     type: String,
     required: true,
@@ -12,11 +11,6 @@ const IngredienteSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-
-  caloriasIngrediente: Number,
-  proteinasIngrediente: Number,
-  carbohidratosIngrediente: Number,
-  grasasIngrediente: Number,
 
   picIngrediente: String,
 

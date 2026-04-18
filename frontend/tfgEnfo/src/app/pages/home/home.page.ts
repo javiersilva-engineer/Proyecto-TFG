@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 interface DiaSemana {
-  letra: string;
+  nombre: string;
   numero: number;
   selected: boolean;
   fechaISO: string;
@@ -45,20 +45,36 @@ export class HomePage implements OnInit {
 
   fechaSeleccionada: string = '';
   calendarioAbierto: boolean = false;
+  isPC: boolean = false;
 
   constructor(private router: Router, private http: HttpClient) { }
 
   ngOnInit() {
+    this.actualizarModoPantalla();
     this.inicializarFechaSeleccionada();
     this.generarSemanaDesdeFechaSeleccionada();
+
+    window.addEventListener('resize', () => {
+      const valorAnterior = this.isPC;
+      this.actualizarModoPantalla();
+
+      if (valorAnterior !== this.isPC) {
+        this.generarSemanaDesdeFechaSeleccionada();
+      }
+    });
   }
 
   ionViewWillEnter() {
+    this.actualizarModoPantalla();
     this.inicializarFechaSeleccionada();
     this.generarSemanaDesdeFechaSeleccionada();
     this.cargarDatosUsuario();
     this.cargarRacha();
     this.marcarDiasCompletadosSemana();
+  }
+
+  actualizarModoPantalla() {
+    this.isPC = window.innerWidth >= 767;
   }
 
   inicializarFechaSeleccionada() {
@@ -91,7 +107,10 @@ export class HomePage implements OnInit {
     const lunes = new Date(fechaBase);
     lunes.setDate(fechaBase.getDate() + diffToMonday);
 
-    const letras = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+    const nombresMovil = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+    const nombresPC = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+
+    const nombres = this.isPC ? nombresPC : nombresMovil;
 
     this.semana = Array.from({ length: 7 }, (_, i) => {
       const fecha = new Date(lunes);
@@ -100,7 +119,7 @@ export class HomePage implements OnInit {
       const fechaISO = this.formatearFechaLocal(fecha);
 
       return {
-        letra: letras[i],
+        nombre: nombres[i],
         numero: fecha.getDate(),
         selected: fechaISO === this.fechaSeleccionada,
         fechaISO,

@@ -187,13 +187,101 @@ ion-content.receta-content::part(scroll)::-webkit-scrollbar {
 
 @media screen and (min-width: 767px) {
   .receta-wrapper {
-    max-width: 30em;
+    max-width: 95%;
     margin: 0 auto;
-    padding-top: 1.5em;
+    padding: 2em 6em 7em 6em;
+  }
+
+  .back-button {
+    margin-bottom: 1em;
+    margin-left: -4em;
+  }
+
+  .back-button ion-icon {
+    font-size: 2.2rem;
+  }
+
+  .imagen-wrap {
+    margin-bottom: 1.2em;
   }
 
   .receta-img {
-    width: 13em;
-    height: 13em;
+    width: 14em;
+    height: 14em;
+    border-radius: 0.5em;
+  }
+
+  .titulo {
+    font-size: var(--tamano-texto-gigante);
+    margin-top: 0.7em;
+  }
+
+  .kcal {
+    font-size: var(--tamano-texto-gigante);
+    margin-top: 0.5em;
+  }
+
+  .macros {
+    justify-content: center;
+    gap: 2.5em;
+    margin: 2em 0 2.5em 0;
+    font-size: var(--tamano-texto-mediano);
+  }
+
+  .macros div {
+    flex: 0 1 auto;
+    min-width: 10em;
+  }
+
+  .bloque {
+    margin-top: 2em;
+  }
+
+  .bloque h2 {
+    font-size: var(--tamano-texto-gigante);
+    margin-bottom: 1em;
+  }
+
+  .ingredientes-lista {
+    max-width: 42em;
+    margin: 0 auto;
+  }
+
+  .ingrediente-fila {
+    padding: 0.8em 0;
+    border-bottom: 1px solid rgba(198, 223, 182, 0.18);
+  }
+
+  .ingrediente-nombre {
+    font-size: var(--tamano-texto-mediano);
+    margin-left: 0;
+  }
+
+  .ingrediente-cantidad {
+    font-size: var(--tamano-texto-mediano);
+    min-width: 7em;
+    margin-right: 0;
+  }
+
+  .receta-bloque {
+    margin-top: 2.5em;
+    padding-top: 1.5em;
+  }
+
+  .receta-header h2 {
+    font-size: var(--tamano-texto-gigante);
+  }
+
+  .receta-header span {
+    font-size: var(--tamano-texto-mediano);
+  }
+
+  .receta-texto {
+    margin-top: 1.2em;
+    font-size: var(--tamano-texto-grande);
+    line-height: 1.7;
+    max-width: 42em;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
