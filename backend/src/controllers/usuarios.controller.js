@@ -1,11 +1,23 @@
 const Usuario = require('../models/usuario');
 const { calcularObjetivos } = require('../utils/calcularMacros');
+const bcrypt = require('bcrypt');
 
 exports.crearUsuario = async (req, res) => {
   try {
-    const usuario = new Usuario(req.body);
+    const { password } = req.body;
+
+    const saltRounds = 10;
+    const passwordHasheada = await bcrypt.hash(password, saltRounds);
+
+    const usuario = new Usuario({
+      ...req.body,
+      password: passwordHasheada
+    });
+
     await usuario.save();
+
     res.status(201).json(usuario);
+
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -41,7 +53,24 @@ exports.loginUsuario = async (req, res) => {
       return res.status(401).json({ message: 'Email o contraseña incorrectos' });
     }
 
-    if (usuario.password !== password) {
+    let passwordCorrecta = false;
+
+    // 🔍 Si parece un hash de bcrypt
+    if (usuario.password.startsWith('$2b$')) {
+      passwordCorrecta = await bcrypt.compare(password, usuario.password);
+    } else {
+      // 🧠 Es texto plano (usuario antiguo)
+      if (password === usuario.password) {
+        passwordCorrecta = true;
+
+        // 🔒 Convertimos a hash automáticamente
+        const hash = await bcrypt.hash(password, 10);
+        usuario.password = hash;
+        await usuario.save();
+      }
+    }
+
+    if (!passwordCorrecta) {
       return res.status(401).json({ message: 'Email o contraseña incorrectos' });
     }
 

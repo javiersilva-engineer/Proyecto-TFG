@@ -44,7 +44,7 @@
 
           <div class="circulo-texto">
             <div class="kcal-main">
-              {{ caloriasConsumidas | number:'1.0-2' }} / {{ caloriasObjetivo }}
+              {{ caloriasConsumidas | number:'1.0-0' }} / {{ caloriasObjetivo }}
             </div>
             <div class="kcal-sub">kcal</div>
           </div>
@@ -60,7 +60,7 @@
       <div class="conjuntoMacros">
         <div class="macro">
           <div class="macro-valor">
-            {{ carbohidratosConsumidos | number:'1.0-2' }} / {{ carbohidratosObjetivo }}g
+            {{ carbohidratosConsumidos | number:'1.0-0' }} / {{ carbohidratosObjetivo }}g
           </div>
           <div class="macro-barra">
             <div class="macro-barra-relleno" [style.width.%]="barraCarbos"></div>
@@ -70,7 +70,7 @@
 
         <div class="macro prot">
           <div class="macro-valor">
-            {{ proteinasConsumidas | number:'1.0-2' }} / {{ proteinasObjetivo }}g
+            {{ proteinasConsumidas | number:'1.0-0' }} / {{ proteinasObjetivo }}g
           </div>
           <div class="macro-barra">
             <div class="macro-barra-relleno" [style.width.%]="barraProteinas"></div>
@@ -80,7 +80,7 @@
 
         <div class="macro">
           <div class="macro-valor">
-            {{ grasasConsumidas | number:'1.0-2' }} / {{ grasasObjetivo }}g
+            {{ grasasConsumidas | number:'1.0-0' }} / {{ grasasObjetivo }}g
           </div>
           <div class="macro-barra">
             <div class="macro-barra-relleno" [style.width.%]="barraGrasas"></div>
